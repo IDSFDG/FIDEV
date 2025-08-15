@@ -65506,7 +65506,8 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         table.setData(valorRegistroCookie);
       } else if ($tmp === 5) {
         var table = Tabulator.findTable("#tabExample")[0];
-               table.import("json", ".json")
+              // table.import("json", ".json")
+               table.import("json",".*")
               .then(() => {
                   //file successfully imported
                })
@@ -65535,6 +65536,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       };
     };
     this.Estudios1Click = async function (Sender) {
+      var $Self = this;
       var sfechadia = "";
       var fechahoy = 0.0;
       var fechafincookie = 0.0;
@@ -65627,7 +65629,10 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         console.log('datos tabla',json);
         valorCookie=json;
         this.WebLocalTextFile1.FText = valorCookie;
-        this.WebLocalTextFile1.SaveAs();
+        this.WebLocalTextFile1.FFilter.Add$2("pedido.json","text/plain","*.json");
+        this.WebLocalTextFile1.SaveAsFile$1(function () {
+          pas["WEBLib.Dialogs"].ShowMessage("File succesfully saved");
+        });
       };
     };
     this.Analisis1Click = function (Sender) {
@@ -66516,6 +66521,8 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       // alert(key);
        keyhoja=key;
       if (keyhoja === "uno") this.Consultas1Click(Sender);
+    };
+    this.WebLocalTextFile1FileSave = function (Sender) {
     };
     this.ValidarUsuarioActivo = async function (u, p) {
       var Result = false;
@@ -67430,6 +67437,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetEvent$1(this.Compartir2,this,"OnClick","Compartir2Click");
         this.WebLocalTextFile1.SetParentComponent(this);
         this.WebLocalTextFile1.SetName("WebLocalTextFile1");
+        this.SetEvent$1(this.WebLocalTextFile1,this,"OnFileSave","WebLocalTextFile1FileSave");
         this.WebLocalTextFile1.SetLeft(408);
         this.WebLocalTextFile1.SetTop(64);
       } finally {
@@ -67627,6 +67635,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("compartirpdf31Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("Compartir2Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("lbarchivoClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebLocalTextFile1FileSave",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
   this.Form1 = null;
   $mod.$implcode = function () {

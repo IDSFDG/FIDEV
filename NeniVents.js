@@ -65468,7 +65468,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebScrollRegistro.SetVisible(false);
       this.edRen.SetText(".");
       nomarch = "";
-      opcionGuardar = 2;
+      opcionGuardar = 5;
       var $tmp = opcionGuardar;
       if ($tmp === 1) {
         nomarchcookie = $impl.RegistroCookie.Find("nombrearchivo").FValue;
@@ -65504,6 +65504,34 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         };
         var table = Tabulator.findTable("#tabExample")[0];
         table.setData(valorRegistroCookie);
+      } else if ($tmp === 5) {
+        var table = Tabulator.findTable("#tabExample")[0];
+               table.import("json", ".json")
+              .then(() => {
+                  //file successfully imported
+               })
+               .catch(() => {
+            //something went wrong
+              })
+        
+        
+              table.on("importImported", function(data){
+            //data - array of row data
+              //var rowCount = table.getDataCount()+1;
+             // console.log('rowcount',rowCount);
+              console.log('data',data);
+               //data.pop();
+              //console.log('data1',data);
+              var l =data.length;
+              for (var i = 0; i < l; i++) {
+                 console.log(data[i].rc);
+                 if (data[i].rc === undefined)
+                 {
+                    data.splice(i);
+                 }
+               }
+        
+              });
       };
     };
     this.Estudios1Click = async function (Sender) {

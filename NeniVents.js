@@ -65506,7 +65506,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         table.setData(valorRegistroCookie);
       };
     };
-    this.Estudios1Click = function (Sender) {
+    this.Estudios1Click = async function (Sender) {
       var sfechadia = "";
       var fechahoy = 0.0;
       var fechafincookie = 0.0;
@@ -65599,7 +65599,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         console.log('datos tabla',json);
         valorCookie=json;
         this.WebLocalTextFile1.FText = valorCookie;
-        this.WebLocalTextFile1.Save();
+        this.WebLocalTextFile1.SaveAs();
       };
     };
     this.Analisis1Click = function (Sender) {
@@ -67565,7 +67565,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("WebButton10Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("Pacientes1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("Consultas1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
-    $r.addMethod("Estudios1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("Estudios1Click",0,[["Sender",pas.System.$rtti["TObject"]]],null,16,{attr: [pas.JS.AsyncAttribute,"Create"]});
     $r.addMethod("Analisis1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("ExportarPDF1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("Expotar1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);

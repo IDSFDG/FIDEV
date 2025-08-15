@@ -65469,9 +65469,9 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.edRen.SetText(".");
       nomarch = "";
       opcionGuardar = 2;
-      nomarchcookie = $impl.RegistroCookie.Find("nombrearchivo").FValue;
       var $tmp = opcionGuardar;
       if ($tmp === 1) {
+        nomarchcookie = $impl.RegistroCookie.Find("nombrearchivo").FValue;
         if ($impl.RegistroCookie.GetCount() === 1) {
           pas["WEBLib.Dialogs"].ShowMessage("No hay nada registrado aún");
           return;

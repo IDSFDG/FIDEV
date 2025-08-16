@@ -65551,6 +65551,8 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var valorCookie = "";
       var LLocalStorage = null;
       var opcionGuardar = 0;
+      var filehandle = undefined;
+      filehandle = this.WebLocalTextFile1.FFileHandle;
       opcionGuardar = 5;
       this.WebScrollRegistro.SetVisible(false);
       this.edRen.SetText(".");
@@ -65628,11 +65630,14 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         var json = JSON.stringify(array);
         console.log('datos tabla',json);
         valorCookie=json;
+        console.log('FileHandle ');
+        console.log(filehandle);
         this.WebLocalTextFile1.FText = valorCookie;
-        this.WebLocalTextFile1.FFilter.Add$2("pedido.json","text/plain","*.json");
-        this.WebLocalTextFile1.SaveAsFile$1(function () {
-          pas["WEBLib.Dialogs"].ShowMessage("File succesfully saved");
-        });
+        if (filehandle == null) {
+          this.WebLocalTextFile1.SaveAsFile$1(function () {
+            pas["WEBLib.Dialogs"].ShowMessage("File succesfully saved");
+          });
+        } else this.WebLocalTextFile1.Save();
       };
     };
     this.Analisis1Click = function (Sender) {

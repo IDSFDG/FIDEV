@@ -82799,7 +82799,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.PedidosDbClientDataset1.First();
         if (!this.PedidosDbClientDataset1.GetEOF()) {
           valorRegistroCookie = this.PedidosDbClientDataset1.FieldByName("pedidolibreta").GetAsString();
-          console.log('valor', valorRegistroCookie);
+          //console.log('valor', valorRegistroCookie);
           var table = Tabulator.findTable("#tabExample")[0];
           table.setData(valorRegistroCookie);
         };
@@ -83503,58 +83503,51 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var maxRegs = 0;
       ventasubasta = "V";
       if (this.radioTipo.GetItemIndex() === 1) ventasubasta = "S";
-      maxRegs = 500;
-      for (i = 0; i <= 500; i++) {
-        var table = Tabulator.findTable("#tabExample")[0];
-        var rowCount = table.getDataCount();
-        irc =   rowCount+1;
-        src = pas.SysUtils.IntToStr(irc);
-        this.edImporte.SetText(pas.SysUtils.TIntegerHelper.ToString$1.call({get: function () {
-            return i;
-          }, set: function (v) {
-            i = v;
-          }}));
-        datosstr = '{"rc":' + String.fromCharCode(34) + src + String.fromCharCode(34) + "," + '"nombre":' + String.fromCharCode(34) + this.edNombre.GetText() + String.fromCharCode(34) + "," + '"articulo":' + String.fromCharCode(34) + this.edArticulo.GetText() + String.fromCharCode(34) + "," + ' "importe":' + String.fromCharCode(34) + this.edImporte.GetText() + String.fromCharCode(34) + "," + '"vds":' + String.fromCharCode(34) + ventasubasta + String.fromCharCode(34) + "}";
-        var table = Tabulator.findTable("#tabExample")[0];
-              var tabledata = [];   // se puede eliminar
-              var obj=JSON.parse(datosstr);   // se puede eliminar
-              tabledata.push(obj);  // se puede eliminar
-              //console.log(tabledata);
-              var rowCount = table.getDataCount()+1;
-             // alert(rowCount);
-              // if (rowCount < 101)
-               if (rowCount < maxRegs);
-              {
-               table.addRow(datosstr)
-                    .then(function(row){
-                        //row - the row component for the row updated or added
-                     row.scrollTo();
-        
-                    //run code after data has been updated
-                    })
-                   .catch(function(error){
-                         //handle error updating data
-                    });
-        
-             }  //if  rowCount
-        
-        
-            /*  if (rowCount < 11)
-              {
-                table.addData(tabledata, false)  //ADD true top of the table false bottom of the table
-                  .then(function(rows){
-                   //rows - array of the row components for the rows updated or added
-        
+      maxRegs = 101;
+      var table = Tabulator.findTable("#tabExample")[0];
+      var rowCount = table.getDataCount();
+      irc =   rowCount+1;
+      src = pas.SysUtils.IntToStr(irc);
+      datosstr = '{"rc":' + String.fromCharCode(34) + src + String.fromCharCode(34) + "," + '"nombre":' + String.fromCharCode(34) + this.edNombre.GetText() + String.fromCharCode(34) + "," + '"articulo":' + String.fromCharCode(34) + this.edArticulo.GetText() + String.fromCharCode(34) + "," + ' "importe":' + String.fromCharCode(34) + this.edImporte.GetText() + String.fromCharCode(34) + "," + '"vds":' + String.fromCharCode(34) + ventasubasta + String.fromCharCode(34) + "}";
+      var table = Tabulator.findTable("#tabExample")[0];
+            var tabledata = [];   // se puede eliminar
+            var obj=JSON.parse(datosstr);   // se puede eliminar
+            tabledata.push(obj);  // se puede eliminar
+            //console.log(tabledata);
+            var rowCount = table.getDataCount()+1;
+           // alert(rowCount);
+            // if (rowCount < 101)
+             if (rowCount < maxRegs);
+            {
+             table.addRow(datosstr)
+                  .then(function(row){
+                      //row - the row component for the row updated or added
+                   row.scrollTo();
+      
                   //run code after data has been updated
-                 // console.log(rows);
-                 // rows.scrollTo("bottom", true);
-                   })
-                  .catch(function(error){
-                   //handle error updating data
+                  })
+                 .catch(function(error){
+                       //handle error updating data
                   });
-              }
-              */;
-      };
+      
+           }  //if  rowCount
+      
+      
+          /*  if (rowCount < 11)
+            {
+              table.addData(tabledata, false)  //ADD true top of the table false bottom of the table
+                .then(function(rows){
+                 //rows - array of the row components for the rows updated or added
+      
+                //run code after data has been updated
+               // console.log(rows);
+               // rows.scrollTo("bottom", true);
+                 })
+                .catch(function(error){
+                 //handle error updating data
+                });
+            }
+            */;
       this.edNombre.SetText("");
       this.edArticulo.SetText("");
       this.edImporte.SetText("");
@@ -84966,7 +84959,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
   });
   this.Form1 = null;
   $mod.$implcode = function () {
-    $impl.maximoRegistros = 500;
+    $impl.maximoRegistros = 101;
     $impl.RegistroCookie = null;
     $impl.NomRegistroCookie = "";
   };

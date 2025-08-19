@@ -82321,7 +82321,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.Descargar1 = null;
       this.WebLabel2 = null;
       this.WebLabel1 = null;
-      this.edPaciente = null;
       this.edPacNombre = null;
       this.Imprimir1 = null;
       this.Graficar1 = null;
@@ -82395,7 +82394,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.Descargar1 = undefined;
       this.WebLabel2 = undefined;
       this.WebLabel1 = undefined;
-      this.edPaciente = undefined;
       this.edPacNombre = undefined;
       this.Imprimir1 = undefined;
       this.Graficar1 = undefined;
@@ -82823,10 +82821,12 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var opcionGuardar = 0;
       var filehandle = undefined;
       var i = 0;
+      var lendatos = 0;
       filehandle = this.WebLocalTextFile1.FFileHandle;
       opcionGuardar = 6;
       this.WebScrollRegistro.SetVisible(false);
       this.edRen.SetText(".");
+      lendatos = 0;
       fechahoy = pas.SysUtils.Now();
       pas.SysUtils.DecodeDate(fechahoy,{get: function () {
           return anio;
@@ -82856,6 +82856,8 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var json = JSON.stringify(array);
       console.log('datos tabla',json);
       valorCookie=json;
+      lendatos=array.length;
+      if (lendatos === 0) return;
       var $tmp = opcionGuardar;
       if ($tmp === 1) {
         guardarCookie = $impl.RegistroCookie.Find(nomarchcookie);
@@ -83465,9 +83467,12 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebScrollRegistro.SetVisible(true);
       this.edRen.SetText(".");
     };
-    this.btnCerrarClick = function (Sender) {
+    this.btnCerrarClick = async function (Sender) {
+      var salvar = "";
+      var mr = 0;
       this.WebScrollRegistro.SetVisible(false);
-      this.Estudios1Click(Sender);
+      mr = await this.WebMessageDlg1.ShowDialog$2("Desea guardar su registro de productos ?",pas["WEBLib.Dialogs"].TMsgDlgType.mtConfirmation,rtl.createSet(pas["WEBLib.Dialogs"].TMsgDlgBtn.mbYes,pas["WEBLib.Dialogs"].TMsgDlgBtn.mbNo));
+      if (mr === 6) this.Estudios1Click(Sender);
     };
     this.ExportaraPDF1Click = function (Sender) {
       this.WebScrollRegistro.SetVisible(false);
@@ -83760,6 +83765,28 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
           doc.save('table.pdf');
     };
     this.compartirpdf31Click = function (Sender) {
+      var fechahoy = 0.0;
+      var anio = 0;
+      var mes = 0;
+      var dia = 0;
+      var sfechadia = "";
+      fechahoy = pas.SysUtils.Now();
+      pas.SysUtils.DecodeDate(fechahoy,{get: function () {
+          return anio;
+        }, set: function (v) {
+          anio = v;
+        }},{get: function () {
+          return mes;
+        }, set: function (v) {
+          mes = v;
+        }},{get: function () {
+          return dia;
+        }, set: function (v) {
+          dia = v;
+        }});
+      sfechadia = pas.SysUtils.DateToStr(fechahoy);
+      sfechadia = pas.SysUtils.Format("%.4d%.2d%.2d",pas.System.VarRecs(0,anio,0,mes,0,dia)) + ".pdf";
+      sfechadia = "Ventas_del_" + sfechadia;
       var table = Tabulator.findTable("#tabExample")[0];
             //var htmlTable = table.getHtml("active",false);
             var htmlTable = table.getHtml("all",false);
@@ -83793,7 +83820,8 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
          doc.autoTable({ html: myElement.querySelector('table')});
          const pdfBlob = doc.output('blob');
       
-         const file = new File([pdfBlob], 'document.pdf', { type: 'application/pdf' });
+        // const file = new File([pdfBlob], 'document.pdf', { type: 'application/pdf' });
+         const file = new File([pdfBlob], sfechadia, { type: 'application/pdf' });
          if ( window.navigator.share) {
             //  const pdfBlob = new Blob([fileContents], { type: 'application/pdf' });
             //const file = new File([pdfBlob], 'document.pdf', { type: 'application/pdf' });
@@ -83829,6 +83857,8 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.PedidosDbClientDataset1.Init(function () {
         $Self.PedidosDbClientDataset1.SetActive(true);
       });
+    };
+    this.WebScrollRegistroMouseEnter = function (Sender) {
     };
     this.ValidarUsuarioActivo = async function (u, p) {
       var Result = false;
@@ -83944,7 +83974,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebLabel1 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebLabel2 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebButton9 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
-      this.edPaciente = pas["WEBLib.StdCtrls"].TEdit.$create("Create$2",["edPaciente"]);
       this.edPacNombre = pas["WEBLib.StdCtrls"].TEdit.$create("Create$2",["edPacNombre"]);
       this.WebButton11 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.WebButton12 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
@@ -84015,7 +84044,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebLabel1.BeforeLoadDFMValues();
       this.WebLabel2.BeforeLoadDFMValues();
       this.WebButton9.BeforeLoadDFMValues();
-      this.edPaciente.BeforeLoadDFMValues();
       this.edPacNombre.BeforeLoadDFMValues();
       this.WebButton11.BeforeLoadDFMValues();
       this.WebButton12.BeforeLoadDFMValues();
@@ -84158,12 +84186,14 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel4.SetTop(0);
         this.WebPanel4.SetWidth(701);
         this.WebPanel4.SetHeight(48);
+        this.WebPanel4.SetHint("Click para registrar productos");
         this.WebPanel4.SetElementClassName("card");
         this.WebPanel4.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebPanel4.SetChildOrderEx(1);
         this.WebPanel4.SetColor(12695295);
         this.WebPanel4.FElementBodyClassName = "card-body";
         this.WebPanel4.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebPanel4.SetShowHint(true);
         this.WebPanel4.SetTabOrder(2);
         this.WebPanel4.SetVisible(false);
         this.SetEvent$1(this.WebPanel4,this,"OnClick","WebPanel4Click");
@@ -84198,7 +84228,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel2.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel2.SetHeightPercent(100.000000000000000000);
         this.WebLabel2.SetParentFont(false);
-        this.WebLabel2.SetShowHint(true);
+        this.WebLabel2.SetShowHint(false);
         this.WebLabel2.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.WebLabel2,this,"OnClick","WebLabel2Click");
         this.WebButton9.SetParentComponent(this.WebPanel4);
@@ -84215,20 +84245,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebButton9.SetHeightPercent(100.000000000000000000);
         this.WebButton9.SetVisible(false);
         this.WebButton9.SetWidthPercent(100.000000000000000000);
-        this.edPaciente.SetParentComponent(this.WebPanel4);
-        this.edPaciente.SetName("edPaciente");
-        this.edPaciente.SetLeft(113);
-        this.edPaciente.SetTop(21);
-        this.edPaciente.SetWidth(121);
-        this.edPaciente.SetHeight(36);
-        this.edPaciente.SetChildOrderEx(1);
-        this.edPaciente.SetElementClassName("form-control");
-        this.edPaciente.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
-        this.edPaciente.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
-        this.edPaciente.SetHeightPercent(100.000000000000000000);
-        this.edPaciente.SetReadOnly(true);
-        this.edPaciente.SetVisible(false);
-        this.edPaciente.SetWidthPercent(100.000000000000000000);
         this.edPacNombre.SetParentComponent(this.WebPanel4);
         this.edPacNombre.SetName("edPacNombre");
         this.edPacNombre.SetLeft(240);
@@ -84331,6 +84347,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebScrollRegistro.SetScrollBars(pas["WEBLib.Controls"].TScrollStyle.ssHorizontal);
         this.WebScrollRegistro.SetVisible(false);
         this.SetEvent$1(this.WebScrollRegistro,this,"OnClick","WebScrollRegistroClick");
+        this.SetEvent$1(this.WebScrollRegistro,this,"OnMouseEnter","WebScrollRegistroMouseEnter");
         this.WebLabel3.SetParentComponent(this.WebScrollRegistro);
         this.WebLabel3.SetName("WebLabel3");
         this.WebLabel3.SetLeft(0);
@@ -84766,7 +84783,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel1.AfterLoadDFMValues();
         this.WebLabel2.AfterLoadDFMValues();
         this.WebButton9.AfterLoadDFMValues();
-        this.edPaciente.AfterLoadDFMValues();
         this.edPacNombre.AfterLoadDFMValues();
         this.WebButton11.AfterLoadDFMValues();
         this.WebButton12.AfterLoadDFMValues();
@@ -84862,7 +84878,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addField("Descargar1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
     $r.addField("WebLabel2",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
     $r.addField("WebLabel1",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
-    $r.addField("edPaciente",pas["WEBLib.StdCtrls"].$rtti["TEdit"]);
     $r.addField("edPacNombre",pas["WEBLib.StdCtrls"].$rtti["TEdit"]);
     $r.addField("Imprimir1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
     $r.addField("Graficar1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
@@ -84939,7 +84954,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("LimpiarHoja1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("LimpiarHoja2Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("Registrar1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
-    $r.addMethod("btnCerrarClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("btnCerrarClick",0,[["Sender",pas.System.$rtti["TObject"]]],null,16,{attr: [pas.JS.AsyncAttribute,"Create"]});
     $r.addMethod("ExportaraPDF1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("btnAgregarClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebPanel4Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
@@ -84956,6 +84971,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("lbarchivoClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebLocalTextFile1FileSave",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebFormShow",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebScrollRegistroMouseEnter",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
   this.Form1 = null;
   $mod.$implcode = function () {

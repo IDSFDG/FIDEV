@@ -82374,6 +82374,10 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
                   });
       
            }  //if  rowCount;
+      this.edNombre.SetText("");
+      this.edArticulo.SetText("");
+      this.edImporte.SetText("");
+      this.edventasuba.SetText("");
     };
     this.WebFormCreate = function (Sender) {
       this.listadatos = pas.Classes.TStringList.$create("Create$1");
@@ -82563,6 +82567,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edImporte.SetWidth(222);
         this.edImporte.SetHeight(22);
         this.edImporte.SetChildOrderEx(3);
+        this.edImporte.SetEditType(pas["WEBLib.StdCtrls"].TEditType.weNumeric);
         this.edImporte.SetElementClassName("form-control");
         this.edImporte.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.edImporte.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
@@ -83092,7 +83097,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var opcionGuardar = 0;
       var LLocalStorage = null;
       var jsonData = "";
-      this.WebScrollRegistro.SetVisible(false);
       this.edRen.SetText(".");
       nomarch = "";
       opcionGuardar = 6;
@@ -83193,7 +83197,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var lendatos = 0;
       filehandle = this.WebLocalTextFile1.FFileHandle;
       opcionGuardar = 6;
-      this.WebScrollRegistro.SetVisible(false);
       this.edRen.SetText(".");
       lendatos = 0;
       fechahoy = pas.SysUtils.Now();
@@ -83381,7 +83384,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.PedidosDbClientDataset1.FFieldDefs.Add$5("fecha",pas.DB.TFieldType.ftString);
     };
     this.Imprimir1Click = function (Sender) {
-      this.WebScrollRegistro.SetVisible(false);
       this.edRen.SetText(".");
       this.btn_imprimirClick(Sender);
     };
@@ -83802,7 +83804,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
               cols[6].updateDefinition({title:'V/S',width:68,headerTooltip:'Vta.Directa /Subasta',field:"vds",headerHozAlign:"left",headerFilter:"input"});
     };
     this.LimpiarHoja2Click = function (Sender) {
-      this.WebScrollRegistro.SetVisible(false);
       this.edRen.SetText(".");
       var table = Tabulator.findTable("#tabExample")[0];
           table.clearSheet("uno"); //clear the data from the info sheet
@@ -83833,16 +83834,14 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
               cols[6].updateDefinition({title:'V/S',width:68,headerTooltip:'Vta.Directa /Subasta',field:"vds",headerHozAlign:"left",headerFilter:"input"});
     };
     this.Registrar1Click = function (Sender) {
-      $impl.cargarFormaCaptura();
+      this.cargarFormaCaptura(Sender);
       return;
-      this.WebScrollRegistro.SetVisible(true);
       this.edRen.SetText(".");
     };
     this.btnCerrarClick = async function (Sender) {
       var salvar = "";
       var mr = 0;
       var lendatos = 0;
-      this.WebScrollRegistro.SetVisible(false);
       var table = Tabulator.findTable("#tabExample")[0];
       var array = table.getData();
       lendatos=array.length;
@@ -83852,7 +83851,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.MuestraMenu(true);
     };
     this.ExportaraPDF1Click = function (Sender) {
-      this.WebScrollRegistro.SetVisible(false);
       this.edRen.SetText(".");
       this.btn_exportarClick(Sender);
       return;
@@ -83936,13 +83934,11 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.edventasuba.SetText("");
     };
     this.WebPanel4Click = function (Sender) {
-      this.WebScrollRegistro.SetVisible(!this.WebScrollRegistro.FVisible);
     };
     this.WebLabel2Click = function (Sender) {
       var opc = false;
       return;
-      $impl.cargarFormaCaptura();
-      this.WebScrollRegistro.SetVisible(!this.WebScrollRegistro.FVisible);
+      this.cargarFormaCaptura(Sender);
       opc = !this.WebScrollRegistro.FVisible;
       this.MuestraMenu(opc);
     };
@@ -84246,6 +84242,30 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     this.WebScrollRegistroMouseLeave = function (Sender) {
       this.MuestraMenu(true);
     };
+    this.cargarFormaCaptura = function (Sender) {
+      var $Self = this;
+      var newform = null;
+      var lendatos = 0;
+      var mr = 0;
+      async function AfterShowModal(AValue) {
+        var table = Tabulator.findTable("#tabExample")[0];
+        var array = table.getData();
+        lendatos=array.length;
+        if (lendatos === 0) return;
+        mr = await $Self.WebMessageDlg1.ShowDialog$2("Desea guardar su registro de productos ?",pas["WEBLib.Dialogs"].TMsgDlgType.mtConfirmation,rtl.createSet(pas["WEBLib.Dialogs"].TMsgDlgBtn.mbYes,pas["WEBLib.Dialogs"].TMsgDlgBtn.mbNo));
+        if (mr === 6) $Self.Estudios1Click(newform);
+      };
+      function AfterCreate(AForm) {
+        newform.btnAgregar.SetCaption("Agregar");
+        newform.SetTop(rtl.trunc(($mod.Form1.GetClientHeight() - newform.GetHeight()) / 2));
+        newform.SetLeft(rtl.trunc(($mod.Form1.GetClientWidth() - newform.GetWidth()) / 1));
+      };
+      newform = pas.Unit3.TForm3.$create("CreateNew$3",[AfterCreate]);
+      newform.FPopup = true;
+      newform.SetCaption("Popup form");
+      newform.SetBorder(pas["WEBLib.Forms"].TFormBorderStyle.fbDialog);
+      newform.ShowModal$1(AfterShowModal);
+    };
     this.ValidarUsuarioActivo = async function (u, p) {
       var Result = false;
       var ustr = "";
@@ -84351,6 +84371,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       return Result;
     };
     this.MuestraMenu = function (opc) {
+      return;
       if (opc === false) {
         const element = document.getElementById('menuprincipal');
         element.style.visibility = 'hidden';
@@ -85369,27 +85390,13 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("WebFormShow",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebScrollRegistroMouseEnter",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebScrollRegistroMouseLeave",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("cargarFormaCaptura",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
   this.Form1 = null;
   $mod.$implcode = function () {
     $impl.maximoRegistros = 101;
     $impl.RegistroCookie = null;
     $impl.NomRegistroCookie = "";
-    $impl.cargarFormaCaptura = function () {
-      var newform = null;
-      function AfterShowModal(AValue) {
-      };
-      function AfterCreate(AForm) {
-        newform.btnAgregar.SetCaption("Agregar");
-        newform.SetTop(rtl.trunc(($mod.Form1.GetClientHeight() - newform.GetHeight()) / 2));
-        newform.SetLeft(rtl.trunc(($mod.Form1.GetClientWidth() - newform.GetWidth()) / 1));
-      };
-      newform = pas.Unit3.TForm3.$create("CreateNew$3",[AfterCreate]);
-      newform.FPopup = true;
-      newform.SetCaption("Popup form");
-      newform.SetBorder(pas["WEBLib.Forms"].TFormBorderStyle.fbDialog);
-      newform.ShowModal$1(AfterShowModal);
-    };
   };
 },["Unit3"]);
 rtl.module("WEBLib.Login",["System","Classes","SysUtils","Types","WEBLib.Controls","WEBLib.StdCtrls","WEBLib.Graphics","WEBLib.Dialogs","Web"],function () {

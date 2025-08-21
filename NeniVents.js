@@ -82451,6 +82451,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel1.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel1.SetHeightPercent(100.000000000000000000);
+        this.WebLabel1.SetVisible(false);
         this.WebLabel1.SetWidthPercent(100.000000000000000000);
         this.WebLabel2.SetParentComponent(this.WebScrollBox1);
         this.WebLabel2.SetName("WebLabel2");

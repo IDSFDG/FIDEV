@@ -63514,7 +63514,9 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
     ];
              var table = new Tabulator("#tabExample",
     
-       {
+         {
+         //footerElement: "<div class='custom-footer'>Total Items: <span id='total-items'></span></div>",
+    
        dependencies:{
             XLSX:XLSX,
         },
@@ -63599,6 +63601,8 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
           //  row.getElement().classList.add("table-danger");
             }
         },
+     // bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
+    
     
           selectableRows:false,
         pagination:false,
@@ -63731,7 +63735,11 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
         //e - the click event object
         //row - row component
       // alert('rowDblClick');
-       if (confirm("Desea eliminar renglón ?")) {
+      var idren=row.getData();
+      console.log('renglon',idren, idren.rc);
+      var rennum = idren.rc;
+    
+       if (confirm("Desea eliminar renglón: "+rennum.toString()+" ?")) {
            row.delete();
        }
     });
@@ -63751,10 +63759,25 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
         switch(keyhoja) {
       case 'uno':
         // code block
-          table.updateColumnDefinition("A", {title:"#",field:"rc",width:1, headerTooltip:"Registro" ,editor:false}) //change the title on the name column
+          table.updateColumnDefinition("A", {title:"#",field:"rc",width:1, headerTooltip:"Registro, seleccion para eliminarlo" ,editor:false}) //change the title on the name column
           table.updateColumnDefinition("B", {title:"Nombre",field:"nombre",width:80, headerTooltip:"Nombre"}) //change the title on the name column
           table.updateColumnDefinition("C", {title:"Articulo",field:"articulo",width:80, headerTooltip:"Articulo"}) //change the title on the name column
-          table.updateColumnDefinition("D", {title:"$Importe",field:"importe",width:60, headerTooltip:"Importe",bottomCalc:"sum"}) //change the title on the name column
+          table.updateColumnDefinition("D", {title:"$Impte",field:"importe",width:70, headerTooltip:"Importe",bottomCalc:"sum",
+        formatter:"money", formatterParams:{
+        decimal:".",
+        thousand:",",
+        symbol:"$",
+        negativeSign:true,
+        precision:2},
+        bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
+           {field: "importe",   bottomCalc:"sum",   responsive:0,
+              title: "Total", width:200, headerFilter:false ,resizable: true,formatter:"money", formatterParams:{
+        decimal:".",
+        thousand:",",
+        symbol:"$",
+        negativeSign:true,
+        precision:2}
+        }) //change the title on the name column
           table.updateColumnDefinition("E", {title:"P.",width:30,field:"pagado",editor:true,formatter:"tickCross", headerTooltip:"Pagado"}) //change the title on the name column
           table.updateColumnDefinition("F", {title:"E.",width:30,field:"entregado",editor:true,formatter:"tickCross", headerTooltip:"Entregado"}) //change the title on the name column
           table.updateColumnDefinition("G", {title:"VD/S",field:"vds",width:68 ,resizable:false, headerTooltip:"Venta/Subasta"}) //change the title on the name column
@@ -63764,8 +63787,23 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
       case 'dos':
         // code block
           table.updateColumnDefinition("A", {title:"#",field:"rc",width:1}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Concepto",field:"concepto",width:280, headerTooltip:"Concepto"}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"$Importe",field:"importe",width:120, resizable:false, headerTooltip:"Importe",bottomCalc:"sum"}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Concepto",field:"concepto",width:230, headerTooltip:"Concepto"}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"$Importe",field:"importe",width:100, resizable:false, headerTooltip:"Importe",bottomCalc:"sum",
+        formatter:"money", formatterParams:{
+        decimal:".",
+        thousand:",",
+        symbol:"$",
+        negativeSign:true,
+        precision:2},
+        bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
+           {field: "importe",   bottomCalc:"sum",   responsive:0,
+              title: "Total", width:200, headerFilter:false ,resizable: true,formatter:"money", formatterParams:{
+        decimal:".",
+        thousand:",",
+        symbol:"$",
+        negativeSign:true,
+        precision:2}
+          }) //change the title on the name column
         break;
         default:
         // code block
@@ -64255,7 +64293,7 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
         // code block
           table.updateColumnDefinition("A", {title:"Nombre",width:250}) //change the title on the name column
           table.updateColumnDefinition("B", {title:"Articulo",width:250}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"Importe",width:150}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"Impte",width:150}) //change the title on the name column
           table.updateColumnDefinition("D", {title:"Pagado",width:80}) //change the title on the name column
           table.updateColumnDefinition("E", {title:"VD/S",width:80}) //change the title on the name column
     
@@ -84608,14 +84646,12 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel4.SetTop(0);
         this.WebPanel4.SetWidth(701);
         this.WebPanel4.SetHeight(48);
-        this.WebPanel4.SetHint("Click para registrar productos");
         this.WebPanel4.SetElementClassName("card");
         this.WebPanel4.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebPanel4.SetChildOrderEx(1);
         this.WebPanel4.SetColor(12695295);
         this.WebPanel4.FElementBodyClassName = "card-body";
         this.WebPanel4.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
-        this.WebPanel4.SetShowHint(true);
         this.WebPanel4.SetTabOrder(2);
         this.WebPanel4.SetVisible(false);
         this.SetEvent$1(this.WebPanel4,this,"OnClick","WebPanel4Click");
@@ -84650,7 +84686,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel2.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel2.SetHeightPercent(100.000000000000000000);
         this.WebLabel2.SetParentFont(false);
-        this.WebLabel2.SetShowHint(false);
         this.WebLabel2.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.WebLabel2,this,"OnClick","WebLabel2Click");
         this.WebButton9.SetParentComponent(this.WebPanel4);

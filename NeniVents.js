@@ -63677,8 +63677,8 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
      //   alert('paciente');
      //   alert(selpacid);
     
-       edPaciente.value = selpacid;
-       edPacNombre.value =selpacnom;
+       //edPaciente.value = selpacid;
+       //edPacNombre.value =selpacnom;
       // alert (edPacNombre.value);
      //  table.setFilter('B like '+edPacNombre.value);
     
@@ -82381,10 +82381,14 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     };
     this.WebFormCreate = function (Sender) {
       this.listadatos = pas.Classes.TStringList.$create("Create$1");
+      this.WebScrollBox1.SetElementClassName("");
+      this.WebScrollBox1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efProperty);
+      this.WebPanel1.SetElementClassName("");
+      this.WebPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efProperty);
     };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
-      this.WebScrollBox1 = pas["WEBLib.ExtCtrls"].TScrollBox.$create("Create$1",[this]);
+      this.WebScrollBox1 = pas["WEBLib.ExtCtrls"].TScrollBox.$create("Create$2",["scroll-INFO"]);
       this.WebLabel1 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebLabel2 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebLabel3 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
@@ -82418,7 +82422,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetName("Form3");
         this.SetLeft(400);
         this.SetWidth(251);
-        this.SetHeight(430);
+        this.SetHeight(459);
         this.SetCaption("Capturar Información");
         this.SetCSSLibrary(pas["WEBLib.Controls"].TCSSLibrary.cssBootstrap);
         this.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
@@ -82434,11 +82438,12 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebScrollBox1.SetLeft(0);
         this.WebScrollBox1.SetTop(0);
         this.WebScrollBox1.SetWidth(251);
-        this.WebScrollBox1.SetHeight(430);
+        this.WebScrollBox1.SetHeight(459);
         this.WebScrollBox1.SetElementClassName("card");
         this.WebScrollBox1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebScrollBox1.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsSingle);
         this.WebScrollBox1.SetChildOrderEx(1);
+        this.WebScrollBox1.SetColor(12695295);
         this.WebLabel1.SetParentComponent(this.WebScrollBox1);
         this.WebLabel1.SetName("WebLabel1");
         this.WebLabel1.SetLeft(0);
@@ -82489,9 +82494,9 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel5.SetParentComponent(this.WebScrollBox1);
         this.WebLabel5.SetName("WebLabel5");
         this.WebLabel5.SetLeft(3);
-        this.WebLabel5.SetTop(272);
-        this.WebLabel5.SetWidth(156);
-        this.WebLabel5.SetHeight(18);
+        this.WebLabel5.SetTop(288);
+        this.WebLabel5.SetWidth(158);
+        this.WebLabel5.SetHeight(33);
         this.WebLabel5.SetCaption("Venta Directa / Subasta");
         this.WebLabel5.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel5.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
@@ -82500,21 +82505,21 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel1.SetParentComponent(this.WebScrollBox1);
         this.WebPanel1.SetName("WebPanel1");
         this.WebPanel1.SetLeft(0);
-        this.WebPanel1.SetTop(372);
+        this.WebPanel1.SetTop(401);
         this.WebPanel1.SetWidth(251);
         this.WebPanel1.SetHeight(58);
         this.WebPanel1.SetElementClassName("card");
         this.WebPanel1.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
         this.WebPanel1.SetChildOrderEx(2);
-        this.WebPanel1.SetColor(15790320);
+        this.WebPanel1.SetColor(13395456);
         this.WebPanel1.FElementBodyClassName = "card-body";
         this.WebPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebPanel1.SetTabOrder(0);
         this.btnCerrar.SetParentComponent(this.WebPanel1);
         this.btnCerrar.SetName("btnCerrar");
-        this.btnCerrar.SetLeft(158);
+        this.btnCerrar.SetLeft(144);
         this.btnCerrar.SetTop(16);
-        this.btnCerrar.SetWidth(54);
+        this.btnCerrar.SetWidth(81);
         this.btnCerrar.SetHeight(25);
         this.btnCerrar.SetCaption("Cerrar");
         this.btnCerrar.SetElementClassName("btn btn-light");
@@ -82525,7 +82530,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetEvent$1(this.btnCerrar,this,"OnClick","btnCerrarClick");
         this.btnAgregar.SetParentComponent(this.WebPanel1);
         this.btnAgregar.SetName("btnAgregar");
-        this.btnAgregar.SetLeft(24);
+        this.btnAgregar.SetLeft(8);
         this.btnAgregar.SetTop(16);
         this.btnAgregar.SetWidth(81);
         this.btnAgregar.SetHeight(25);
@@ -82577,7 +82582,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.chkPagado.SetParentComponent(this.WebScrollBox1);
         this.chkPagado.SetName("chkPagado");
         this.chkPagado.SetLeft(3);
-        this.chkPagado.SetTop(228);
+        this.chkPagado.SetTop(244);
         this.chkPagado.SetWidth(86);
         this.chkPagado.SetHeight(22);
         this.chkPagado.SetCaption("Pagado");
@@ -82592,7 +82597,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.chkEntregado.SetParentComponent(this.WebScrollBox1);
         this.chkEntregado.SetName("chkEntregado");
         this.chkEntregado.SetLeft(107);
-        this.chkEntregado.SetTop(228);
+        this.chkEntregado.SetTop(244);
         this.chkEntregado.SetWidth(86);
         this.chkEntregado.SetHeight(22);
         this.chkEntregado.SetCaption("Entregado");
@@ -82606,9 +82611,9 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.chkEntregado.SetWidthPercent(100.000000000000000000);
         this.edventasuba.SetParentComponent(this.WebScrollBox1);
         this.edventasuba.SetName("edventasuba");
-        this.edventasuba.SetLeft(3);
-        this.edventasuba.SetTop(312);
-        this.edventasuba.SetWidth(222);
+        this.edventasuba.SetLeft(179);
+        this.edventasuba.SetTop(285);
+        this.edventasuba.SetWidth(46);
         this.edventasuba.SetHeight(22);
         this.edventasuba.SetChildOrderEx(3);
         this.edventasuba.SetElementClassName("form-control");

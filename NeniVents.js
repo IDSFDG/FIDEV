@@ -63760,9 +63760,9 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
       case 'uno':
         // code block
           table.updateColumnDefinition("A", {title:"#",field:"rc",width:1, headerTooltip:"Registro, seleccion para eliminarlo" ,editor:false}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Nombre",field:"nombre",width:80, headerTooltip:"Nombre"}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"Articulo",field:"articulo",width:80, headerTooltip:"Articulo"}) //change the title on the name column
-          table.updateColumnDefinition("D", {title:"$Impte",field:"importe",width:70, headerTooltip:"Importe",bottomCalc:"sum",
+          table.updateColumnDefinition("B", {title:"Cliente",field:"nombre",width:80, headerTooltip:"Cliente"}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"Producto",field:"articulo",width:80, headerTooltip:"Producto"}) //change the title on the name column
+          table.updateColumnDefinition("D", {title:"$Precio",field:"importe",width:70, headerTooltip:"Precio",bottomCalc:"sum",
         formatter:"money", formatterParams:{
         decimal:".",
         thousand:",",
@@ -63962,9 +63962,9 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
            var cols = table.getColumns() //get array of column components
     
             cols[0].updateDefinition({title:' ',width:5});
-            cols[1].updateDefinition({title:'Nombre',width:120,responsive:0});
-            cols[2].updateDefinition({title:'Articulo',width:120,responsive:0});
-            cols[3].updateDefinition({title:'Importe',width:75,responsive:0});
+            cols[1].updateDefinition({title:'Cliente',width:120,responsive:0});
+            cols[2].updateDefinition({title:'Producto',width:120,responsive:0});
+            cols[3].updateDefinition({title:'Precio',width:75,responsive:0});
             cols[4].updateDefinition({title:'P./E.',width:70});
             cols[5].updateDefinition({title:'VD/SUB',width:70});
         //  alert('tableBuilt');
@@ -64291,9 +64291,9 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
     switch(key) {
       case 'uno':
         // code block
-          table.updateColumnDefinition("A", {title:"Nombre",width:250}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Articulo",width:250}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"Impte",width:150}) //change the title on the name column
+          table.updateColumnDefinition("A", {title:"Cliente",width:250}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Producto",width:250}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"Precio",width:150}) //change the title on the name column
           table.updateColumnDefinition("D", {title:"Pagado",width:80}) //change the title on the name column
           table.updateColumnDefinition("E", {title:"VD/S",width:80}) //change the title on the name column
     
@@ -64322,7 +64322,7 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
       default:
         // code block
           table.updateColumnDefinition("A", {title:"Clave"}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Nombre",width:250}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Cliente",width:250}) //change the title on the name column
     
     };
   };
@@ -82416,6 +82416,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.edArticulo.SetText("");
       this.edImporte.SetText("");
       this.edventasuba.SetText("");
+      this.chkPagado.SetChecked(false);
+      this.chkEntregado.SetChecked(false);
     };
     this.WebFormCreate = function (Sender) {
       this.listadatos = pas.Classes.TStringList.$create("Create$1");
@@ -82423,6 +82425,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebScrollBox1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efProperty);
       this.WebPanel1.SetElementClassName("");
       this.WebPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efProperty);
+    };
+    this.WebFormCloseQuery = function (Sender, CanClose) {
     };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
@@ -82461,7 +82465,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetLeft(400);
         this.SetWidth(251);
         this.SetHeight(459);
-        this.SetCaption("Capturar Información");
+        this.SetCaption("Registro de  Información");
         this.SetCSSLibrary(pas["WEBLib.Controls"].TCSSLibrary.cssBootstrap);
         this.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.FFont.FCharset = 1;
@@ -82470,6 +82474,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.FFont.SetName("Tahoma");
         this.FFont.SetStyle({});
         this.SetParentFont(false);
+        this.FShowClose = false;
+        this.SetEvent(this,"OnCloseQuery","WebFormCloseQuery");
         this.SetEvent(this,"OnCreate","WebFormCreate");
         this.WebScrollBox1.SetParentComponent(this);
         this.WebScrollBox1.SetName("WebScrollBox1");
@@ -82481,7 +82487,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebScrollBox1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebScrollBox1.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsSingle);
         this.WebScrollBox1.SetChildOrderEx(1);
-        this.WebScrollBox1.SetColor(12695295);
+        this.WebScrollBox1.SetColor(15979512);
         this.WebLabel1.SetParentComponent(this.WebScrollBox1);
         this.WebLabel1.SetName("WebLabel1");
         this.WebLabel1.SetLeft(0);
@@ -82490,7 +82496,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel1.SetHeight(18);
         this.WebLabel1.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebLabel1.SetAlignment(pas.Classes.TAlignment.taCenter);
-        this.WebLabel1.SetCaption("Capturar Información");
+        this.WebLabel1.SetCaption("Registro de  Información");
         this.WebLabel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel1.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel1.SetHeightPercent(100.000000000000000000);
@@ -82500,9 +82506,9 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel2.SetName("WebLabel2");
         this.WebLabel2.SetLeft(0);
         this.WebLabel2.SetTop(32);
-        this.WebLabel2.SetWidth(52);
+        this.WebLabel2.SetWidth(104);
         this.WebLabel2.SetHeight(18);
-        this.WebLabel2.SetCaption("Nombre");
+        this.WebLabel2.SetCaption("Nombre Cliente:");
         this.WebLabel2.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel2.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel2.SetHeightPercent(100.000000000000000000);
@@ -82511,9 +82517,9 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel3.SetName("WebLabel3");
         this.WebLabel3.SetLeft(3);
         this.WebLabel3.SetTop(100);
-        this.WebLabel3.SetWidth(46);
+        this.WebLabel3.SetWidth(62);
         this.WebLabel3.SetHeight(18);
-        this.WebLabel3.SetCaption("Articulo");
+        this.WebLabel3.SetCaption("Producto:");
         this.WebLabel3.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel3.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel3.SetHeightPercent(100.000000000000000000);
@@ -82522,9 +82528,9 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel4.SetName("WebLabel4");
         this.WebLabel4.SetLeft(3);
         this.WebLabel4.SetTop(160);
-        this.WebLabel4.SetWidth(53);
+        this.WebLabel4.SetWidth(43);
         this.WebLabel4.SetHeight(18);
-        this.WebLabel4.SetCaption("Importe");
+        this.WebLabel4.SetCaption("Precio:");
         this.WebLabel4.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel4.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel4.SetHeightPercent(100.000000000000000000);
@@ -82533,8 +82539,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel5.SetName("WebLabel5");
         this.WebLabel5.SetLeft(3);
         this.WebLabel5.SetTop(288);
-        this.WebLabel5.SetWidth(158);
-        this.WebLabel5.SetHeight(33);
+        this.WebLabel5.SetWidth(156);
+        this.WebLabel5.SetHeight(18);
         this.WebLabel5.SetCaption("Venta Directa / Subasta");
         this.WebLabel5.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel5.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
@@ -82549,9 +82555,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel1.SetElementClassName("card");
         this.WebPanel1.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
         this.WebPanel1.SetChildOrderEx(2);
-        this.WebPanel1.SetColor(13395456);
+        this.WebPanel1.SetColor(12632256);
         this.WebPanel1.FElementBodyClassName = "card-body";
-        this.WebPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebPanel1.SetTabOrder(0);
         this.btnCerrar.SetParentComponent(this.WebPanel1);
         this.btnCerrar.SetName("btnCerrar");
@@ -82568,7 +82573,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetEvent$1(this.btnCerrar,this,"OnClick","btnCerrarClick");
         this.btnAgregar.SetParentComponent(this.WebPanel1);
         this.btnAgregar.SetName("btnAgregar");
-        this.btnAgregar.SetLeft(8);
+        this.btnAgregar.SetLeft(30);
         this.btnAgregar.SetTop(16);
         this.btnAgregar.SetWidth(81);
         this.btnAgregar.SetHeight(25);
@@ -82698,6 +82703,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("btnCerrarClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("btnAgregarClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebFormCloseQuery",0,[["Sender",pas.System.$rtti["TObject"]],["CanClose",rtl.boolean,1]]);
   });
   this.Form3 = null;
   $mod.$implcode = function () {
@@ -83840,9 +83846,9 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
                 row.delete();
                }
               }});
-              cols[1].updateDefinition({title:'Nombre', field:"nombre",width:90,responsive:0,headerTooltip:'Nombre',headerFilter:"input"});
-              cols[2].updateDefinition({title:'Articulo',field:"articulo",width:100,responsive:0,headerTooltip:'Articulo',headerFilter:"input"});
-              cols[3].updateDefinition({title:'$Importe',field:"importe",width:70,responsive:0,headerTooltip:'Importe',headerFilter:"input" , bottomCalc:"sum"});
+              cols[1].updateDefinition({title:'Cliente', field:"nombre",width:90,responsive:0,headerTooltip:'Cliente',headerFilter:"input"});
+              cols[2].updateDefinition({title:'Producto',field:"articulo",width:100,responsive:0,headerTooltip:'Producto',headerFilter:"input"});
+              cols[3].updateDefinition({title:'$Precio',field:"importe",width:70,responsive:0,headerTooltip:'Precio',headerFilter:"input" , bottomCalc:"sum"});
               cols[4].updateDefinition({title:'P.',width:30,headerTooltip:'Pagado',field:"pagado",editor:true,headerHozAlign:"left", formatter:"tickCross"});
               cols[5].updateDefinition({title:'E.',width:30,headerTooltip:'Entregado',field:"entregado",editor:true, headerHozAlign:"left",formatter:"tickCross"});
               cols[6].updateDefinition({title:'V/S',width:68,headerTooltip:'Vta.Directa /Subasta',field:"vds",headerHozAlign:"left",headerFilter:"input"});
@@ -83870,9 +83876,9 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
                 row.delete();
                }
               }});
-              cols[1].updateDefinition({title:'Nombre', field:"nombre",width:90,responsive:0,headerTooltip:'Nombre',headerFilter:"input"});
-              cols[2].updateDefinition({title:'Articulo',field:"articulo",width:100,responsive:0,headerTooltip:'Articulo',headerFilter:"input"});
-              cols[3].updateDefinition({title:'$Importe',field:"importe",width:70,responsive:0,headerTooltip:'Importe',headerFilter:"input"  , bottomCalc:"sum"});
+              cols[1].updateDefinition({title:'Cliente', field:"nombre",width:90,responsive:0,headerTooltip:'Cliente',headerFilter:"input"});
+              cols[2].updateDefinition({title:'Producto',field:"articulo",width:100,responsive:0,headerTooltip:'Producto',headerFilter:"input"});
+              cols[3].updateDefinition({title:'$Precio',field:"importe",width:70,responsive:0,headerTooltip:'Precio',headerFilter:"input"  , bottomCalc:"sum"});
               cols[4].updateDefinition({title:'P.',width:30,headerTooltip:'Pagado',field:"pagado",editor:true, headerHozAlign:"left",formatter:"tickCross"});
               cols[5].updateDefinition({title:'E.',width:30,headerTooltip:'Entregado',field:"entregado",editor:true,headerHozAlign:"left", formatter:"tickCross"});
               cols[6].updateDefinition({title:'V/S',width:68,headerTooltip:'Vta.Directa /Subasta',field:"vds",headerHozAlign:"left",headerFilter:"input"});
@@ -84301,13 +84307,16 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       };
       function AfterCreate(AForm) {
         newform.btnAgregar.SetCaption("Agregar");
+        newform.FShowClose = false;
         newform.SetTop(rtl.trunc(($mod.Form1.GetClientHeight() - newform.GetHeight()) / 2));
         newform.SetLeft(rtl.trunc(($mod.Form1.GetClientWidth() - newform.GetWidth()) / 1));
+        newform.SetLeft(newform.GetLeft() - 10);
       };
       newform = pas.Unit3.TForm3.$create("CreateNew$3",[AfterCreate]);
       newform.FPopup = true;
-      newform.SetCaption("Popup form");
+      newform.SetCaption("Registro form");
       newform.SetBorder(pas["WEBLib.Forms"].TFormBorderStyle.fbDialog);
+      newform.FShowClose = false;
       newform.ShowModal$1(AfterShowModal);
     };
     this.ValidarUsuarioActivo = async function (u, p) {
@@ -84637,6 +84646,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel3.SetElementClassName("card");
         this.WebPanel3.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebPanel3.SetChildOrderEx(3);
+        this.WebPanel3.SetColor(12632256);
         this.WebPanel3.FElementBodyClassName = "card-body";
         this.WebPanel3.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebPanel3.SetTabOrder(1);
@@ -84649,7 +84659,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel4.SetElementClassName("card");
         this.WebPanel4.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebPanel4.SetChildOrderEx(1);
-        this.WebPanel4.SetColor(12695295);
+        this.WebPanel4.SetColor(15979512);
         this.WebPanel4.FElementBodyClassName = "card-body";
         this.WebPanel4.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebPanel4.SetTabOrder(2);
@@ -84769,7 +84779,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.lbarchivo.SetHeight(22);
         this.lbarchivo.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsNone);
         this.lbarchivo.SetChildOrderEx(1);
-        this.lbarchivo.SetColor(12695295);
+        this.lbarchivo.SetColor(15979512);
         this.lbarchivo.SetEnabled(false);
         this.lbarchivo.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.lbarchivo.SetHeightPercent(100.000000000000000000);
@@ -84800,7 +84810,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebScrollRegistro.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
         this.WebScrollRegistro.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsSingle);
         this.WebScrollRegistro.SetChildOrderEx(3);
-        this.WebScrollRegistro.SetColor(12695295);
+        this.WebScrollRegistro.SetColor(15979512);
         this.WebScrollRegistro.SetScrollBars(pas["WEBLib.Controls"].TScrollStyle.ssHorizontal);
         this.WebScrollRegistro.SetVisible(false);
         this.SetEvent$1(this.WebScrollRegistro,this,"OnClick","WebScrollRegistroClick");

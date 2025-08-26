@@ -82487,7 +82487,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebScrollBox1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebScrollBox1.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsSingle);
         this.WebScrollBox1.SetChildOrderEx(1);
-        this.WebScrollBox1.SetColor(15979512);
+        this.WebScrollBox1.SetColor(16376827);
         this.WebLabel1.SetParentComponent(this.WebScrollBox1);
         this.WebLabel1.SetName("WebLabel1");
         this.WebLabel1.SetLeft(0);
@@ -84659,7 +84659,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel4.SetElementClassName("card");
         this.WebPanel4.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebPanel4.SetChildOrderEx(1);
-        this.WebPanel4.SetColor(15979512);
+        this.WebPanel4.SetColor(16577277);
         this.WebPanel4.FElementBodyClassName = "card-body";
         this.WebPanel4.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebPanel4.SetTabOrder(2);
@@ -84779,7 +84779,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.lbarchivo.SetHeight(22);
         this.lbarchivo.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsNone);
         this.lbarchivo.SetChildOrderEx(1);
-        this.lbarchivo.SetColor(15979512);
+        this.lbarchivo.SetColor(16376827);
         this.lbarchivo.SetEnabled(false);
         this.lbarchivo.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.lbarchivo.SetHeightPercent(100.000000000000000000);
@@ -84810,7 +84810,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebScrollRegistro.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
         this.WebScrollRegistro.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsSingle);
         this.WebScrollRegistro.SetChildOrderEx(3);
-        this.WebScrollRegistro.SetColor(15979512);
+        this.WebScrollRegistro.SetColor(16376827);
         this.WebScrollRegistro.SetScrollBars(pas["WEBLib.Controls"].TScrollStyle.ssHorizontal);
         this.WebScrollRegistro.SetVisible(false);
         this.SetEvent$1(this.WebScrollRegistro,this,"OnClick","WebScrollRegistroClick");
@@ -86069,7 +86069,7 @@ rtl.module("uFormaLogin",["System","SysUtils","Classes","JS","Web","WEBLib.Graph
         this.WebLoginPanel1.SetCaptionLabel("Control de Acceso");
         this.WebLoginPanel1.FCenter.SetHorizontal(true);
         this.WebLoginPanel1.FCenter.SetVertical(true);
-        this.WebLoginPanel1.SetColor(15979512);
+        this.WebLoginPanel1.SetColor(16376827);
         this.WebLoginPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efProperty);
         this.WebLoginPanel1.SetElementPosition(pas["WEBLib.Controls"].TElementPosition.epAbsolute);
         this.WebLoginPanel1.SetLoginLabel("Login");

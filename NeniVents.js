@@ -84779,7 +84779,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.lbarchivo.SetHeight(22);
         this.lbarchivo.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsNone);
         this.lbarchivo.SetChildOrderEx(1);
-        this.lbarchivo.SetColor(16376827);
+        this.lbarchivo.SetColor(16577277);
         this.lbarchivo.SetEnabled(false);
         this.lbarchivo.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.lbarchivo.SetHeightPercent(100.000000000000000000);

@@ -82377,6 +82377,12 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var src = "";
       var irc = 0;
       var maxRegs = 0;
+      if (this.edNombre.GetText() === "") {
+        this.edNombre.SetFocus();
+        this.chkPagado.SetChecked(false);
+        this.chkEntregado.SetChecked(false);
+        return;
+      };
       maxRegs = 101;
       pagado = "false";
       entregado = "false";
@@ -82418,6 +82424,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.edventasuba.SetText("");
       this.chkPagado.SetChecked(false);
       this.chkEntregado.SetChecked(false);
+      this.edNombre.SetFocus();
     };
     this.WebFormCreate = function (Sender) {
       this.listadatos = pas.Classes.TStringList.$create("Create$1");
@@ -82427,6 +82434,34 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efProperty);
     };
     this.WebFormCloseQuery = function (Sender, CanClose) {
+    };
+    this.edventasubaEnter = function (Sender) {
+      if (this.edventasuba.GetText() === "") this.edventasuba.SetText("V");
+    };
+    this.edventasubaExit = function (Sender) {
+    };
+    this.chkPagadoExit = function (Sender) {
+    };
+    this.chkEntregadoExit = function (Sender) {
+      this.btnAgregar.SetFocus();
+    };
+    this.edNombreKeyDown = function (Sender, Key, Shift) {
+      if (Key.get() === 13) this.edArticulo.SetFocus();
+    };
+    this.edArticuloKeyDown = function (Sender, Key, Shift) {
+      if (Key.get() === 13) this.edImporte.SetFocus();
+    };
+    this.edImporteKeyDown = function (Sender, Key, Shift) {
+      if (Key.get() === 13) this.edventasuba.SetFocus();
+    };
+    this.edventasubaKeyDown = function (Sender, Key, Shift) {
+      if (Key.get() === 13) this.chkPagado.SetFocus();
+    };
+    this.chkPagadoKeyDown = function (Sender, Key, Shift) {
+      if (Key.get() === 13) this.chkEntregado.SetFocus();
+    };
+    this.chkEntregadoKeyDown = function (Sender, Key, Shift) {
+      if (Key.get() === 13) this.btnAgregar.SetFocus();
     };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
@@ -82538,7 +82573,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel5.SetParentComponent(this.WebScrollBox1);
         this.WebLabel5.SetName("WebLabel5");
         this.WebLabel5.SetLeft(3);
-        this.WebLabel5.SetTop(288);
+        this.WebLabel5.SetTop(256);
         this.WebLabel5.SetWidth(156);
         this.WebLabel5.SetHeight(18);
         this.WebLabel5.SetCaption("Venta Directa / Subasta");
@@ -82583,6 +82618,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.btnAgregar.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.btnAgregar.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.btnAgregar.SetHeightPercent(100.000000000000000000);
+        this.btnAgregar.SetTabOrder(106);
         this.btnAgregar.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.btnAgregar,this,"OnClick","btnAgregarClick");
         this.edNombre.SetParentComponent(this.WebScrollBox1);
@@ -82596,7 +82632,9 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edNombre.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.edNombre.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.edNombre.SetHeightPercent(100.000000000000000000);
+        this.edNombre.SetTabOrder(100);
         this.edNombre.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.edNombre,this,"OnKeyDown","edNombreKeyDown");
         this.edArticulo.SetParentComponent(this.WebScrollBox1);
         this.edArticulo.SetName("edArticulo");
         this.edArticulo.SetLeft(3);
@@ -82608,7 +82646,9 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edArticulo.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.edArticulo.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.edArticulo.SetHeightPercent(100.000000000000000000);
+        this.edArticulo.SetTabOrder(101);
         this.edArticulo.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.edArticulo,this,"OnKeyDown","edArticuloKeyDown");
         this.edImporte.SetParentComponent(this.WebScrollBox1);
         this.edImporte.SetName("edImporte");
         this.edImporte.SetLeft(3);
@@ -82621,11 +82661,13 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edImporte.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.edImporte.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.edImporte.SetHeightPercent(100.000000000000000000);
+        this.edImporte.SetTabOrder(102);
         this.edImporte.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.edImporte,this,"OnKeyDown","edImporteKeyDown");
         this.chkPagado.SetParentComponent(this.WebScrollBox1);
         this.chkPagado.SetName("chkPagado");
         this.chkPagado.SetLeft(3);
-        this.chkPagado.SetTop(244);
+        this.chkPagado.SetTop(313);
         this.chkPagado.SetWidth(86);
         this.chkPagado.SetHeight(22);
         this.chkPagado.SetCaption("Pagado");
@@ -82636,11 +82678,14 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.chkPagado.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.chkPagado.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.chkPagado.SetHeightPercent(100.000000000000000000);
+        this.chkPagado.SetTabOrder(104);
         this.chkPagado.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.chkPagado,this,"OnExit","chkPagadoExit");
+        this.SetEvent$1(this.chkPagado,this,"OnKeyDown","chkPagadoKeyDown");
         this.chkEntregado.SetParentComponent(this.WebScrollBox1);
         this.chkEntregado.SetName("chkEntregado");
         this.chkEntregado.SetLeft(107);
-        this.chkEntregado.SetTop(244);
+        this.chkEntregado.SetTop(313);
         this.chkEntregado.SetWidth(86);
         this.chkEntregado.SetHeight(22);
         this.chkEntregado.SetCaption("Entregado");
@@ -82651,11 +82696,14 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.chkEntregado.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.chkEntregado.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.chkEntregado.SetHeightPercent(100.000000000000000000);
+        this.chkEntregado.SetTabOrder(105);
         this.chkEntregado.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.chkEntregado,this,"OnExit","chkEntregadoExit");
+        this.SetEvent$1(this.chkEntregado,this,"OnKeyDown","chkEntregadoKeyDown");
         this.edventasuba.SetParentComponent(this.WebScrollBox1);
         this.edventasuba.SetName("edventasuba");
         this.edventasuba.SetLeft(179);
-        this.edventasuba.SetTop(285);
+        this.edventasuba.SetTop(256);
         this.edventasuba.SetWidth(46);
         this.edventasuba.SetHeight(22);
         this.edventasuba.SetChildOrderEx(3);
@@ -82663,7 +82711,11 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edventasuba.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.edventasuba.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.edventasuba.SetHeightPercent(100.000000000000000000);
+        this.edventasuba.SetTabOrder(103);
         this.edventasuba.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.edventasuba,this,"OnEnter","edventasubaEnter");
+        this.SetEvent$1(this.edventasuba,this,"OnExit","edventasubaExit");
+        this.SetEvent$1(this.edventasuba,this,"OnKeyDown","edventasubaKeyDown");
       } finally {
         this.WebScrollBox1.AfterLoadDFMValues();
         this.WebLabel1.AfterLoadDFMValues();
@@ -82704,6 +82756,16 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("btnAgregarClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebFormCloseQuery",0,[["Sender",pas.System.$rtti["TObject"]],["CanClose",rtl.boolean,1]]);
+    $r.addMethod("edventasubaEnter",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("edventasubaExit",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("chkPagadoExit",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("chkEntregadoExit",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("edNombreKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
+    $r.addMethod("edArticuloKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
+    $r.addMethod("edImporteKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
+    $r.addMethod("edventasubaKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
+    $r.addMethod("chkPagadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
+    $r.addMethod("chkEntregadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
   });
   this.Form3 = null;
   $mod.$implcode = function () {

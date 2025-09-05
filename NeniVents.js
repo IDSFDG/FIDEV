@@ -82346,6 +82346,10 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebLabel5 = null;
       this.edventasuba = null;
       this.btnAgregar = null;
+      this.WebLabel6 = null;
+      this.edPagado = null;
+      this.WebLabel7 = null;
+      this.edEntregado = null;
       this.listadatos = null;
     };
     this.$final = function () {
@@ -82364,6 +82368,10 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebLabel5 = undefined;
       this.edventasuba = undefined;
       this.btnAgregar = undefined;
+      this.WebLabel6 = undefined;
+      this.edPagado = undefined;
+      this.WebLabel7 = undefined;
+      this.edEntregado = undefined;
       this.listadatos = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
@@ -82377,7 +82385,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var src = "";
       var irc = 0;
       var maxRegs = 0;
-      if (this.edNombre.GetText() === "") {
+      if ((this.edNombre.GetText() === "") || (this.edArticulo.GetText() === "") || (this.edImporte.GetText() === "")) {
         this.edNombre.SetFocus();
         this.chkPagado.SetChecked(false);
         this.chkEntregado.SetChecked(false);
@@ -82388,6 +82396,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       entregado = "false";
       if (this.chkPagado.GetChecked()) pagado = "true";
       if (this.chkEntregado.GetChecked()) entregado = "true";
+      pagado = this.edPagado.GetText();
+      entregado = this.edEntregado.GetText();
       datosstr = '{"nombre":' + String.fromCharCode(34) + this.edNombre.GetText() + String.fromCharCode(34) + "," + '"articulo":' + String.fromCharCode(34) + this.edArticulo.GetText() + String.fromCharCode(34) + "," + ' "importe":' + String.fromCharCode(34) + this.edImporte.GetText() + String.fromCharCode(34) + "," + '"pagado":' + String.fromCharCode(34) + pagado + String.fromCharCode(34) + "," + '"entregado":' + String.fromCharCode(34) + entregado + String.fromCharCode(34) + "," + '"vds":' + String.fromCharCode(34) + this.edventasuba.GetText() + String.fromCharCode(34) + "}";
       this.listadatos.Add(datosstr);
       var table = Tabulator.findTable("#tabExample")[0];
@@ -82424,6 +82434,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.edventasuba.SetText("");
       this.chkPagado.SetChecked(false);
       this.chkEntregado.SetChecked(false);
+      this.edPagado.SetText("");
+      this.edEntregado.SetText("");
       this.edNombre.SetFocus();
     };
     this.WebFormCreate = function (Sender) {
@@ -82434,9 +82446,6 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efProperty);
     };
     this.WebFormCloseQuery = function (Sender, CanClose) {
-    };
-    this.edventasubaEnter = function (Sender) {
-      if (this.edventasuba.GetText() === "") this.edventasuba.SetText("V");
     };
     this.edventasubaExit = function (Sender) {
     };
@@ -82452,15 +82461,25 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       if (Key.get() === 13) this.edImporte.SetFocus();
     };
     this.edImporteKeyDown = function (Sender, Key, Shift) {
+      if (!(Key.get() in rtl.createSet(8,9,12,13,46,48,49,50,51,52,53,54,55,56,57))) Key.set(0);
       if (Key.get() === 13) this.edventasuba.SetFocus();
     };
     this.edventasubaKeyDown = function (Sender, Key, Shift) {
-      if (Key.get() === 13) this.chkPagado.SetFocus();
+      if (!(Key.get() in rtl.createSet(8,9,12,13,83,86))) Key.set(0);
+      if (Key.get() === 13) this.edPagado.SetFocus();
     };
     this.chkPagadoKeyDown = function (Sender, Key, Shift) {
       if (Key.get() === 13) this.chkEntregado.SetFocus();
     };
     this.chkEntregadoKeyDown = function (Sender, Key, Shift) {
+      if (Key.get() === 13) this.btnAgregar.SetFocus();
+    };
+    this.edPagadoKeyDown = function (Sender, Key, Shift) {
+      if (!(Key.get() in rtl.createSet(8,9,12,13,78,83))) Key.set(0);
+      if (Key.get() === 13) this.edEntregado.SetFocus();
+    };
+    this.edEntregadoKeyDown = function (Sender, Key, Shift) {
+      if (!(Key.get() in rtl.createSet(8,9,12,13,78,83))) Key.set(0);
       if (Key.get() === 13) this.btnAgregar.SetFocus();
     };
     this.LoadDFMValues = function () {
@@ -82471,6 +82490,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebLabel3 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebLabel4 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebLabel5 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
+      this.WebLabel6 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
+      this.WebLabel7 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebPanel1 = pas["WEBLib.ExtCtrls"].TPanel.$create("Create$1",[this]);
       this.btnCerrar = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.btnAgregar = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
@@ -82480,12 +82501,16 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.chkPagado = pas["WEBLib.StdCtrls"].TCheckBox.$create("Create$1",[this]);
       this.chkEntregado = pas["WEBLib.StdCtrls"].TCheckBox.$create("Create$1",[this]);
       this.edventasuba = pas["WEBLib.StdCtrls"].TEdit.$create("Create$1",[this]);
+      this.edPagado = pas["WEBLib.StdCtrls"].TEdit.$create("Create$1",[this]);
+      this.edEntregado = pas["WEBLib.StdCtrls"].TEdit.$create("Create$1",[this]);
       this.WebScrollBox1.BeforeLoadDFMValues();
       this.WebLabel1.BeforeLoadDFMValues();
       this.WebLabel2.BeforeLoadDFMValues();
       this.WebLabel3.BeforeLoadDFMValues();
       this.WebLabel4.BeforeLoadDFMValues();
       this.WebLabel5.BeforeLoadDFMValues();
+      this.WebLabel6.BeforeLoadDFMValues();
+      this.WebLabel7.BeforeLoadDFMValues();
       this.WebPanel1.BeforeLoadDFMValues();
       this.btnCerrar.BeforeLoadDFMValues();
       this.btnAgregar.BeforeLoadDFMValues();
@@ -82495,6 +82520,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.chkPagado.BeforeLoadDFMValues();
       this.chkEntregado.BeforeLoadDFMValues();
       this.edventasuba.BeforeLoadDFMValues();
+      this.edPagado.BeforeLoadDFMValues();
+      this.edEntregado.BeforeLoadDFMValues();
       try {
         this.SetName("Form3");
         this.SetLeft(400);
@@ -82573,7 +82600,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel5.SetParentComponent(this.WebScrollBox1);
         this.WebLabel5.SetName("WebLabel5");
         this.WebLabel5.SetLeft(3);
-        this.WebLabel5.SetTop(256);
+        this.WebLabel5.SetTop(232);
         this.WebLabel5.SetWidth(156);
         this.WebLabel5.SetHeight(18);
         this.WebLabel5.SetCaption("Venta Directa / Subasta");
@@ -82581,12 +82608,34 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel5.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel5.SetHeightPercent(100.000000000000000000);
         this.WebLabel5.SetWidthPercent(100.000000000000000000);
+        this.WebLabel6.SetParentComponent(this.WebScrollBox1);
+        this.WebLabel6.SetName("WebLabel6");
+        this.WebLabel6.SetLeft(3);
+        this.WebLabel6.SetTop(273);
+        this.WebLabel6.SetWidth(53);
+        this.WebLabel6.SetHeight(18);
+        this.WebLabel6.SetCaption("Pagado:");
+        this.WebLabel6.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebLabel6.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.WebLabel6.SetHeightPercent(100.000000000000000000);
+        this.WebLabel6.SetWidthPercent(100.000000000000000000);
+        this.WebLabel7.SetParentComponent(this.WebScrollBox1);
+        this.WebLabel7.SetName("WebLabel7");
+        this.WebLabel7.SetLeft(3);
+        this.WebLabel7.SetTop(315);
+        this.WebLabel7.SetWidth(71);
+        this.WebLabel7.SetHeight(18);
+        this.WebLabel7.SetCaption("Entregado:");
+        this.WebLabel7.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebLabel7.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.WebLabel7.SetHeightPercent(100.000000000000000000);
+        this.WebLabel7.SetWidthPercent(100.000000000000000000);
         this.WebPanel1.SetParentComponent(this.WebScrollBox1);
         this.WebPanel1.SetName("WebPanel1");
         this.WebPanel1.SetLeft(0);
-        this.WebPanel1.SetTop(401);
+        this.WebPanel1.SetTop(408);
         this.WebPanel1.SetWidth(251);
-        this.WebPanel1.SetHeight(58);
+        this.WebPanel1.SetHeight(51);
         this.WebPanel1.SetElementClassName("card");
         this.WebPanel1.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
         this.WebPanel1.SetChildOrderEx(2);
@@ -82595,8 +82644,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel1.SetTabOrder(0);
         this.btnCerrar.SetParentComponent(this.WebPanel1);
         this.btnCerrar.SetName("btnCerrar");
-        this.btnCerrar.SetLeft(144);
-        this.btnCerrar.SetTop(16);
+        this.btnCerrar.SetLeft(135);
+        this.btnCerrar.SetTop(10);
         this.btnCerrar.SetWidth(81);
         this.btnCerrar.SetHeight(25);
         this.btnCerrar.SetCaption("Cerrar");
@@ -82608,8 +82657,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetEvent$1(this.btnCerrar,this,"OnClick","btnCerrarClick");
         this.btnAgregar.SetParentComponent(this.WebPanel1);
         this.btnAgregar.SetName("btnAgregar");
-        this.btnAgregar.SetLeft(30);
-        this.btnAgregar.SetTop(16);
+        this.btnAgregar.SetLeft(25);
+        this.btnAgregar.SetTop(10);
         this.btnAgregar.SetWidth(81);
         this.btnAgregar.SetHeight(25);
         this.btnAgregar.SetCaption(".");
@@ -82652,11 +82701,10 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edImporte.SetParentComponent(this.WebScrollBox1);
         this.edImporte.SetName("edImporte");
         this.edImporte.SetLeft(3);
-        this.edImporte.SetTop(192);
+        this.edImporte.SetTop(184);
         this.edImporte.SetWidth(222);
         this.edImporte.SetHeight(22);
         this.edImporte.SetChildOrderEx(3);
-        this.edImporte.SetEditType(pas["WEBLib.StdCtrls"].TEditType.weNumeric);
         this.edImporte.SetElementClassName("form-control");
         this.edImporte.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.edImporte.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
@@ -82666,8 +82714,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetEvent$1(this.edImporte,this,"OnKeyDown","edImporteKeyDown");
         this.chkPagado.SetParentComponent(this.WebScrollBox1);
         this.chkPagado.SetName("chkPagado");
-        this.chkPagado.SetLeft(3);
-        this.chkPagado.SetTop(313);
+        this.chkPagado.SetLeft(143);
+        this.chkPagado.SetTop(345);
         this.chkPagado.SetWidth(86);
         this.chkPagado.SetHeight(22);
         this.chkPagado.SetCaption("Pagado");
@@ -82679,13 +82727,14 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.chkPagado.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.chkPagado.SetHeightPercent(100.000000000000000000);
         this.chkPagado.SetTabOrder(104);
+        this.chkPagado.SetVisible(false);
         this.chkPagado.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.chkPagado,this,"OnExit","chkPagadoExit");
         this.SetEvent$1(this.chkPagado,this,"OnKeyDown","chkPagadoKeyDown");
         this.chkEntregado.SetParentComponent(this.WebScrollBox1);
         this.chkEntregado.SetName("chkEntregado");
-        this.chkEntregado.SetLeft(107);
-        this.chkEntregado.SetTop(313);
+        this.chkEntregado.SetLeft(144);
+        this.chkEntregado.SetTop(373);
         this.chkEntregado.SetWidth(86);
         this.chkEntregado.SetHeight(22);
         this.chkEntregado.SetCaption("Entregado");
@@ -82697,13 +82746,14 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.chkEntregado.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.chkEntregado.SetHeightPercent(100.000000000000000000);
         this.chkEntregado.SetTabOrder(105);
+        this.chkEntregado.SetVisible(false);
         this.chkEntregado.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.chkEntregado,this,"OnExit","chkEntregadoExit");
         this.SetEvent$1(this.chkEntregado,this,"OnKeyDown","chkEntregadoKeyDown");
         this.edventasuba.SetParentComponent(this.WebScrollBox1);
         this.edventasuba.SetName("edventasuba");
         this.edventasuba.SetLeft(179);
-        this.edventasuba.SetTop(256);
+        this.edventasuba.SetTop(232);
         this.edventasuba.SetWidth(46);
         this.edventasuba.SetHeight(22);
         this.edventasuba.SetChildOrderEx(3);
@@ -82711,11 +82761,41 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edventasuba.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.edventasuba.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.edventasuba.SetHeightPercent(100.000000000000000000);
+        this.edventasuba.SetMaxLength(1);
         this.edventasuba.SetTabOrder(103);
         this.edventasuba.SetWidthPercent(100.000000000000000000);
-        this.SetEvent$1(this.edventasuba,this,"OnEnter","edventasubaEnter");
         this.SetEvent$1(this.edventasuba,this,"OnExit","edventasubaExit");
         this.SetEvent$1(this.edventasuba,this,"OnKeyDown","edventasubaKeyDown");
+        this.edPagado.SetParentComponent(this.WebScrollBox1);
+        this.edPagado.SetName("edPagado");
+        this.edPagado.SetLeft(84);
+        this.edPagado.SetTop(270);
+        this.edPagado.SetWidth(53);
+        this.edPagado.SetHeight(22);
+        this.edPagado.SetChildOrderEx(3);
+        this.edPagado.SetElementClassName("form-control");
+        this.edPagado.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.edPagado.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.edPagado.SetHeightPercent(100.000000000000000000);
+        this.edPagado.SetMaxLength(1);
+        this.edPagado.SetTabOrder(104);
+        this.edPagado.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.edPagado,this,"OnKeyDown","edPagadoKeyDown");
+        this.edEntregado.SetParentComponent(this.WebScrollBox1);
+        this.edEntregado.SetName("edEntregado");
+        this.edEntregado.SetLeft(84);
+        this.edEntregado.SetTop(315);
+        this.edEntregado.SetWidth(53);
+        this.edEntregado.SetHeight(22);
+        this.edEntregado.SetChildOrderEx(3);
+        this.edEntregado.SetElementClassName("form-control");
+        this.edEntregado.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.edEntregado.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.edEntregado.SetHeightPercent(100.000000000000000000);
+        this.edEntregado.SetMaxLength(1);
+        this.edEntregado.SetTabOrder(105);
+        this.edEntregado.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.edEntregado,this,"OnKeyDown","edEntregadoKeyDown");
       } finally {
         this.WebScrollBox1.AfterLoadDFMValues();
         this.WebLabel1.AfterLoadDFMValues();
@@ -82723,6 +82803,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel3.AfterLoadDFMValues();
         this.WebLabel4.AfterLoadDFMValues();
         this.WebLabel5.AfterLoadDFMValues();
+        this.WebLabel6.AfterLoadDFMValues();
+        this.WebLabel7.AfterLoadDFMValues();
         this.WebPanel1.AfterLoadDFMValues();
         this.btnCerrar.AfterLoadDFMValues();
         this.btnAgregar.AfterLoadDFMValues();
@@ -82732,6 +82814,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.chkPagado.AfterLoadDFMValues();
         this.chkEntregado.AfterLoadDFMValues();
         this.edventasuba.AfterLoadDFMValues();
+        this.edPagado.AfterLoadDFMValues();
+        this.edEntregado.AfterLoadDFMValues();
       };
     };
     rtl.addIntf(this,pas["WEBLib.Controls"].IControl);
@@ -82752,11 +82836,14 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addField("WebLabel5",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
     $r.addField("edventasuba",pas["WEBLib.StdCtrls"].$rtti["TEdit"]);
     $r.addField("btnAgregar",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addField("WebLabel6",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
+    $r.addField("edPagado",pas["WEBLib.StdCtrls"].$rtti["TEdit"]);
+    $r.addField("WebLabel7",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
+    $r.addField("edEntregado",pas["WEBLib.StdCtrls"].$rtti["TEdit"]);
     $r.addMethod("btnCerrarClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("btnAgregarClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebFormCloseQuery",0,[["Sender",pas.System.$rtti["TObject"]],["CanClose",rtl.boolean,1]]);
-    $r.addMethod("edventasubaEnter",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("edventasubaExit",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("chkPagadoExit",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("chkEntregadoExit",0,[["Sender",pas.System.$rtti["TObject"]]]);
@@ -82766,6 +82853,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("edventasubaKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
     $r.addMethod("chkPagadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
     $r.addMethod("chkEntregadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
+    $r.addMethod("edPagadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
+    $r.addMethod("edEntregadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
   });
   this.Form3 = null;
   $mod.$implcode = function () {
@@ -84705,12 +84794,14 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel3.SetTop(48);
         this.WebPanel3.SetWidth(701);
         this.WebPanel3.SetHeight(41);
+        this.WebPanel3.SetHint("Seleccione el menú para iniciar");
         this.WebPanel3.SetElementClassName("card");
         this.WebPanel3.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebPanel3.SetChildOrderEx(3);
         this.WebPanel3.SetColor(12632256);
         this.WebPanel3.FElementBodyClassName = "card-body";
         this.WebPanel3.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebPanel3.SetShowHint(true);
         this.WebPanel3.SetTabOrder(1);
         this.WebPanel4.SetParentComponent(this);
         this.WebPanel4.SetName("WebPanel4");
@@ -84745,7 +84836,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel2.SetTop(0);
         this.WebLabel2.SetWidth(701);
         this.WebLabel2.SetHeight(19);
-        this.WebLabel2.SetHint("Click para registrar productos");
+        this.WebLabel2.SetHint("Seleccione el menú para iniciar");
         this.WebLabel2.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebLabel2.SetAlignment(pas.Classes.TAlignment.taCenter);
         this.WebLabel2.SetCaption("Registro de VENTAS Y SUBASTAS");
@@ -84758,6 +84849,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel2.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel2.SetHeightPercent(100.000000000000000000);
         this.WebLabel2.SetParentFont(false);
+        this.WebLabel2.SetShowHint(false);
         this.WebLabel2.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.WebLabel2,this,"OnClick","WebLabel2Click");
         this.WebButton9.SetParentComponent(this.WebPanel4);
@@ -84776,9 +84868,9 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebButton9.SetWidthPercent(100.000000000000000000);
         this.edPacNombre.SetParentComponent(this.WebPanel4);
         this.edPacNombre.SetName("edPacNombre");
-        this.edPacNombre.SetLeft(240);
-        this.edPacNombre.SetTop(29);
-        this.edPacNombre.SetWidth(233);
+        this.edPacNombre.SetLeft(510);
+        this.edPacNombre.SetTop(3);
+        this.edPacNombre.SetWidth(65);
         this.edPacNombre.SetHeight(22);
         this.edPacNombre.SetChildOrderEx(1);
         this.edPacNombre.SetElementClassName("form-control");
@@ -86757,7 +86849,981 @@ rtl.module("Unit2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $impl.llistadatos = null;
   };
 },[]);
-rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","Unit1","uCargarConsultas","uFormaLogin","Unit2","Unit3"],function () {
+rtl.module("libace",["System","Web","JS","Classes","Types"],function () {
+  "use strict";
+  var $mod = this;
+  this.$rtti.$ExtClass("TAcePoint",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "Object"});
+  this.$rtti.$ExtClass("TAceRange",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "Range"});
+  this.$rtti.$ExtClass("TAceCompletion",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "Object"});
+  this.$rtti.$DynArray("TAceCompletions",{eltype: this.$rtti["TAceCompletion"]});
+  this.$rtti.$ExtClass("TAceEditSession");
+  this.$rtti.$ExtClass("TAceEditor");
+  this.$rtti.$RefToProcVar("TAceCompletersCallback",{procsig: rtl.newTIProcSig([["aObject",pas.JS.$rtti["TJSObject"]],["aCompletions",this.$rtti["TAceCompletions"]]])});
+  this.$rtti.$ExtClass("TAceCompleter",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "Object"});
+  this.$rtti.$DynArray("TAceCompletersArray",{eltype: this.$rtti["TAceCompleter"]});
+  this.$rtti.$ExtClass("TAceVirtualRenderer",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "VirtualRenderer"});
+  this.$rtti.$ExtClass("TAceDocument",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "Document"});
+  this.$rtti.$ExtClass("TAceSearchOptions",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "Object"});
+  this.$rtti.$ExtClass("TAceEditSession",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "EditSession"});
+  this.$rtti.$ExtClass("TAceSelection",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "Selection"});
+  this.$rtti.$ExtClass("TAceEditor",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "Editor"});
+  this.$rtti.$ExtClass("TAce",{ancestor: pas.JS.$rtti["TJSObject"], jsclass: "ace"});
+  this.$rtti.$StaticArray("PascalKeywords$a",{dims: [88], eltype: rtl.string});
+  this.PascalKeywords = ["absolute","abstract","all","and","and_then","array","as","asm","attribute","begin","bindable","case","class","const","constructor","destructor","div","do","else","end","except","export","exports","external","far","file","finalization","finally","for","forward","function","goto","if","implementation","import","in","inherited","initialization","interface","interrupt","is","label","library","mod","module","name","near","nil","not","object","of","only","operator","or","or_else","otherwise","packed","pow","private","procedure","program","property","protected","public","published","qualified","record","repeat","resident","restricted","segment","set","shl","shr","then","to","try","type","unit","until","uses","value","var","view","virtual","while","with","xor"];
+});
+rtl.module("WEBLib.SyntaxMemo",["System","Classes","WEBLib.Controls","Web","JS","libace","SysUtils","Types"],function () {
+  "use strict";
+  var $mod = this;
+  this.$rtti.$MethodVar("TSyntaxMemoChangeCursorEvent",{procsig: rtl.newTIProcSig([["Sender",pas.System.$rtti["TObject"]],["ARow",rtl.longint],["AColumn",rtl.longint]]), methodkind: 0});
+  this.$rtti.$MethodVar("TSyntaxMemoChangeSelectionEvent",{procsig: rtl.newTIProcSig([["Sender",pas.System.$rtti["TObject"]],["ASelectedText",rtl.string]]), methodkind: 0});
+  this.TSyntaxAutocomplete = {"0": "saNone", saNone: 0, "1": "saBasic", saBasic: 1, "2": "saLive", saLive: 2};
+  this.$rtti.$Enum("TSyntaxAutocomplete",{minvalue: 0, maxvalue: 2, ordtype: 1, enumtype: this.TSyntaxAutocomplete});
+  this.TSyntaxWrapping = {"0": "swNone", swNone: 0, "1": "swPrintMargin", swPrintMargin: 1, "2": "swValue", swValue: 2, "3": "swView", swView: 3};
+  this.$rtti.$Enum("TSyntaxWrapping",{minvalue: 0, maxvalue: 3, ordtype: 1, enumtype: this.TSyntaxWrapping});
+  this.TSyntaxTextDirection = {"0": "stdLeftToRight", stdLeftToRight: 0, "1": "stdRightToLeft", stdRightToLeft: 1};
+  this.$rtti.$Enum("TSyntaxTextDirection",{minvalue: 0, maxvalue: 1, ordtype: 1, enumtype: this.TSyntaxTextDirection});
+  rtl.createClass(this,"TSyntaxCompletion",pas.Classes.TCollectionItem,function () {
+    this.$init = function () {
+      pas.Classes.TCollectionItem.$init.call(this);
+      this.FName = "";
+      this.FMeta = "";
+      this.FScore = 0;
+      this.FCaption = "";
+      this.FValue = "";
+    };
+    this.Create$1 = function (ACollection) {
+      pas.Classes.TCollectionItem.Create$1.apply(this,arguments);
+      this.FScore = 0;
+      return this;
+    };
+    var $r = this.$rtti;
+    $r.addMethod("Create$1",2,[["ACollection",pas.Classes.$rtti["TCollection"]]]);
+    $r.addProperty("Caption",0,rtl.string,"FCaption","FCaption");
+    $r.addProperty("Meta",0,rtl.string,"FMeta","FMeta");
+    $r.addProperty("Name",0,rtl.string,"FName","FName");
+    $r.addProperty("Score",0,rtl.longint,"FScore","FScore",{Default: 0});
+    $r.addProperty("Value",0,rtl.string,"FValue","FValue");
+  });
+  rtl.createClass(this,"TSyntaxCompleter",pas.Classes.TCollection,function () {
+    this.$init = function () {
+      pas.Classes.TCollection.$init.call(this);
+      this.FOnChange = null;
+    };
+    this.$final = function () {
+      this.FOnChange = undefined;
+      pas.Classes.TCollection.$final.call(this);
+    };
+    this.SetItem$1 = function (Index, Value) {
+      this.SetItem(Index,Value);
+    };
+    this.GetItem$1 = function (Index) {
+      var Result = null;
+      Result = this.GetItem(Index);
+      return Result;
+    };
+    this.Changed$1 = function () {
+      if (this.FOnChange != null) this.FOnChange(this);
+    };
+    this.Update = function (Item) {
+      pas.Classes.TCollection.Update.apply(this,arguments);
+      this.Changed$1();
+    };
+    this.Create$2 = function () {
+      pas.Classes.TCollection.Create$1.call(this,$mod.TSyntaxCompletion);
+      return this;
+    };
+    this.Add$1 = function () {
+      var Result = null;
+      Result = pas.Classes.TCollection.Add.call(this);
+      return Result;
+    };
+    this.Insert$1 = function (Index) {
+      var Result = null;
+      Result = pas.Classes.TCollection.Insert.call(this,Index);
+      return Result;
+    };
+    var $r = this.$rtti;
+    $r.addMethod("Create$2",2,[]);
+  });
+  rtl.createClass(this,"TSyntaxMemo",pas["WEBLib.Controls"].TCustomControl,function () {
+    this.$init = function () {
+      pas["WEBLib.Controls"].TCustomControl.$init.call(this);
+      this.FPascalCompleter = null;
+      this.FCustomCompleter = null;
+      this.FEditor = null;
+      this.FLines = null;
+      this.FTheme = "";
+      this.FMode = "";
+      this.FSelStart = 0;
+      this.FOnChange = null;
+      this.FOnChangeSelection = null;
+      this.FOnChangeCursor = null;
+      this.FAutocompletion = 0;
+      this.FWordWrapValue = 0;
+      this.FWordWrapIndent = false;
+      this.FWordWrap = 0;
+      this.FSoftTabs = false;
+      this.FFixedGutterWidth = false;
+      this.FShowLineNumbers = false;
+      this.FTextDirection$1 = 0;
+      this.FCustomAutocomplete = null;
+    };
+    this.$final = function () {
+      this.FPascalCompleter = undefined;
+      this.FCustomCompleter = undefined;
+      this.FEditor = undefined;
+      this.FLines = undefined;
+      this.FOnChange = undefined;
+      this.FOnChangeSelection = undefined;
+      this.FOnChangeCursor = undefined;
+      this.FCustomAutocomplete = undefined;
+      pas["WEBLib.Controls"].TCustomControl.$final.call(this);
+    };
+    this.SetText = function (Value) {
+      if (this.FEditor != null) {
+        this.FEditor.setValue(Value);
+        this.FEditor.clearSelection();
+      };
+    };
+    this.SetTheme = function (Value) {
+      this.FTheme = Value;
+      if (this.FEditor != null) this.FEditor.setTheme("ace/theme/" + Value);
+    };
+    this.SetMode = function (Value) {
+      this.FMode = Value;
+      if (this.FEditor != null) this.FEditor.session.setMode("ace/mode/" + Value);
+    };
+    this.SetReadOnly = function (Value) {
+      if (this.FEditor != null) this.FEditor.setReadOnly(Value);
+    };
+    this.SetShowInvisibles = function (Value) {
+      if (this.FEditor != null) this.FEditor.setShowInvisibles(Value);
+    };
+    this.SetHighlightActiveLine = function (Value) {
+      if (this.FEditor != null) this.FEditor.setHighlightActiveLine(Value);
+    };
+    this.SetPrintMargin = function (Value) {
+      if (this.FEditor != null) this.FEditor.setPrintMarginColumn(Value);
+    };
+    this.SetShowPrintMargin = function (Value) {
+      if (this.FEditor != null) this.FEditor.setShowPrintMargin(Value);
+    };
+    this.SetLines = function (Value) {
+      this.FLines.Assign(Value);
+    };
+    this.SetSelLength = function (Value) {
+      var r = null;
+      var ep = null;
+      var sp = null;
+      var d = null;
+      if (this.FEditor != null) {
+        d = this.FEditor.session.getDocument();
+        ep = d.indexToPosition(this.GetSelStart() + Value);
+        sp = d.indexToPosition(this.GetSelStart());
+        if ((this.GetSelStart() + Value) < this.GetSelStart()) {
+          r = ace.Range.fromPoints(ep,sp);
+          this.FEditor.selection.setSelectionRange(r,true);
+        } else {
+          r = ace.Range.fromPoints(sp,ep);
+          this.FEditor.selection.setSelectionRange(r,false);
+        };
+      };
+    };
+    this.SetSelStart = function (Value) {
+      var r = null;
+      var p = null;
+      var d = null;
+      this.FSelStart = Value;
+      if (this.FEditor != null) {
+        d = this.FEditor.session.getDocument();
+        p = d.indexToPosition(Value);
+        r = ace.Range.fromPoints(p,p);
+        this.FEditor.selection.setSelectionRange(r,false);
+      };
+    };
+    this.SetShowIndentGuides = function (Value) {
+      if (this.FEditor != null) this.FEditor.setDisplayIndentGuides(Value);
+    };
+    this.SetCaretPosition = function (Value) {
+      if (this.FEditor != null) this.FEditor.selection.moveTo(Value.y,Value.x);
+    };
+    this.SetAutocompletion = function (Value) {
+      this.FAutocompletion = Value;
+      if (this.FEditor != null) {
+        var $tmp = Value;
+        if ($tmp === $mod.TSyntaxAutocomplete.saNone) {
+          this.FEditor.setOption("enableBasicAutocompletion",false);
+          this.FEditor.setOption("enableLiveAutocompletion",false);
+        } else if ($tmp === $mod.TSyntaxAutocomplete.saBasic) {
+          this.FEditor.setOption("enableBasicAutocompletion",true);
+          this.FEditor.setOption("enableLiveAutocompletion",false);
+        } else if ($tmp === $mod.TSyntaxAutocomplete.saLive) {
+          this.FEditor.setOption("enableBasicAutocompletion",true);
+          this.FEditor.setOption("enableLiveAutocompletion",true);
+        };
+      };
+    };
+    this.SetWordWrap = function (Value) {
+      this.FWordWrap = Value;
+      if (this.FEditor != null) {
+        if (this.FWordWrapIndent) {
+          this.FEditor.session.setOption("indentedSoftWrap",true)}
+         else this.FEditor.session.setOption("indentedSoftWrap",false);
+        var $tmp = Value;
+        if ($tmp === $mod.TSyntaxWrapping.swNone) {
+          this.FEditor.session.setUseWrapMode(false)}
+         else if ($tmp === $mod.TSyntaxWrapping.swPrintMargin) {
+          this.FEditor.session.setUseWrapMode(true);
+          this.FEditor.session.setWrapLimitRange(this.GetPrintMargin(),this.GetPrintMargin());
+        } else if ($tmp === $mod.TSyntaxWrapping.swValue) {
+          this.FEditor.session.setUseWrapMode(true);
+          this.FEditor.session.setWrapLimitRange(this.FWordWrapValue,this.FWordWrapValue);
+        } else if ($tmp === $mod.TSyntaxWrapping.swView) {
+          this.FEditor.session.setUseWrapMode(true);
+          this.FEditor.session.setWrapLimitRange();
+        };
+      };
+    };
+    this.SetWordWrapIndent = function (Value) {
+      this.FWordWrapIndent = Value;
+      this.SetWordWrap(this.FWordWrap);
+    };
+    this.SetWordWrapValue = function (Value) {
+      this.FWordWrapValue = Value;
+      if (this.FWordWrap === $mod.TSyntaxWrapping.swValue) this.SetWordWrap(this.FWordWrap);
+    };
+    this.SetSoftTabs = function (Value) {
+      this.FSoftTabs = Value;
+      if (this.FEditor != null) this.FEditor.session.setOption("useSoftTabs",Value);
+    };
+    this.SetFixedGutterWidth = function (Value) {
+      this.FFixedGutterWidth = Value;
+      if (this.FEditor != null) {
+        this.FEditor.renderer.setOption("fixedWidthGutter",Value);
+        let iNum = 999;
+        this.FEditor.session.gutterRenderer =  {
+          getWidth: function(session, lastLineNumber, config) {
+            if (lastLineNumber < (iNum + 1) & Value) {
+              return iNum.toString().length * config.characterWidth;
+            } else {
+              return lastLineNumber.toString().length * config.characterWidth;
+            }
+          },
+          getText: function(session, row) {
+              return row + 1;
+          }
+        };
+      };
+    };
+    this.SetShowGutter = function (Value) {
+      if (this.FEditor != null) this.FEditor.renderer.setShowGutter(Value);
+    };
+    this.SetShowLineNumbers = function (Value) {
+      this.FShowLineNumbers = Value;
+      if (this.FEditor != null) this.FEditor.renderer.setOption("showLineNumbers",Value);
+    };
+    this.SetFadeFoldWidgets = function (Value) {
+      if (this.FEditor != null) this.FEditor.setFadeFoldWidgets(Value);
+    };
+    this.SetShowFoldWidgets = function (Value) {
+      if (this.FEditor != null) this.FEditor.setShowFoldWidgets(Value);
+    };
+    this.SetTextDirection = function (Value) {
+      this.FTextDirection$1 = Value;
+      if (this.FEditor != null) {
+        var $tmp = Value;
+        if ($tmp === $mod.TSyntaxTextDirection.stdLeftToRight) {
+          this.FEditor.setOption("rtl",false)}
+         else if ($tmp === $mod.TSyntaxTextDirection.stdRightToLeft) this.FEditor.setOption("rtl",true);
+      };
+    };
+    this.SetFontSize = function (Value) {
+      if (this.FEditor != null) {
+        this.FEditor.setFontSize(pas.SysUtils.IntToStr(Value) + "px");
+      };
+    };
+    this.SetCustomAutocomplete = function (Value) {
+      this.FCustomAutocomplete.Assign(Value);
+      this.InitializeKeyWords(this.FCustomAutocomplete);
+    };
+    this.SetPersistentHorizontalScrollbar = function (Value) {
+    };
+    this.SetPersistentVerticalScrollbar = function (Value) {
+    };
+    this.GetText = function () {
+      var Result = "";
+      if (this.FEditor != null) {
+        Result = this.FEditor.getValue()}
+       else Result = "";
+      return Result;
+    };
+    this.GetReadOnly = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        Result = this.FEditor.getReadOnly()}
+       else Result = false;
+      return Result;
+    };
+    this.GetShowInvisibles = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        Result = this.FEditor.getShowInvisibles()}
+       else Result = false;
+      return Result;
+    };
+    this.GetHighlightActiveLine = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        Result = this.FEditor.getHighlightActiveLine()}
+       else Result = false;
+      return Result;
+    };
+    this.GetPrintMargin = function () {
+      var Result = 0;
+      if (this.FEditor != null) {
+        Result = this.FEditor.getPrintMarginColumn()}
+       else Result = 80;
+      return Result;
+    };
+    this.GetShowPrintMargin = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        Result = this.FEditor.getShowPrintMargin()}
+       else Result = false;
+      return Result;
+    };
+    this.GetLines = function () {
+      var Result = null;
+      var strl = null;
+      var ds = [];
+      var I = 0;
+      if (!this.IsUpdating()) {
+        strl = pas.Classes.TStringList.$create("Create$1");
+        if (this.FEditor != null) {
+          ds = this.FEditor.session.getDocument().getAllLines();
+          strl = pas.Classes.TStringList.$create("Create$1");
+          strl.BeginUpdate();
+          for (var $l = 0, $end = rtl.length(ds) - 1; $l <= $end; $l++) {
+            I = $l;
+            strl.Add(ds[I]);
+          };
+          strl.EndUpdate();
+        };
+        this.FLines.Assign(strl);
+        strl = rtl.freeLoc(strl);
+      };
+      Result = this.FLines;
+      return Result;
+    };
+    this.GetSelLength = function () {
+      var Result = 0;
+      var d = null;
+      if (this.FEditor != null) {
+        d = this.FEditor.session.getDocument();
+        Result = d.positionToIndex(this.FEditor.selection.getRange().end) - this.GetSelStart();
+      } else Result = 0;
+      return Result;
+    };
+    this.GetSelStart = function () {
+      var Result = 0;
+      if (this.FEditor != null) {
+        Result = this.FEditor.session.getDocument().positionToIndex(this.FEditor.selection.getRange().start)}
+       else Result = this.FSelStart;
+      return Result;
+    };
+    this.GetShowIndentGuides = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        Result = this.FEditor.getDisplayIndentGuides()}
+       else Result = false;
+      return Result;
+    };
+    this.GetCaretPosition = function () {
+      var Result = pas.Types.TPoint.$new();
+      var p = pas.Types.TPoint.$new();
+      p.x = 0;
+      p.y = 0;
+      if (this.FEditor != null) {
+        p.x = this.FEditor.getCursorPosition().column;
+        p.y = this.FEditor.getCursorPosition().row;
+      };
+      Result.$assign(p);
+      return Result;
+    };
+    this.GetShowGutter = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        Result = this.FEditor.renderer.getShowGutter()}
+       else Result = false;
+      return Result;
+    };
+    this.GetFadeFoldWidgets = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        Result = this.FEditor.getFadeFoldWidgets()}
+       else Result = false;
+      return Result;
+    };
+    this.GetShowFoldWidgets = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        this.FEditor.getShowFoldWidgets()}
+       else Result = false;
+      return Result;
+    };
+    this.GetFontSize = function () {
+      var Result = 0;
+      var s = "";
+      if (this.FEditor != null) {
+        s = this.FEditor.getFontSize() + "";
+        s = pas.SysUtils.StringReplace(s,"p","",{});
+        s = pas.SysUtils.StringReplace(s,"x","",{});
+        Result = pas.SysUtils.StrToInt(s);
+      } else Result = 12;
+      return Result;
+    };
+    this.GetPersistentHorizontalScrollbar = function () {
+      var Result = false;
+      if ((this.FEditor != null) && !(pas.Classes.TComponentStateItem.csDesigning in this.FComponentState)) {
+        Result = this.FEditor.getHScrollBarAlwaysVisible()}
+       else Result = false;
+      return Result;
+    };
+    this.GetPersistentVerticalScrollbar = function () {
+      var Result = false;
+      if ((this.FEditor != null) && !(pas.Classes.TComponentStateItem.csDesigning in this.FComponentState)) {
+        Result = this.FEditor.getVScrollBarAlwaysVisible()}
+       else Result = false;
+      return Result;
+    };
+    this.GetFont = function () {
+      var Result = "";
+      Result = "";
+      return Result;
+    };
+    this.SetFontName = function (Value) {
+      if (this.FEditor != null) this.FEditor.setOption("fontFamily",Value);
+    };
+    this.GetTabSize = function () {
+      var Result = 0;
+      if (this.FEditor != null) {
+        Result = this.FEditor.session.getTabSize()}
+       else Result = 2;
+      return Result;
+    };
+    this.SetTabSize = function (Value) {
+      if (this.FEditor != null) this.FEditor.session.setTabSize(Value);
+    };
+    this.AutocompleteChanged = function (Sender) {
+      this.InitializeKeyWords(this.FCustomAutocomplete);
+    };
+    this.BindEvents = function () {
+      pas["WEBLib.Controls"].TCustomControl.BindEvents.call(this);
+      if (this.FEditor != null) {
+        this.FEditor.addEventListener("change",rtl.createCallback(this,"DoChange"));
+        this.FEditor.selection.addEventListener("changeCursor",rtl.createCallback(this,"HandleDoChangeCursor"));
+        this.FEditor.selection.addEventListener("changeSelection",rtl.createCallback(this,"HandleDoChangeSelection"));
+        this.FEditor.container.addEventListener("keydown",rtl.createCallback(this,"HandleDoKeyDown"));
+        this.FEditor.container.addEventListener("keyup",rtl.createCallback(this,"HandleDoKeyUp"));
+        this.FEditor.container.addEventListener("keypress",rtl.createCallback(this,"HandleDoKeyPress"));
+      };
+      if (this.GetElementHandle() != null) {
+        this.GetElementHandle().ondragover = rtl.createSafeCallback(this,"HandleDoDragOver");
+        this.GetElementHandle().ondrop = rtl.createSafeCallback(this,"HandleDoDrop");
+      };
+    };
+    this.DoChange = function () {
+      if (this.FOnChange != null) this.FOnChange(this);
+    };
+    this.DoChangeCursorPosition = function (ARow, AColumn) {
+      if (this.FOnChangeCursor != null) this.FOnChangeCursor(this,ARow,AColumn);
+    };
+    this.DoChangeSelection = function (ASelectedText) {
+      if (this.FOnChangeSelection != null) this.FOnChangeSelection(this,ASelectedText);
+    };
+    this.DoLinesChange = function (Sender) {
+      var I = 0;
+      var lns = [];
+      var p = null;
+      if (this.FEditor != null) {
+        lns = rtl.arraySetLength(lns,"",this.FLines.GetCount());
+        for (var $l = 0, $end = this.FLines.GetCount() - 1; $l <= $end; $l++) {
+          I = $l;
+          lns[I] = this.FLines.Get(I);
+        };
+        if (rtl.length(lns) === 0) {
+          lns = rtl.arraySetLength(lns,"",1);
+          lns[0] = "";
+        };
+        this.FEditor.setValue("");
+        p = new Object();
+        p.row = 0;
+        p.column = 0;
+        this.FEditor.session.getDocument().insertMergedLines(p,rtl.arrayRef(lns));
+      };
+    };
+    this.DragDrop$1 = function (Source, X, Y) {
+      if (this.FOnDragDrop != null) this.FOnDragDrop(this,Source,X,Y);
+    };
+    this.DragOver$1 = function (Source, X, Y, State, Accept) {
+      if (this.FOnDragOver != null) this.FOnDragOver(this,Source,X,Y,State,Accept);
+    };
+    this.EditorResize = function (Sender) {
+      if (this.FEditor != null) this.FEditor.resize();
+    };
+    this.RemoveCompleter = function (ACompleter) {
+      if (this.FEditor != null) {
+        let completers = this.FEditor.completers;
+        if (completers) {
+          if (completers.indexOf(ACompleter) !== -1) {
+            completers.splice(completers.indexOf(ACompleter), 1);
+          };
+        };
+      };
+    };
+    this.UnbindEvents = function () {
+      pas["WEBLib.Controls"].TControl.UnbindEvents.call(this);
+      if (this.FEditor != null) {
+        this.FEditor.removeEventListener("change",rtl.createCallback(this,"DoChange"));
+        this.FEditor.selection.removeEventListener("changeCursor",rtl.createCallback(this,"HandleDoChangeCursor"));
+        this.FEditor.selection.removeEventListener("changeSelection",rtl.createCallback(this,"HandleDoChangeSelection"));
+        this.FEditor.container.removeEventListener("keydown",rtl.createCallback(this,"HandleDoKeyDown"));
+        this.FEditor.container.removeEventListener("keyup",rtl.createCallback(this,"HandleDoKeyUp"));
+        this.FEditor.container.removeEventListener("keypress",rtl.createCallback(this,"HandleDoKeyPress"));
+      };
+    };
+    this.UpdateElement = function () {
+      pas["WEBLib.Controls"].TControl.UpdateElement.call(this);
+      if (!this.IsUpdating() && (this.GetElementHandle() != null)) {
+        this.GetElementHandle().style.setProperty("font-family","");
+        this.GetElementHandle().style.setProperty("font-style","");
+        this.GetElementHandle().style.setProperty("font-size","");
+        this.GetElementHandle().style.setProperty("color","");
+        this.GetElementHandle().style.setProperty("user-select","");
+        this.GetElementHandle().style.setProperty("outline","");
+      };
+    };
+    this.CreateElement = function () {
+      var Result = null;
+      Result = document.createElement("DIV");
+      this.FEditor = ace.edit(Result);
+      this.SetAutocompletion($mod.TSyntaxAutocomplete.saBasic);
+      this.SetSoftTabs(true);
+      this.SetTabSize(2);
+      return Result;
+    };
+    this.GetElementBindHandle = function () {
+      var Result = null;
+      if (this.FEditor != null) {
+        Result = this.FEditor}
+       else pas["WEBLib.Controls"].TControl.GetElementBindHandle.call(this);
+      return Result;
+    };
+    this.GetInstanceName = function () {
+      var Result = "";
+      Result = this.FName + "_" + this.$classname;
+      return Result;
+    };
+    this.HandleDoChangeCursor = function (Event) {
+      var Result = false;
+      if (this.FEditor != null) this.DoChangeCursorPosition(this.FEditor.getCursorPosition().row,this.FEditor.getCursorPosition().column);
+      Result = true;
+      return Result;
+    };
+    this.HandleDoChangeSelection = function (Event) {
+      var Result = false;
+      if (this.FEditor != null) this.DoChangeSelection(this.FEditor.getSelectedText());
+      Result = true;
+      return Result;
+    };
+    this.HandleDoDragOver = function (aEvent) {
+      var Result = false;
+      var allow = false;
+      var obj = null;
+      aEvent.preventDefault();
+      this.DragOver$1(obj,0,0,pas["WEBLib.Controls"].TDragState.dsDragMove,{get: function () {
+          return allow;
+        }, set: function (v) {
+          allow = v;
+        }});
+      Result = true;
+      return Result;
+    };
+    this.HandleDoDrop = function (aEvent) {
+      var Result = false;
+      var dragobj = null;
+      aEvent.preventDefault();
+      dragobj = pas["WEBLib.Controls"].TDragSourceObject.$create("Create");
+      dragobj.FJSEvent = aEvent;
+      dragobj.FObject = this;
+      try {
+        this.DragDrop$1(dragobj,aEvent.clientX,aEvent.clientY);
+      } finally {
+        dragobj = rtl.freeLoc(dragobj);
+      };
+      Result = true;
+      return Result;
+    };
+    this.Loaded = function () {
+      var fs = 0;
+      pas["WEBLib.Controls"].TCustomControl.Loaded.call(this);
+      fs = this.GetFontSize();
+      this.SetFontSize(fs + 1);
+      this.SetFontSize(fs - 1);
+    };
+    this.CreateInitialize = function () {
+      pas["WEBLib.Controls"].TCustomControl.CreateInitialize.call(this);
+      this.SetTabStop(true);
+      this.FCustomAutocomplete = $mod.TSyntaxCompleter.$create("Create$2");
+      this.FCustomAutocomplete.FOnChange = rtl.createCallback(this,"AutocompleteChanged");
+      this.FLines = pas.Classes.TStringList.$create("Create$1");
+      this.FLines.SetSkipLastLineBreak(true);
+      this.FLines.FOnChange = rtl.createCallback(this,"DoLinesChange");
+      this.FEventStopPropagation = rtl.diffSet(this.FEventStopPropagation,rtl.createSet(pas["WEBLib.Controls"].TElementEvent.eeMouseMove));
+      this.FOnResize = rtl.createCallback(this,"EditorResize");
+      if (!(this.FEditor != null) && (this.GetElementHandle() != null)) {
+        this.UnbindEvents();
+        this.FEditor = ace.edit(this.GetElementHandle());
+        this.SetAutocompletion($mod.TSyntaxAutocomplete.saBasic);
+        this.SetSoftTabs(true);
+        this.SetTabSize(2);
+        this.BindEvents();
+      };
+    };
+    this.Destroy = function () {
+      rtl.free(this,"FCustomAutocomplete");
+      rtl.free(this,"FLines");
+      pas["WEBLib.Controls"].TCustomControl.Destroy.call(this);
+    };
+    this.BeginUpdate = function () {
+      pas["WEBLib.Controls"].TControl.BeginUpdate.call(this);
+    };
+    this.Clear = function () {
+      this.SetText("");
+    };
+    this.DisableLocalKeywords = function () {
+      let langTools = ace.require('ace/ext/language_tools');
+      langTools.setCompleters([]);
+    };
+    this.EndUpdate = function () {
+      pas["WEBLib.Controls"].TCustomControl.EndUpdate.call(this);
+      this.InitializeKeyWords(this.FCustomAutocomplete);
+    };
+    this.Find = function (AText) {
+      if (this.FEditor != null) this.FEditor.find(AText);
+    };
+    this.FindAll = function (AText) {
+      if (this.FEditor != null) this.FEditor.findAll(AText);
+    };
+    this.FindNext = function () {
+      if (this.FEditor != null) this.FEditor.findNext();
+    };
+    this.FindPrevious = function () {
+      if (this.FEditor != null) this.FEditor.findPrevious();
+    };
+    this.Focus = function () {
+      if (this.FEditor != null) this.FEditor.focus();
+    };
+    this.InitializeKeyWords = function (ACompleter) {
+      var I = 0;
+      var ca = [];
+      var c = null;
+      if (this.IsUpdating()) return;
+      this.RemoveCompleter(this.FCustomCompleter);
+      ca = rtl.arraySetLength(ca,null,ACompleter.GetCount());
+      for (var $l = 0, $end = ACompleter.GetCount() - 1; $l <= $end; $l++) {
+        I = $l;
+        c = new Object();
+        c.caption = ACompleter.GetItem$1(I).FCaption;
+        c.meta = ACompleter.GetItem$1(I).FMeta;
+        c.name = ACompleter.GetItem$1(I).FName;
+        c.score = ACompleter.GetItem$1(I).FScore;
+        c.value = ACompleter.GetItem$1(I).FValue;
+        ca[I] = c;
+      };
+      var completer = {
+            getCompletions: function(editor, session, pos, prefix, callback) {
+              callback(null, ca);
+            }
+          };
+      
+          this.FCustomCompleter = completer;
+      
+          let langTools = ace.require('ace/ext/language_tools');
+          if (langTools) {
+            langTools.addCompleter(completer);
+          };
+    };
+    this.InsertText = function (AText) {
+      if (this.FEditor != null) this.FEditor.session.getDocument().insert(this.FEditor.getCursorPosition(),AText);
+    };
+    this.InsertText$1 = function (APosition, AText) {
+      var p = null;
+      if (this.FEditor != null) {
+        p = new Object();
+        p.row = APosition.y;
+        p.column = APosition.x;
+        this.FEditor.session.getDocument().insert(p,AText);
+      };
+    };
+    this.PreloadPascalKeywords = function () {
+      var ca = [];
+      var c = null;
+      var I = 0;
+      this.RemoveCompleter(this.FPascalCompleter);
+      ca = rtl.arraySetLength(ca,null,88);
+      for (I = 0; I <= 88; I++) {
+        c = new Object();
+        c.value = pas.libace.PascalKeywords[I];
+        c.score = 1000;
+        c.meta = "keyword";
+        ca[I] = c;
+      };
+      var completer = {
+            getCompletions: function(editor, session, pos, prefix, callback) {
+              callback(null, ca);
+            }
+          };
+      
+          this.FPascalCompleter = completer;
+      
+          let langTools = ace.require('ace/ext/language_tools');
+          langTools.addCompleter(completer);
+    };
+    this.Redo = function () {
+      if (this.FEditor != null) this.FEditor.redo();
+    };
+    this.RemoveSelectedText = function () {
+      if (this.FEditor != null) this.FEditor.session.getDocument().remove(this.FEditor.selection.getRange());
+    };
+    this.RemoveCustomAutocompleter = function () {
+      this.RemoveCompleter(this.FCustomCompleter);
+    };
+    this.RemovePascalKeywords = function () {
+      this.RemoveCompleter(this.FPascalCompleter);
+    };
+    this.Replace = function (AReplacement) {
+      if (this.FEditor != null) this.FEditor.replace(AReplacement);
+    };
+    this.Replace$1 = function (AText, AReplacement) {
+      var opt = null;
+      if (this.FEditor != null) {
+        opt = new Object();
+        opt.needle = AText;
+        this.FEditor.replace(AReplacement,opt);
+      };
+    };
+    this.ReplaceAll = function (AReplacement) {
+      if (this.FEditor != null) this.FEditor.replaceAll(AReplacement);
+    };
+    this.ReplaceAll$1 = function (AText, AReplacement) {
+      var opt = null;
+      if (this.FEditor != null) {
+        opt = new Object();
+        opt.needle = AText;
+        this.FEditor.replaceAll(AReplacement,opt);
+      };
+    };
+    this.SelectAll = function () {
+      if (this.FEditor != null) this.FEditor.selectAll();
+    };
+    this.Undo = function () {
+      if (this.FEditor != null) this.FEditor.undo();
+    };
+    this.Unselect = function () {
+      if (this.FEditor != null) this.FEditor.clearSelection();
+    };
+    this.OpenSearchBox = function () {
+      var Result = false;
+      if (this.FEditor != null) {
+        Result = this.FEditor.execCommand("find")}
+       else Result = false;
+      return Result;
+    };
+    rtl.addIntf(this,pas["WEBLib.Controls"].IControl);
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addProperty("Align",2,pas["WEBLib.Controls"].$rtti["TAlign"],"FAlign","SetAlign",{Default: pas["WEBLib.Controls"].TAlign.alNone});
+    $r.addProperty("Anchors",2,pas["WEBLib.Controls"].$rtti["TAnchors"],"FAnchors","SetAnchors",{Default: rtl.createSet(pas["WEBLib.Controls"].TAnchorKind.akLeft,pas["WEBLib.Controls"].TAnchorKind.akTop)});
+    $r.addProperty("AlignWithMargins",2,rtl.boolean,"FAlignWithMargins","SetAlignWithMargins",{Default: false});
+    $r.addProperty("Autocompletion",2,$mod.$rtti["TSyntaxAutocomplete"],"FAutocompletion","SetAutocompletion");
+    $r.addProperty("CustomAutocomplete",2,$mod.$rtti["TSyntaxCompleter"],"FCustomAutocomplete","SetCustomAutocomplete");
+    $r.addProperty("FadeFoldWidgets",3,rtl.boolean,"GetFadeFoldWidgets","SetFadeFoldWidgets");
+    $r.addProperty("FixedGutterWidth",2,rtl.boolean,"FFixedGutterWidth","SetFixedGutterWidth");
+    $r.addProperty("FontSize",3,rtl.longint,"GetFontSize","SetFontSize");
+    $r.addProperty("Height",3,rtl.longint,"GetHeight","SetHeight");
+    $r.addProperty("HighlightActiveLine",3,rtl.boolean,"GetHighlightActiveLine","SetHighlightActiveLine");
+    $r.addProperty("Left",3,rtl.longint,"GetLeft","SetLeft");
+    $r.addProperty("Lines",3,pas.Classes.$rtti["TStringList"],"GetLines","SetLines");
+    $r.addProperty("Mode",2,rtl.string,"FMode","SetMode");
+    $r.addProperty("PersistentHorizontalScrollbar",3,rtl.boolean,"GetPersistentHorizontalScrollbar","SetPersistentHorizontalScrollbar");
+    $r.addProperty("PersistentVerticalScrollbar",3,rtl.boolean,"GetPersistentVerticalScrollbar","SetPersistentVerticalScrollbar");
+    $r.addProperty("PrintMargin",3,rtl.longint,"GetPrintMargin","SetPrintMargin",{Default: 80});
+    $r.addProperty("ReadOnly",3,rtl.boolean,"GetReadOnly","SetReadOnly");
+    $r.addProperty("SelLength",3,rtl.longint,"GetSelLength","SetSelLength");
+    $r.addProperty("SelStart",3,rtl.longint,"GetSelStart","SetSelStart");
+    $r.addProperty("ShowFoldWidgets",3,rtl.boolean,"GetShowFoldWidgets","SetShowFoldWidgets");
+    $r.addProperty("ShowGutter",3,rtl.boolean,"GetShowGutter","SetShowGutter");
+    $r.addProperty("ShowIndentGuides",3,rtl.boolean,"GetShowIndentGuides","SetShowIndentGuides");
+    $r.addProperty("ShowInvisibles",3,rtl.boolean,"GetShowInvisibles","SetShowInvisibles");
+    $r.addProperty("ShowLineNumbers",2,rtl.boolean,"FShowLineNumbers","SetShowLineNumbers");
+    $r.addProperty("ShowPrintMargin",3,rtl.boolean,"GetShowPrintMargin","SetShowPrintMargin");
+    $r.addProperty("SoftTabs",2,rtl.boolean,"FSoftTabs","SetSoftTabs",{Default: true});
+    $r.addProperty("TextDirection",2,$mod.$rtti["TSyntaxTextDirection"],"FTextDirection$1","SetTextDirection");
+    $r.addProperty("Theme",2,rtl.string,"FTheme","SetTheme");
+    $r.addProperty("TabOrder",2,rtl.longint,"FTabOrder","SetTabOrder");
+    $r.addProperty("TabSize",3,rtl.longint,"GetTabSize","SetTabSize");
+    $r.addProperty("TabStop",2,rtl.boolean,"FTabStop","SetTabStop",{Default: true});
+    $r.addProperty("Top",3,rtl.longint,"GetTop","SetTop");
+    $r.addProperty("Visible",2,rtl.boolean,"FVisible","SetVisible",{Default: true});
+    $r.addProperty("Width",3,rtl.longint,"GetWidth","SetWidth");
+    $r.addProperty("WordWrap",2,$mod.$rtti["TSyntaxWrapping"],"FWordWrap","SetWordWrap");
+    $r.addProperty("WordWrapIndented",2,rtl.boolean,"FWordWrapIndent","SetWordWrapIndent");
+    $r.addProperty("WordWrapValue",2,rtl.longint,"FWordWrapValue","SetWordWrapValue");
+    $r.addProperty("OnChange",0,pas["WEBLib.Controls"].$rtti["TNotifyEvent"],"FOnChange","FOnChange");
+    $r.addProperty("OnChangeCursor",0,$mod.$rtti["TSyntaxMemoChangeCursorEvent"],"FOnChangeCursor","FOnChangeCursor");
+    $r.addProperty("OnChangeSelection",0,$mod.$rtti["TSyntaxMemoChangeSelectionEvent"],"FOnChangeSelection","FOnChangeSelection");
+    $r.addProperty("OnClick",0,pas["WEBLib.Controls"].$rtti["TNotifyEvent"],"FOnClick","FOnClick");
+    $r.addProperty("OnDblClick",0,pas["WEBLib.Controls"].$rtti["TNotifyEvent"],"FOnDblClick","FOnDblClick");
+    $r.addProperty("OnDragDrop",0,pas["WEBLib.Controls"].$rtti["TDragDropEvent"],"FOnDragDrop","FOnDragDrop");
+    $r.addProperty("OnDragOver",0,pas["WEBLib.Controls"].$rtti["TDragOverEvent"],"FOnDragOver","FOnDragOver");
+    $r.addProperty("OnEnter",0,pas["WEBLib.Controls"].$rtti["TNotifyEvent"],"FOnEnter","FOnEnter");
+    $r.addProperty("OnExit",0,pas["WEBLib.Controls"].$rtti["TNotifyEvent"],"FOnExit","FOnExit");
+    $r.addProperty("OnKeyDown",0,pas["WEBLib.Controls"].$rtti["TKeyEvent"],"FOnKeyDown","FOnKeyDown");
+    $r.addProperty("OnKeyPress",0,pas["WEBLib.Controls"].$rtti["TKeyPressEvent"],"FOnKeyPress","FOnKeyPress");
+    $r.addProperty("OnKeyUp",0,pas["WEBLib.Controls"].$rtti["TKeyEvent"],"FOnKeyUp","FOnKeyUp");
+    $r.addProperty("OnMouseDown",0,pas["WEBLib.Controls"].$rtti["TMouseEvent"],"FOnMouseDown","FOnMouseDown");
+    $r.addProperty("OnMouseEnter",0,pas["WEBLib.Controls"].$rtti["TNotifyEvent"],"FOnMouseEnter","FOnMouseEnter");
+    $r.addProperty("OnMouseLeave",0,pas["WEBLib.Controls"].$rtti["TNotifyEvent"],"FOnMouseLeave","FOnMouseLeave");
+    $r.addProperty("OnMouseMove",0,pas["WEBLib.Controls"].$rtti["TMouseMoveEvent"],"FOnMouseMove","FOnMouseMove");
+    $r.addProperty("OnMouseUp",0,pas["WEBLib.Controls"].$rtti["TMouseEvent"],"FOnMouseUp","FOnMouseUp");
+  });
+  rtl.createClass(this,"TWebSyntaxMemo",this.TSyntaxMemo,function () {
+    rtl.addIntf(this,pas["WEBLib.Controls"].IControl);
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+});
+rtl.module("Unit4",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.SyntaxMemo","WEBLib.WebCtrls","WEBLib.ExtCtrls","WEBLib.StdCtrls","WEBLib.StdCtrls"],function () {
+  "use strict";
+  var $mod = this;
+  rtl.createClass(this,"TForm4",pas["WEBLib.Forms"].TForm,function () {
+    this.$init = function () {
+      pas["WEBLib.Forms"].TForm.$init.call(this);
+      this.WebHTMLDiv1 = null;
+      this.WebSyntaxMemo1 = null;
+      this.WebPanel1 = null;
+      this.WebButton1 = null;
+    };
+    this.$final = function () {
+      this.WebHTMLDiv1 = undefined;
+      this.WebSyntaxMemo1 = undefined;
+      this.WebPanel1 = undefined;
+      this.WebButton1 = undefined;
+      pas["WEBLib.Forms"].TForm.$final.call(this);
+    };
+    this.WebFormCreate = function (Sender) {
+      var i = 0;
+      var j = 0;
+      for (i = 1; i <= 100; i++) this.WebSyntaxMemo1.GetLines().Add(" ");
+      return;
+      var editor = ace.edit("editor");
+      // editor.setTheme("ace/theme/monokai");
+      // editor.session.setMode("ace/mode/javascript");
+      //  editor.gotoLine(10);
+    };
+    this.WebButton1Click = function (Sender) {
+      var editor = ace.edit("editor");
+           //editor.setTheme("ace/theme/monokai");
+           //editor.session.setMode("ace/mode/javascript");
+      
+            editor.gotoLine(10);
+    };
+    this.LoadDFMValues = function () {
+      pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
+      this.WebHTMLDiv1 = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$2",["editor"]);
+      this.WebSyntaxMemo1 = pas["WEBLib.SyntaxMemo"].TSyntaxMemo.$create("Create$1",[this]);
+      this.WebPanel1 = pas["WEBLib.ExtCtrls"].TPanel.$create("Create$1",[this]);
+      this.WebButton1 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
+      this.WebHTMLDiv1.BeforeLoadDFMValues();
+      this.WebSyntaxMemo1.BeforeLoadDFMValues();
+      this.WebPanel1.BeforeLoadDFMValues();
+      this.WebButton1.BeforeLoadDFMValues();
+      try {
+        this.SetName("Form4");
+        this.SetWidth(640);
+        this.SetHeight(480);
+        this.SetCSSLibrary(pas["WEBLib.Controls"].TCSSLibrary.cssBootstrap);
+        this.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.FFont.FCharset = 1;
+        this.FFont.SetColor(65793);
+        this.FFont.SetHeight(-15);
+        this.FFont.SetName("Tahoma");
+        this.FFont.SetStyle({});
+        this.SetParentFont(false);
+        this.SetEvent(this,"OnCreate","WebFormCreate");
+        this.WebHTMLDiv1.SetParentComponent(this);
+        this.WebHTMLDiv1.SetName("WebHTMLDiv1");
+        this.WebHTMLDiv1.SetLeft(0);
+        this.WebHTMLDiv1.SetTop(0);
+        this.WebHTMLDiv1.SetWidth(640);
+        this.WebHTMLDiv1.SetHeight(420);
+        this.WebHTMLDiv1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
+        this.WebHTMLDiv1.SetChildOrderEx(1);
+        this.WebHTMLDiv1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebHTMLDiv1.SetRole("");
+        this.WebSyntaxMemo1.SetParentComponent(this.WebHTMLDiv1);
+        this.WebSyntaxMemo1.SetName("WebSyntaxMemo1");
+        this.WebSyntaxMemo1.SetLeft(0);
+        this.WebSyntaxMemo1.SetTop(0);
+        this.WebSyntaxMemo1.SetWidth(640);
+        this.WebSyntaxMemo1.SetHeight(420);
+        this.WebSyntaxMemo1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
+        this.WebSyntaxMemo1.SetTabOrder(0);
+        this.WebPanel1.SetParentComponent(this);
+        this.WebPanel1.SetName("WebPanel1");
+        this.WebPanel1.SetLeft(0);
+        this.WebPanel1.SetTop(420);
+        this.WebPanel1.SetWidth(640);
+        this.WebPanel1.SetHeight(60);
+        this.WebPanel1.SetElementClassName("card");
+        this.WebPanel1.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
+        this.WebPanel1.SetChildOrderEx(1);
+        this.WebPanel1.FElementBodyClassName = "card-body";
+        this.WebPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebPanel1.SetTabOrder(1);
+        this.WebButton1.SetParentComponent(this.WebPanel1);
+        this.WebButton1.SetName("WebButton1");
+        this.WebButton1.SetLeft(56);
+        this.WebButton1.SetTop(8);
+        this.WebButton1.SetWidth(96);
+        this.WebButton1.SetHeight(25);
+        this.WebButton1.SetCaption("Linea");
+        this.WebButton1.SetElementClassName("btn btn-light");
+        this.WebButton1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebButton1.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.WebButton1.SetHeightPercent(100.000000000000000000);
+        this.WebButton1.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.WebButton1,this,"OnClick","WebButton1Click");
+      } finally {
+        this.WebHTMLDiv1.AfterLoadDFMValues();
+        this.WebSyntaxMemo1.AfterLoadDFMValues();
+        this.WebPanel1.AfterLoadDFMValues();
+        this.WebButton1.AfterLoadDFMValues();
+      };
+    };
+    rtl.addIntf(this,pas["WEBLib.Controls"].IControl);
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addField("WebHTMLDiv1",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
+    $r.addField("WebSyntaxMemo1",pas["WEBLib.SyntaxMemo"].$rtti["TSyntaxMemo"]);
+    $r.addField("WebPanel1",pas["WEBLib.ExtCtrls"].$rtti["TPanel"]);
+    $r.addField("WebButton1",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebButton1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
+  });
+  this.Form4 = null;
+});
+rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","Unit1","uCargarConsultas","uFormaLogin","Unit2","Unit3","Unit4"],function () {
   "use strict";
   var $mod = this;
   $mod.$implcode = function () {

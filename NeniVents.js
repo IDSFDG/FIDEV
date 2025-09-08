@@ -82461,11 +82461,9 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       if (Key.get() === 13) this.edImporte.SetFocus();
     };
     this.edImporteKeyDown = function (Sender, Key, Shift) {
-      if (!(Key.get() in rtl.createSet(8,9,12,13,46,48,49,50,51,52,53,54,55,56,57))) Key.set(0);
       if (Key.get() === 13) this.edventasuba.SetFocus();
     };
     this.edventasubaKeyDown = function (Sender, Key, Shift) {
-      if (!(Key.get() in rtl.createSet(8,9,12,13,83,86))) Key.set(0);
       if (Key.get() === 13) this.edPagado.SetFocus();
     };
     this.chkPagadoKeyDown = function (Sender, Key, Shift) {
@@ -82475,12 +82473,46 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       if (Key.get() === 13) this.btnAgregar.SetFocus();
     };
     this.edPagadoKeyDown = function (Sender, Key, Shift) {
-      if (!(Key.get() in rtl.createSet(8,9,12,13,78,83))) Key.set(0);
       if (Key.get() === 13) this.edEntregado.SetFocus();
     };
     this.edEntregadoKeyDown = function (Sender, Key, Shift) {
-      if (!(Key.get() in rtl.createSet(8,9,12,13,78,83))) Key.set(0);
       if (Key.get() === 13) this.btnAgregar.SetFocus();
+    };
+    this.edImporteKeyPress = function (Sender, Key) {
+      var nKey = 0;
+      nKey = Key.get().charCodeAt();
+      if (!(nKey in rtl.createSet(8,9,12,13,46,48,49,50,51,52,53,54,55,56,57))) {
+        Key.set("\x00");
+        this.edImporte.SetText("");
+      };
+      if (nKey === 13) this.edventasuba.SetFocus();
+    };
+    this.edventasubaKeyPress = function (Sender, Key) {
+      var rtext = "";
+      rtext = this.edventasuba.GetText();
+      rtext = "";
+      if (!(Key.get().charCodeAt() in rtl.createSet(86,118,83,115))) {
+        Key.set("\x00");
+        this.edventasuba.SetText(rtext);
+      };
+    };
+    this.edPagadoKeyPress = function (Sender, Key) {
+      var rtext = "";
+      rtext = this.edPagado.GetText();
+      rtext = "";
+      if (!(Key.get().charCodeAt() in rtl.createSet(78,110,83,115))) {
+        Key.set("\x00");
+        this.edPagado.SetText(rtext);
+      };
+    };
+    this.edEntregadoKeyPress = function (Sender, Key) {
+      var rtext = "";
+      rtext = this.edEntregado.GetText();
+      rtext = "";
+      if (!(Key.get().charCodeAt() in rtl.createSet(78,110,83,115))) {
+        Key.set("\x00");
+        this.edEntregado.SetText(rtext);
+      };
     };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
@@ -82558,11 +82590,10 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel1.SetHeight(18);
         this.WebLabel1.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebLabel1.SetAlignment(pas.Classes.TAlignment.taCenter);
-        this.WebLabel1.SetCaption("Registro de  Información");
+        this.WebLabel1.SetCaption("Agregar Renglones ");
         this.WebLabel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel1.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel1.SetHeightPercent(100.000000000000000000);
-        this.WebLabel1.SetVisible(false);
         this.WebLabel1.SetWidthPercent(100.000000000000000000);
         this.WebLabel2.SetParentComponent(this.WebScrollBox1);
         this.WebLabel2.SetName("WebLabel2");
@@ -82712,6 +82743,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edImporte.SetTabOrder(102);
         this.edImporte.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.edImporte,this,"OnKeyDown","edImporteKeyDown");
+        this.SetEvent$1(this.edImporte,this,"OnKeyPress","edImporteKeyPress");
         this.chkPagado.SetParentComponent(this.WebScrollBox1);
         this.chkPagado.SetName("chkPagado");
         this.chkPagado.SetLeft(143);
@@ -82766,6 +82798,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edventasuba.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.edventasuba,this,"OnExit","edventasubaExit");
         this.SetEvent$1(this.edventasuba,this,"OnKeyDown","edventasubaKeyDown");
+        this.SetEvent$1(this.edventasuba,this,"OnKeyPress","edventasubaKeyPress");
         this.edPagado.SetParentComponent(this.WebScrollBox1);
         this.edPagado.SetName("edPagado");
         this.edPagado.SetLeft(84);
@@ -82781,6 +82814,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edPagado.SetTabOrder(104);
         this.edPagado.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.edPagado,this,"OnKeyDown","edPagadoKeyDown");
+        this.SetEvent$1(this.edPagado,this,"OnKeyPress","edPagadoKeyPress");
         this.edEntregado.SetParentComponent(this.WebScrollBox1);
         this.edEntregado.SetName("edEntregado");
         this.edEntregado.SetLeft(84);
@@ -82796,6 +82830,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.edEntregado.SetTabOrder(105);
         this.edEntregado.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.edEntregado,this,"OnKeyDown","edEntregadoKeyDown");
+        this.SetEvent$1(this.edEntregado,this,"OnKeyPress","edEntregadoKeyPress");
       } finally {
         this.WebScrollBox1.AfterLoadDFMValues();
         this.WebLabel1.AfterLoadDFMValues();
@@ -82855,10 +82890,25 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("chkEntregadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
     $r.addMethod("edPagadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
     $r.addMethod("edEntregadoKeyDown",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.word,1],["Shift",pas.Classes.$rtti["TShiftState"]]]);
+    $r.addMethod("edImporteKeyPress",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.char,1]]);
+    $r.addMethod("edventasubaKeyPress",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.char,1]]);
+    $r.addMethod("edPagadoKeyPress",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.char,1]]);
+    $r.addMethod("edEntregadoKeyPress",0,[["Sender",pas.System.$rtti["TObject"]],["Key",rtl.char,1]]);
   });
   this.Form3 = null;
   $mod.$implcode = function () {
     $impl.maximoRegistros = 101;
+    $impl.validateInputType = function (inputType, Achar) {
+      var Result = false;
+      var Fresult = false;
+      Fresult = true;
+      console.log(Achar);
+      if (inputType === "jdFloat") {
+        if (!(Achar.charCodeAt() in rtl.createSet(null,48,57,110))) Fresult = false;
+      } else if (inputType === "onlyletters") if (!(Achar.charCodeAt() in rtl.createSet(null,97,122,null,65,90))) Fresult = false;
+      Result = Fresult;
+      return Result;
+    };
   };
 },[]);
 rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.WebCtrls","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.ExtCtrls","WEBLib.REST","WEBLib.JQCtrls","WEBLib.SideMenu","WEBLib.Menus","WEBLib.Menus","uCargarConsultas","WEBLib.Cookies","WEBLib.Storage","WEBLib.LocalFiles","DB","WEBLib.IndexedDb"],function () {
@@ -84849,7 +84899,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel2.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel2.SetHeightPercent(100.000000000000000000);
         this.WebLabel2.SetParentFont(false);
-        this.WebLabel2.SetShowHint(false);
         this.WebLabel2.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.WebLabel2,this,"OnClick","WebLabel2Click");
         this.WebButton9.SetParentComponent(this.WebPanel4);
@@ -85258,7 +85307,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetEvent$1(this.Pacientes1,this,"OnClick","Pacientes1Click");
         this.Registrar1.SetParentComponent(this.Archivo1);
         this.Registrar1.SetName("Registrar1");
-        this.Registrar1.SetCaption("Escribir Hoja");
+        this.Registrar1.SetCaption("Agregar Renglones");
         this.SetEvent$1(this.Registrar1,this,"OnClick","Registrar1Click");
         this.Consultas1.SetParentComponent(this.Archivo1);
         this.Consultas1.SetName("Consultas1");

@@ -83426,13 +83426,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
           var table = Tabulator.findTable("#tabExample")[0];
           table.setData(valorRegistroCookie);
         };
-        if (pas.SysUtils.TStringHelper.GetLength.call({get: function () {
-            return valorRegistroCookie;
-          }, set: function (v) {
-            valorRegistroCookie = v;
-          }}) === 0) {
-          alert('Registro de ventas, vacio, para iniciar agregar Renglones a Libreta');
-        };
       };
     };
     this.Estudios1Click = async function (Sender) {

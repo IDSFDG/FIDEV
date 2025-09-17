@@ -83421,7 +83421,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.PedidosDbClientDataset1.First();
         if (!this.PedidosDbClientDataset1.GetEOF()) {
           valorRegistroCookie = this.PedidosDbClientDataset1.FieldByName("pedidolibreta").GetAsString();
-          alert('registro',valorRegistroCookie);
+          // alert('registro',valorRegistroCookie);
           //console.log('valor', valorRegistroCookie);
           var table = Tabulator.findTable("#tabExample")[0];
           table.setData(valorRegistroCookie);
@@ -84019,7 +84019,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
        var activeRowCount = table.getDataCount(key);
        rowcountt =activeRowCount;
        //console.log('activeRowCount',activeRowCount);
-      if ((keyhoja === "uno") && (rowcountt === 0)) this.Consultas1Click(Sender);
+      if (keyhoja === "uno") this.Consultas1Click(Sender);
     };
     this.AnlisisGrfico1Click = async function (Sender) {
       //window.open('http://localhost/GraficadorPas/TMSWeb/Debug/Project1.html');

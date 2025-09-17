@@ -84233,6 +84233,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         // p=pp;
       resultado = await this.ValidarUsuarioActivo(u,p);
       };
+      pas["WEBLib.Dialogs"].ShowMessage("form enter");
       this.PedidosDbClientDataset1.Open();
       this.PedidosDbClientDataset1.SetActive(true);
       this.PedidosDbClientDataset1.First();

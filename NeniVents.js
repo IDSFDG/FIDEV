@@ -82559,7 +82559,7 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetLeft(400);
         this.SetWidth(251);
         this.SetHeight(459);
-        this.SetCaption("Libreta Digital (Registro Información)");
+        this.SetCaption("Libreta Digital (Registro)");
         this.SetCSSLibrary(pas["WEBLib.Controls"].TCSSLibrary.cssBootstrap);
         this.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.FFont.FCharset = 1;
@@ -83421,6 +83421,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.PedidosDbClientDataset1.First();
         if (!this.PedidosDbClientDataset1.GetEOF()) {
           valorRegistroCookie = this.PedidosDbClientDataset1.FieldByName("pedidolibreta").GetAsString();
+          alert('registro',valorRegistroCookie);
           //console.log('valor', valorRegistroCookie);
           var table = Tabulator.findTable("#tabExample")[0];
           table.setData(valorRegistroCookie);

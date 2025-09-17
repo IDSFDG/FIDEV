@@ -84233,17 +84233,6 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         // p=pp;
       resultado = await this.ValidarUsuarioActivo(u,p);
       };
-      pas["WEBLib.Dialogs"].ShowMessage("form enter");
-      this.PedidosDbClientDataset1.Open();
-      this.PedidosDbClientDataset1.SetActive(true);
-      this.PedidosDbClientDataset1.First();
-      if (!this.PedidosDbClientDataset1.GetEOF()) {
-        valorRegistroCookie = this.PedidosDbClientDataset1.FieldByName("pedidolibreta").GetAsString();
-        // alert('registro',valorRegistroCookie);
-        //console.log('valor', valorRegistroCookie);
-        var table = Tabulator.findTable("#tabExample")[0];
-        table.setData(valorRegistroCookie);
-      };
     };
     this.lbminimizarChange = function (Sender) {
       var ttxt = "";

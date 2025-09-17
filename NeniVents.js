@@ -63652,9 +63652,6 @@ rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.
     });
        table.on("tableBuilt", function(){
     
-    
-    
-    
            });
     
     table.on("rowClick", function(e, row) {
@@ -83575,6 +83572,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var dia = 0;
       var sfechadia = "";
       var nomarch = "";
+      var valorRegistroCookie = "";
       fechahoy = pas.SysUtils.Now();
       pas.SysUtils.DecodeDate(fechahoy,{get: function () {
           return anio;
@@ -84224,6 +84222,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var u = "";
       var p = "";
       var resultado = false;
+      var valorRegistroCookie = "";
       u = this.lbusuario.FCaption;
       const myElement = document.getElementById('elminimiza');
       if (myElement.innerHTML == 'minimiza')
@@ -84234,7 +84233,16 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         // p=pp;
       resultado = await this.ValidarUsuarioActivo(u,p);
       };
-      this.WebDivClick(Sender);
+      this.PedidosDbClientDataset1.Open();
+      this.PedidosDbClientDataset1.SetActive(true);
+      this.PedidosDbClientDataset1.First();
+      if (!this.PedidosDbClientDataset1.GetEOF()) {
+        valorRegistroCookie = this.PedidosDbClientDataset1.FieldByName("pedidolibreta").GetAsString();
+        // alert('registro',valorRegistroCookie);
+        //console.log('valor', valorRegistroCookie);
+        var table = Tabulator.findTable("#tabExample")[0];
+        table.setData(valorRegistroCookie);
+      };
     };
     this.lbminimizarChange = function (Sender) {
       var ttxt = "";

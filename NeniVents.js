@@ -63383,1691 +63383,6 @@ rtl.module("WEBLib.Cookies",["System","SysUtils","Classes"],function () {
   rtl.createClass(this,"TWebCookies",this.TCookies,function () {
   });
 },["Web","JS"]);
-rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.WebCtrls","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.ExtCtrls","WEBLib.REST","WEBLib.JQCtrls","WEBLib.SideMenu","WEBLib.Menus","WEBLib.Menus","WEBLib.Cookies"],function () {
-  "use strict";
-  var $mod = this;
-  this.cargarUsuarios = function () {
-    var i = 0;
-    //********************************************************************************
-     //********************************************************************************
-     //        const sqlPromise = initSqlJs({
-     //       locateFile: file => 'https://idsfdg.github.io/FIDEVALE/'
-     //     });
-     //        const dataPromise = fetch("//idsfdg.github.io/FIDEVALE/BD_Vale.db").then(res => res.arrayBuffer());
-     //        const [SQL, buf] = await Promise.all([sqlPromise, dataPromise])
-     //        const db = new SQL.Database(new Uint8Array(buf));
-     //   alert('fech');
-     //********************************************************************************
-     //********************************************************************************
-    
-      const xhr = new XMLHttpRequest();
-    
-    // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
-    //xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/Base1.db', true);
-      xhr.open('GET', 'https://idsfdg.github.io/FIDEVALE/BD_Vale.db', true);
-    //alert('1');
-    xhr.responseType = 'arraybuffer';
-    //alert('2');
-     xhr.onload =  e => {
-      const uInt8Array = new Uint8Array(xhr.response);
-    //   alert('3');
-      const db = new SQL.Database(uInt8Array);
-    //   alert('4');
-    
-     //********************************************************************************
-     //SELECT SQL *********************************************************************
-     //********************************************************************************
-    
-     // const  contents =   db.exec("SELECT contrapwd,estado FROM tablausuarios where nombre = '"+ustr+"';");
-      const  contents =   db.exec("SELECT nombre,contrapwd,estado FROM tablausuarios;");
-     //********************************************************************************
-     //********************************************************************************
-    
-      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-       if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-        // Request finished. Do processing here.
-    
-         var len = contents.length;
-         console.log('contents');
-        console.log(contents.length);
-         if (len > 0)
-         {
-          console.log(contents);
-          console.log('contents columns');
-          console.log(contents[0].columns);
-          console.log('contents values');
-          console.log(contents[0].values);
-          var len2 = contents[0].values.length;
-          if (len2 > 0)
-          {
-              for (var i = 0; i < len2; i++) {
-                 var u =contents[0].values[i][0];
-                 var p =contents[0].values[i][1];
-                 var e =contents[0].values[i][2];
-                 console.log(u);
-                 console.log(p);
-                 console.log(e);
-               //  lista[(i*len2)+0]=u;
-               //  lista[(i*len2)+1]=p;
-               //  lista[(i*len2)+2]=e;
-    
-                const edBox = document.getElementById("tabla");
-              // Set the text content of the editbox
-                 edBox.value = edBox.value+u+"\r"+p+"\r"+e+"\r";
-              }
-             }   //values
-            // console.log('lista*****');
-            //  for (var i = 0; i < 10; i++) {
-            //  console.log(lista[i]);
-               //  WebMemo1.lines.add(lista[i]);
-             //}
-         }  //contents
-      } // readyState
-    //alert('5');
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-    };
-    xhr.send();
-  };
-  this.IniciarHoja = function (WebScrollRegistro) {
-    var selpacid = "";
-    var selpacnom = "";
-    var opcpdf = "";
-    var editCheck = function(cell){
-        //cell - the cell component for the editable cell
-        //get row data
-        var data = cell.getRow().getData();
-       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
-       return false // no editable
-     // return true // editable
-    };
-    //********************************************************************************
-     //********************************************************************************
-      var sheetDataConsulta = [];
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-         var sheets = [
-        {
-          name:'huno',
-          title:"Registro",
-          key:"uno",
-         // rows:10,
-          rows:0,
-          columns:7,
-          data:[],
-      },
-    
-       {
-          name:'hdos',
-          title:"Gastos",
-          key:"dos",
-         // rows:10,
-          rows:10,
-          columns:3,
-          data:[],
-      },
-    
-    ];
-             var table = new Tabulator("#tabExample",
-    
-         {
-         //footerElement: "<div class='custom-footer'>Total Items: <span id='total-items'></span></div>",
-    
-       dependencies:{
-            XLSX:XLSX,
-        },
-      htmlOutputConfig:{
-            columnHeaders:true, //do not include column headers in HTML table
-            columnGroups:false, //do not include column groups in column headers for HTML table
-            rowHeaders:true, //do not include row headers in HTML table
-            rowGroups:false, //do not include row groups in HTML table
-            columnCalcs:true, //do not include column calcs in HTML table
-            dataTree:false, //do not include data tree in HTML table
-            formatCells:false, //show raw cell values without formatter
-        },
-      columnDefaults:{
-            headerTooltip:function(e, cell, onRendered){
-                //e - mouseover event
-                //cell - cell component
-                //onRendered - onRendered callback registration function
-    
-                var el = document.createElement("div");
-                el.style.backgroundColor = "red";
-                el.innerText = column.getDefinition().title;
-    
-                return el;
-            },
-        },
-        downloadEncoder:function(fileContents, mimeType){
-    
-             //fileContents - the unencoded contents of the file
-            //mimeType - the suggested mime type for the output
-    
-            //alert('downloadEncoder');
-            //custom action to send blob to server could be included here
-    
-    
-            var miBlob = new Blob([fileContents], {type:mimeType});
-            const blobUrl = URL.createObjectURL(miBlob);
-    
-    
-    
-        // OK       abrir blob
-    
-            window.open(blobUrl);
-    
-    
-         //return new Blob([fileContents], {type:mimeType}); //must return a blob to proceed with the download, return false to abort download
-    
-         // return false, no descargar el archivo.
-         return false;
-       },
-       // importFormat:"csv",
-       // autoColumns:true,
-        downloadConfig:{
-            columnHeaders:true, //do not include column headers in downloaded table
-            columnGroups:false, //do not include column groups in column headers for downloaded table
-            rowHeaders:false, //do not include row headers in downloaded table
-            rowGroups:false, //do not include row groups in downloaded table
-            columnCalcs:false, //do not include column calcs in downloaded table
-            dataTree:false, //do not include data tree in downloaded table
-        },
-    
-        printAsHtml:true, //enable html table printing
-        printStyled:true, //copy Tabulator styling to HTML table
-     printConfig:{
-            columnHeaders:true, //do not include column headers in printed table
-            columnGroups:false, //do not include column groups in column headers for printed table
-            rowHeaders:false, //do not include row headers in printed table
-            rowGroups:false, //do not include row groups in printed table
-            columnCalcs:false, //do not include column calcs in printed table
-            dataTree:false, //do not include data tree in printed table
-            formatCells:false, //show raw cell values without formatter
-        },
-    rowFormatter:function(row){
-    
-          // alert('rowformatter');
-         // console.log(row.getData());    //OK
-            if((row.getData()._id % 2 ) > 0){
-               // console.log ('rowformatter');
-              //  row.getElement().classList.add("Modern"); //mark rows with age greater than or equal to 18 as successful;
-           // row.getElement().style.backgroundColor = "#d5f7d7"; //apply css change to row element
-           // row.getElement().style.backgroundColor = "#7cbfb2";
-           // row.getElement().style.backgroundColor = "#b87cbf"; // Gine
-          //  row.getElement().classList.add("table-danger");
-            }
-        },
-     // bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
-    
-    
-          selectableRows:false,
-        pagination:false,
-       // paginationElement:paginacionSCR, //build pagination controls in this element
-    
-       // responsiveLayout:true, // enable responsive layouts
-       // responsiveLayout:"collapse", // collapse columns that no longer fit on the table into a list under the row
-       // responsiveLayout:"hide",
-      // layout:"fitDataStretch",
-    
-    
-     //     rowHeader:{field:"_id", hozAlign:"center", headerSort:false, title:"Sel.Ren.", headerWordWrap:true},
-     // height:"211px",
-     //   height:"100%",
-        height:"311px",
-        height:"85%",
-      spreadsheet:true,
-      //spreadsheetRows:10,
-      spreadsheetRows:0,
-      spreadsheetColumns:6,
-      spreadsheetColumnDefinition:{editable:editCheck,editor:"input"},
-    
-        spreadsheetSheets:sheets,        // DEFINICION HOJAS ARREGLO
-        spreadsheetSheetTabs:true,
-      //  spreadsheetSheetTabsElement:"#table-tabs", //insert tabs in element with id of table-tabs
-    
-    
-      editorEmptyValue:undefined, //ensure empty values are set to undefined so they arent included in spreadsheet output data
-    
-      spreadsheetColumnDefinition:{editor:"input"}, //add an input editor to every cell
-            rowHeight:50, //set rows to 40px height
-    
-         index:"rc",
-      },
-    );
-    
-       table.on("rowAdded", function(row){
-        //row - row component
-         console.log(row);
-         console.log(row.getData());
-         var ddata =row.getData();
-         //console.log('data',ddata);
-         //console.log('rc',ddata.rc);
-        // row.scrollToRow();
-        //table.scrollToRow(row.getIndex(), "center", false);
-        row.scrollTo("bottom", true);
-    });
-       table.on("tableBuilt", function(){
-    
-           });
-    
-    table.on("rowClick", function(e, row) {
-    
-    
-          var rowIndex = row.getIndex();
-           var rowPosition = row.getPosition();
-         console.log('index',rowIndex)
-         console.log('pos',rowPosition);
-    
-       //alert('row click');
-         // alert(row);
-       // alert(' identifica'+row.getData().Identifica);
-    
-      //iden=row.getData().Identifica;
-     var iden=row.getData();
-        //alert(' iden'+iden);
-        console.log(iden);
-        console.log('idenA',iden.A);
-        console.log('idenA',iden.B);
-        selpacid = iden.A
-        selpacnom = iden.B
-        console.log('id',selpacid);
-     //   alert('paciente');
-     //   alert(selpacid);
-    
-       //edPaciente.value = selpacid;
-       //edPacNombre.value =selpacnom;
-      // alert (edPacNombre.value);
-     //  table.setFilter('B like '+edPacNombre.value);
-    
-     /*
-       if (confirm("Desea eliminar registro "+rowPosition.toString()+" ?")) {
-           row.delete();
-       }
-    
-    
-     // Pendiente actualizar , porque las columnas del Grid son editables
-      if (confirm("Desea actualizar registro "+rowPosition.toString()+" ?"))
-      {;
-    WebScrollRegistro.get().SetVisible(true);
-    const editBox = document.getElementById("rowsel");
-         // Set the text content of the editbox
-         console.log(row);
-          editBox.value = rowPosition;
-    
-    
-         const btnregi = document.getElementById("btnregistrar");
-         btnregi.innerText ='Actualizar';
-    
-    
-        // const btnregd = document.getElementById("btndel");
-        // btnregd.hidden="";
-    
-        // const scrreg = document.getElementById("scrollregistro");
-        // scrreg.display="inline-block";
-       //  console.log(scrreg);
-    
-         var rowData = row.getData();
-         console.log(rowData);
-         const cliente = document.getElementById("cliente");
-         cliente.value=rowData.nombre;
-         const producto = document.getElementById("producto");
-         producto.value=rowData.articulo;
-         const importe = document.getElementById("importe");
-         importe.value=rowData.importe;
-         const vds = document.getElementById("vds");
-         vds.value=rowData.vds;
-         }
-      */;
-    });
-      table.on("sheetUpdated", function(sheet){
-        //sheet - sheet component for sheet
-      //  alert('sheetUpdated');
-    });
-    
-    table.on("rowDblClick", function(e, row){
-        //e - the click event object
-        //row - row component
-      // alert('rowDblClick');
-      var idren=row.getData();
-      console.log('renglon',idren, idren.rc);
-      var rennum = idren.rc;
-    
-       if (confirm("Desea eliminar renglón: "+rennum.toString()+" ?")) {
-           row.delete();
-       }
-    });
-    
-     //********************************************************************************
-     //********************************************************************************
-    
-           table.on("sheetLoaded", function(sheet){
-    
-        //sheet - sheet component for sheet
-           var key = sheet.getKey();
-        var   keyhoja=key;
-      // end;
-      //    if (keyhoja = 'uno') then ActualizaTitulosCol('uno');
-      //    if (keyhoja = 'dos') then ActualizaTitulosCol('dos');
-      // asm
-        switch(keyhoja) {
-      case 'uno':
-        // code block
-          table.updateColumnDefinition("A", {title:"#",field:"rc",width:1, headerTooltip:"Registro, seleccion para eliminarlo" ,editor:false}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Cliente",field:"nombre",width:80, headerTooltip:"Cliente"}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"Producto",field:"articulo",width:80, headerTooltip:"Producto"}) //change the title on the name column
-          table.updateColumnDefinition("D", {title:"$Precio",field:"importe",width:70, headerTooltip:"Precio",bottomCalc:"sum",
-        formatter:"money", formatterParams:{
-        decimal:".",
-        thousand:",",
-        symbol:"$",
-        negativeSign:true,
-        precision:2},
-        bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
-           {field: "importe",   bottomCalc:"sum",   responsive:0,
-              title: "Total", width:200, headerFilter:false ,resizable: true,formatter:"money", formatterParams:{
-        decimal:".",
-        thousand:",",
-        symbol:"$",
-        negativeSign:true,
-        precision:2}
-        }) //change the title on the name column
-          table.updateColumnDefinition("E", {title:"P.",width:30,field:"pagado",editor:true,formatter:"tickCross", headerTooltip:"Pagado"}) //change the title on the name column
-          table.updateColumnDefinition("F", {title:"E.",width:30,field:"entregado",editor:true,formatter:"tickCross", headerTooltip:"Entregado"}) //change the title on the name column
-          table.updateColumnDefinition("G", {title:"VD/S",field:"vds",width:68 ,resizable:false, headerTooltip:"Venta/Subasta"}) //change the title on the name column
-    
-    
-        break;
-      case 'dos':
-        // code block
-          table.updateColumnDefinition("A", {title:"#",field:"rc",width:1}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Concepto",field:"concepto",width:230, headerTooltip:"Concepto"}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"$Importe",field:"importe",width:100, resizable:false, headerTooltip:"Importe",bottomCalc:"sum",
-        formatter:"money", formatterParams:{
-        decimal:".",
-        thousand:",",
-        symbol:"$",
-        negativeSign:true,
-        precision:2},
-        bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
-           {field: "importe",   bottomCalc:"sum",   responsive:0,
-              title: "Total", width:200, headerFilter:false ,resizable: true,formatter:"money", formatterParams:{
-        decimal:".",
-        thousand:",",
-        symbol:"$",
-        negativeSign:true,
-        precision:2}
-          }) //change the title on the name column
-        break;
-        default:
-        // code block
-    
-    }
-    
-    });
-     //********************************************************************************
-     //********************************************************************************;
-  };
-  this.CargarVentas = function () {
-    var selpacid = "";
-    var selpacnom = "";
-    var editCheck = function(cell){
-        //cell - the cell component for the editable cell
-        //get row data
-        var data = cell.getRow().getData();
-       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
-       return false // no editable
-     // return true // editable
-    };
-    //********************************************************************************
-     //********************************************************************************
-      var sheetDataConsulta = [];
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-         var sheets = [
-        {
-          name:'huno',
-          title:"Registro",
-          key:"uno",
-          rows:10,
-          columns:5,
-          data:[],
-      },
-    
-    ];
-             var table = new Tabulator("#tabExample",
-     {
-    
-       dependencies:{
-            XLSX:XLSX,
-        },
-    
-    
-       // importFormat:"csv",
-       // autoColumns:true,
-        downloadConfig:{
-            columnHeaders:false, //do not include column headers in downloaded table
-            columnGroups:false, //do not include column groups in column headers for downloaded table
-            rowHeaders:false, //do not include row headers in downloaded table
-            rowGroups:false, //do not include row groups in downloaded table
-            columnCalcs:false, //do not include column calcs in downloaded table
-            dataTree:false, //do not include data tree in downloaded table
-        },
-    rowFormatter:function(row){
-    
-          // alert('rowformatter');
-         // console.log(row.getData());    //OK
-            if((row.getData()._id % 2 ) > 0){
-               // console.log ('rowformatter');
-              //  row.getElement().classList.add("Modern"); //mark rows with age greater than or equal to 18 as successful;
-           // row.getElement().style.backgroundColor = "#d5f7d7"; //apply css change to row element
-            row.getElement().style.backgroundColor = "#7cbfb2";
-            row.getElement().style.backgroundColor = "#b87cbf"; // Gine
-          //  row.getElement().classList.add("table-danger");
-            }
-        },
-    
-           locale:true,
-          langs:{
-            "espaniol":{
-                "columns":{
-                    "name":"Name", //replace the title of column name with the value "Name"
-                },
-                "data":{
-                    "loading":"Loading", //data loader text
-                    "error":"Error", //data error text
-                },
-                "groups":{ //copy for the auto generated item count in group header
-                    "item":"item", //the singular  for item
-                    "items":"items", //the plural for items
-                },
-                "pagination":{
-                    "page_size":"Tam.Pag.", //label for the page size select element
-                    "page_title":"Ver Pag.",//tooltip text for the numeric page button, appears in front of the page number (eg. "Show Page" will result in a tool tip of "Show Page 1" on the page 1 button)
-                    "first":"Prim.", //text for the first page button
-                    "first_title":"Prim.Pag", //tooltip text for the first page button
-                    "last":"Ultim.",
-                    "last_title":"Ult.Pag.",
-                    "prev":"Prev.",
-                    "prev_title":"Pag.Ant.",
-                    "next":"Sig.",
-                    "next_title":"Pag.Sig.",
-                    "all":"All",
-                    "counter":{
-                        "showing": "Ver",
-                        "of": "de",
-                        "rows": "rengs",
-                        "pages": "paginas",
-                    }
-                },
-                "headerFilters":{
-                    "default":"filter column...", //default header filter placeholder text
-                    "columns":{
-                        "name":"filter name...", //replace default header filter text for column name
-                    }
-                }
-            }
-        },
-       // pagination:true, //enable pagination
-      //  paginationSize:10, // this option can take any positive integer value
-        paginationSize:10,
-        paginationSizeSelector:[5, 10, 15],
-        pagination:false, //true,
-    
-       // paginationElement:paginacionSCR, //build pagination controls in this element
-    
-        responsiveLayout:true, // enable responsive layouts
-        responsiveLayout:"collapse", // collapse columns that no longer fit on the table into a list under the row
-       // responsiveLayout:"hide",
-      // layout:"fitDataStretch",
-          rowHeader:{field:"_id", hozAlign:"center", headerSort:false, title:"Sel.Ren.", headerWordWrap:true},
-     // height:"211px",
-     //   height:"100%",
-        height:"311px",
-        height:"70%",
-      spreadsheet:true,
-      spreadsheetRows:10,
-      spreadsheetColumns:4,
-      spreadsheetColumnDefinition:{editable:editCheck,editor:"input"},
-    
-    
-     // spreadsheetData:sheetDataConsulta,             // OK
-    
-      //spreadsheetSheetTabs:true, //show spreadsheet tabs in footer    // OK
-    
-    
-        spreadsheetSheets:sheets,        // DEFINICION HOJAS ARREGLO
-        spreadsheetSheetTabs:true,
-      //  spreadsheetSheetTabsElement:"#table-tabs", //insert tabs in element with id of table-tabs
-    
-    
-      editorEmptyValue:undefined, //ensure empty values are set to undefined so they arent included in spreadsheet output data
-    
-      spreadsheetColumnDefinition:{editor:"input"}, //add an input editor to every cell
-      },);
-    
-    
-       table.on("tableBuilt", function(){
-         // table.setLocale("espaniol"); //set locale to espaniol
-           table.activeSheet("uno"); //make the info sheet active
-        //   table.setSheetData("uno",sheetDataConsulta);       // API
-           var cols = table.getColumns() //get array of column components
-    
-            cols[0].updateDefinition({title:' ',width:5});
-            cols[1].updateDefinition({title:'Cliente',width:120,responsive:0});
-            cols[2].updateDefinition({title:'Producto',width:120,responsive:0});
-            cols[3].updateDefinition({title:'Precio',width:75,responsive:0});
-            cols[4].updateDefinition({title:'P./E.',width:70});
-            cols[5].updateDefinition({title:'VD/SUB',width:70});
-        //  alert('tableBuilt');
-    
-    
-           });
-     
-    table.on("rowClick", function(e, row) {
-      // alert('row click');
-         // alert(row);
-       // alert(' identifica'+row.getData().Identifica);
-    
-      //iden=row.getData().Identifica;
-     var iden=row.getData();
-        //alert(' iden'+iden);
-        console.log(iden);
-        console.log('idenA',iden.A);
-        console.log('idenA',iden.B);
-        selpacid = iden.A
-        selpacnom = iden.B
-        console.log('id',selpacid);
-     //   alert('paciente');
-     //   alert(selpacid);
-    
-       edPaciente.value = selpacid;
-       edPacNombre.value =selpacnom;
-      // alert (edPacNombre.value);
-     //  table.setFilter('B like '+edPacNombre.value);
-    });
-      table.on("sheetUpdated", function(sheet){
-        //sheet - sheet component for sheet
-      //  alert('sheetUpdated');
-    });
-    
-     //********************************************************************************
-     //********************************************************************************;
-  };
-  this.CargarConsultaMedica = function (idpaciente) {
-    //  alert('CargarConsultaMedica');
-    //  alert(idpaciente);
-    
-      var editCheck = function(cell){
-        //cell - the cell component for the editable cell
-        //get row data
-        var data = cell.getRow().getData();
-       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
-       return false // no editable
-     // return true // editable
-    };
-    //********************************************************************************
-     //********************************************************************************
-      var sheetDataConsulta = [];
-    
-      const xhr = new XMLHttpRequest();
-    
-    // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
-    //xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/Base1.db', true);
-    xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/BD_SIMEDIC_G.db', true);
-    //alert('1');
-    xhr.responseType = 'arraybuffer';
-    //alert('2');
-    xhr.onload = e => {
-      const uInt8Array = new Uint8Array(xhr.response);
-    //   alert('3');
-      const db = new SQL.Database(uInt8Array);
-    //   alert('4');
-    
-     //********************************************************************************
-     //SELECT SQL *********************************************************************
-     //********************************************************************************
-     // const contents = db.exec("SELECT identificador as clave,nombre,rfc FROM TAB_PROSPECTOS WHERE identificador > 100");
-    //  const contents = db.exec("SELECT id,nombre FROM tabla1");
-    // const  contents = db.exec("SELECT fecha,comentario,diagnosticon FROM ObtieneConsultasPacientes_2 where idpaciente = 11155;");
-     const  contents = db.exec("SELECT fecha,comentario,diagnosticon FROM TABLA_CONSULTA_PRUEBAS;");
-    
-     //********************************************************************************
-     //********************************************************************************
-    
-    //   alert('5');
-      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-      console.log('contents');
-      console.log(contents);
-      console.log(contents[0].columns);
-      console.log(contents[0].values);
-    
-     // longitud de la arreglo tabla SQLite
-      var len = contents[0].values.length;
-      for (let i = 0; i < len; i++) {
-         //var obj = JSON.parse (contents[0].values[i]);
-         var obj = contents[0].values[i];
-         console.log(i,contents[0].values[i]);  // valus
-         sheetDataConsulta.push(obj);
-      }
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-      console.log('sheetdata');
-      console.log(sheetDataConsulta);
-    
-      var table = Tabulator.findTable("#tabExample")[0];
-      table.activeSheet("dos"); //make the info sheet active
-      table.setSheetData("dos",sheetDataConsulta);
-    
-           console.log('columnas');
-           console.log(contents[0].columns);
-           console.log('columnas sperad');
-           var cols = table.getColumns() //get array of column components
-           console.log(cols);
-           var lenc = cols.length;
-           for (let i = 1; i < lenc; i++) {
-    
-             var col = cols[i];
-             var strtitle = contents[0].columns[i-1];
-             console.log(strtitle);
-             if (strtitle=="nombre")
-                 col.updateDefinition({title:strtitle,width:250}) //change the column title
-             else
-                col.updateDefinition({title:strtitle, width:130}) //change the column title
-    
-              console.log(col);
-            }
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-    };
-    xhr.send();
-  };
-  this.CargarEstudiosMedicos = function (idpaciente) {
-    //  alert('CargarEstudiosMedicos');
-    //  alert(idpaciente);
-    
-      var editCheck = function(cell){
-        //cell - the cell component for the editable cell
-        //get row data
-        var data = cell.getRow().getData();
-       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
-       return false // no editable
-     // return true // editable
-    };
-    //********************************************************************************
-     //********************************************************************************
-      var sheetDataConsulta = [];
-    
-      const xhr = new XMLHttpRequest();
-    
-    // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
-    //xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/Base1.db', true);
-    xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/BD_SIMEDIC_G.db', true);
-    //alert('1');
-    xhr.responseType = 'arraybuffer';
-    //alert('2');
-    xhr.onload = e => {
-      const uInt8Array = new Uint8Array(xhr.response);
-     //  alert('3');
-      const db = new SQL.Database(uInt8Array);
-    //   alert('4');
-    
-     //********************************************************************************
-     //SELECT SQL *********************************************************************
-     //********************************************************************************
-     // const contents = db.exec("SELECT identificador as clave,nombre,rfc FROM TAB_PROSPECTOS WHERE identificador > 100");
-    //  const contents = db.exec("SELECT id,nombre FROM tabla1");
-    // const  contents = db.exec("SELECT fecha,comentario,tipo FROM ObtieneEstudiosAnalisisPacientes_2 where tipo = 'ESTUDIO' and idpaciente = 11154;");
-     const  contents = db.exec("SELECT fecha,comentario,tipo FROM TABLA_ESTUDIOANALISIS_PRUEBA where tipo = 'ESTUDIO';");
-    
-     //********************************************************************************
-     //********************************************************************************
-    
-     //  alert('5');
-      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-      console.log('contents');
-      console.log(contents);
-      console.log(contents[0].columns);
-      console.log(contents[0].values);
-    
-     // longitud de la arreglo tabla SQLite
-      var len = contents[0].values.length;
-      for (let i = 0; i < len; i++) {
-         //var obj = JSON.parse (contents[0].values[i]);
-         var obj = contents[0].values[i];
-         console.log(i,contents[0].values[i]);  // valus
-         sheetDataConsulta.push(obj);
-      }
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-      console.log('sheetdata');
-      console.log(sheetDataConsulta);
-    
-      var table = Tabulator.findTable("#tabExample")[0];
-      table.activeSheet("tres"); //make the info sheet active
-      table.setSheetData("tres",sheetDataConsulta);
-    
-           console.log('columnas');
-           console.log(contents[0].columns);
-           console.log('columnas sperad');
-           var cols = table.getColumns() //get array of column components
-           console.log(cols);
-           var lenc = cols.length;
-           for (let i = 1; i < lenc; i++) {
-    
-             var col = cols[i];
-             var strtitle = contents[0].columns[i-1];
-             console.log(strtitle);
-             if (strtitle=="nombre")
-                 col.updateDefinition({title:strtitle,width:250}) //change the column title
-             else
-                col.updateDefinition({title:strtitle, width:130}) //change the column title
-    
-              console.log(col);
-            }
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-    };
-    xhr.send();
-  };
-  this.CargarAnalisisMedicos = function (idpaciente) {
-    // alert('CargarAnalisisMedicos');
-     // alert(idpaciente);
-    
-      var editCheck = function(cell){
-        //cell - the cell component for the editable cell
-        //get row data
-        var data = cell.getRow().getData();
-       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
-       return false // no editable
-     // return true // editable
-    };
-    //********************************************************************************
-     //********************************************************************************
-      var sheetDataConsulta = [];
-    
-      const xhr = new XMLHttpRequest();
-    
-    // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
-    //xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/Base1.db', true);
-    xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/BD_SIMEDIC_G.db', true);
-    //alert('1');
-    xhr.responseType = 'arraybuffer';
-    //alert('2');
-    xhr.onload = e => {
-      const uInt8Array = new Uint8Array(xhr.response);
-    //   alert('3');
-      const db = new SQL.Database(uInt8Array);
-    //   alert('4');
-    
-     //********************************************************************************
-     //SELECT SQL *********************************************************************
-     //********************************************************************************
-     // const contents = db.exec("SELECT identificador as clave,nombre,rfc FROM TAB_PROSPECTOS WHERE identificador > 100");
-    //  const contents = db.exec("SELECT id,nombre FROM tabla1");
-    // const  contents = db.exec("SELECT fecha,comentario,tipo FROM ObtieneEstudiosAnalisisPacientes_2 where tipo = 'ANALISIS' and idpaciente = 11154;");
-    
-     const  contents = db.exec("SELECT fecha,comentario,tipo FROM TABLA_ESTUDIOANALISIS_PRUEBA where tipo = 'ANALISIS';");
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-    
-     //  alert('5');
-      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-      console.log('contents');
-      console.log(contents);
-      console.log(contents[0].columns);
-      console.log(contents[0].values);
-    
-     // longitud de la arreglo tabla SQLite
-      var len = contents[0].values.length;
-      for (let i = 0; i < len; i++) {
-         //var obj = JSON.parse (contents[0].values[i]);
-         var obj = contents[0].values[i];
-         console.log(i,contents[0].values[i]);  // valus
-         sheetDataConsulta.push(obj);
-      }
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-      console.log('sheetdata');
-      console.log(sheetDataConsulta);
-    
-      var table = Tabulator.findTable("#tabExample")[0];
-      table.activeSheet("cuatro"); //make the info sheet active
-      table.setSheetData("cuatro",sheetDataConsulta);
-    
-           console.log('columnas');
-           console.log(contents[0].columns);
-           console.log('columnas sperad');
-           var cols = table.getColumns() //get array of column components
-           console.log(cols);
-           var lenc = cols.length;
-           for (let i = 1; i < lenc; i++) {
-    
-             var col = cols[i];
-             var strtitle = contents[0].columns[i-1];
-             console.log(strtitle);
-             if (strtitle=="nombre")
-                 col.updateDefinition({title:strtitle,width:250}) //change the column title
-             else
-                col.updateDefinition({title:strtitle, width:130}) //change the column title
-    
-              console.log(col);
-            }
-    
-    
-     //********************************************************************************
-     //********************************************************************************
-    
-       // table.activeSheet("uno"); //make the info sheet active
-    
-      // alert (edPacNombre.value);
-      // table.setFilter("B", "like", edPacNombre.value);
-    };
-    xhr.send();
-  };
-  this.ActualizaTitulosCol = function (key) {
-    var table = Tabulator.findTable("#tabExample")[0];
-        alert (key);
-    switch(key) {
-      case 'uno':
-        // code block
-          table.updateColumnDefinition("A", {title:"Cliente",width:250}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Producto",width:250}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"Precio",width:150}) //change the title on the name column
-          table.updateColumnDefinition("D", {title:"Pagado",width:80}) //change the title on the name column
-          table.updateColumnDefinition("E", {title:"VD/S",width:80}) //change the title on the name column
-    
-        break;
-      case 'dos':
-        // code block
-          table.updateColumnDefinition("A", {title:"fecha"}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Comentario",width:130}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"Diagnostico",width:130}) //change the title on the name column
-    
-        break;
-      case 'tres':
-        // code block
-          table.updateColumnDefinition("A", {title:"fecha"}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Comentario",width:130}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"Tipo"}) //change the title on the name column
-    
-        break;
-      case 'cuatro':
-        // code block
-          table.updateColumnDefinition("A", {title:"fecha"}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Comentario",width:130}) //change the title on the name column
-          table.updateColumnDefinition("C", {title:"Tipo"}) //change the title on the name column
-    
-        break;
-      default:
-        // code block
-          table.updateColumnDefinition("A", {title:"Clave"}) //change the title on the name column
-          table.updateColumnDefinition("B", {title:"Cliente",width:250}) //change the title on the name column
-    
-    };
-  };
-  this.GetCookie = function (cookie_name) {
-    var Result = "";
-    var Cookies = null;
-    var Cookie = null;
-    Result = "";
-    Cookies = pas["WEBLib.Cookies"].TCookies.$create("Create$2");
-    try {
-      Cookies.GetCookies();
-      Cookie = Cookies.Find(cookie_name);
-      if (Cookie != null) Result = Cookie.FValue;
-    } finally {
-      Cookies = rtl.freeLoc(Cookies);
-    };
-    return Result;
-  };
-  $mod.$init = function () {
-  };
-},["Unit1"]);
-rtl.module("jsdelphisystem",["System"],function () {
-  "use strict";
-  var $mod = this;
-});
-rtl.module("WEBLib.LocalFiles",["System","Classes","SysUtils","JS","Web","jsdelphisystem"],function () {
-  "use strict";
-  var $mod = this;
-  this.$rtti.$RefToProcVar("TOpenTextFileProc",{procsig: rtl.newTIProcSig([["AText",rtl.string]])});
-  this.$rtti.$RefToProcVar("TOpenBinaryFileProc",{procsig: rtl.newTIProcSig([["AValue",pas.JS.$rtti["TJSArrayBuffer"]]])});
-  this.$rtti.$RefToProcVar("TSaveFileProc",{procsig: rtl.newTIProcSig([])});
-  rtl.createClass(this,"TFileFilterItem",pas.Classes.TCollectionItem,function () {
-    this.$init = function () {
-      pas.Classes.TCollectionItem.$init.call(this);
-      this.FExtensions = null;
-      this.FMimeType = "";
-      this.FDescription = "";
-    };
-    this.$final = function () {
-      this.FExtensions = undefined;
-      pas.Classes.TCollectionItem.$final.call(this);
-    };
-    this.SetExtensions = function (Value) {
-      this.FExtensions.Assign(Value);
-    };
-    this.GetExtensions = function () {
-      var Result = null;
-      Result = this.FExtensions;
-      return Result;
-    };
-    this.Create$1 = function (ACollection) {
-      pas.Classes.TCollectionItem.Create$1.apply(this,arguments);
-      this.FExtensions = pas.Classes.TStringList.$create("Create$1");
-      return this;
-    };
-    this.Destroy = function () {
-      rtl.free(this,"FExtensions");
-      pas.Classes.TCollectionItem.Destroy.call(this);
-    };
-    var $r = this.$rtti;
-    $r.addMethod("Create$1",2,[["ACollection",pas.Classes.$rtti["TCollection"]]]);
-    $r.addProperty("Description",0,rtl.string,"FDescription","FDescription");
-    $r.addProperty("MIMEType",0,rtl.string,"FMimeType","FMimeType");
-    $r.addProperty("Extensions",3,pas.Classes.$rtti["TStrings"],"GetExtensions","SetExtensions");
-  });
-  rtl.createClass(this,"TFileFilter",pas.Classes.TOwnedCollection,function () {
-    this.GetItems = function (Index) {
-      var Result = null;
-      Result = this.GetItem(Index);
-      return Result;
-    };
-    this.SetItems = function (Index, Value) {
-      this.SetItem(Index,Value);
-    };
-    this.GetFilterString = function () {
-      var Result = "";
-      var i = 0;
-      var j = 0;
-      var ext = "";
-      var mext = "";
-      Result = "";
-      if (this.GetCount() > 0) {
-        Result = "[";
-        for (var $l = 0, $end = this.GetCount() - 1; $l <= $end; $l++) {
-          i = $l;
-          if (i > 0) Result = Result + ",";
-          Result = Result + "{";
-          if (this.GetItems(i).GetExtensions().GetCount() > 0) {
-            ext = "";
-            for (var $l1 = 0, $end1 = this.GetItems(i).GetExtensions().GetCount() - 1; $l1 <= $end1; $l1++) {
-              j = $l1;
-              if (j > 0) ext = ext + ",";
-              mext = this.GetItems(i).GetExtensions().Get(j);
-              if (pas.System.Pos("*.",mext) > 0) mext = pas.System.Copy(mext,2,mext.length);
-              if ((mext === "*.*") || (mext === ".*")) continue;
-              ext = ext + '"' + mext + '"';
-            };
-            if (ext !== "") Result = Result + '"description": "' + this.GetItems(i).FDescription + '", "accept": {"' + this.GetItems(i).FMimeType + '":[' + ext + "]}";
-          };
-          Result = Result + "}";
-        };
-        Result = Result + "]";
-      };
-      return Result;
-    };
-    this.GetFilterObject = function () {
-      var Result = null;
-      var opts = "";
-      var all = "";
-      var jo = null;
-      if (this.GetCount() > 0) {
-        if (this.HasAllFiles()) {
-          all = "false"}
-         else all = "true";
-        opts = '{ "types":' + this.GetFilterString() + ',"excludeAcceptAllOption": ' + all + ',"multiple": false }';
-      };
-      if (opts !== "") {
-        jo = null;
-        if (opts != "") {
-          jo = JSON.parse(opts); };
-      };
-      Result = jo;
-      return Result;
-    };
-    this.HasAllFiles = function () {
-      var Result = false;
-      var i = 0;
-      var j = 0;
-      Result = false;
-      for (var $l = 0, $end = this.GetCount() - 1; $l <= $end; $l++) {
-        i = $l;
-        for (var $l1 = 0, $end1 = this.GetItems(i).GetExtensions().GetCount() - 1; $l1 <= $end1; $l1++) {
-          j = $l1;
-          if ((this.GetItems(i).GetExtensions().Get(j) === "*") || (this.GetItems(i).GetExtensions().Get(j) === "*.*")) {
-            Result = true;
-            break;
-          };
-        };
-      };
-      return Result;
-    };
-    this.Create$3 = function (AOwner) {
-      pas.Classes.TOwnedCollection.Create$2.call(this,AOwner,$mod.TFileFilterItem);
-      return this;
-    };
-    this.Add$1 = function () {
-      var Result = null;
-      Result = pas.Classes.TCollection.Add.call(this);
-      return Result;
-    };
-    this.Add$2 = function (ADescription, AMIMEType, AExtensions) {
-      var Result = null;
-      Result = this.Add$1();
-      Result.FDescription = ADescription;
-      Result.FMimeType = AMIMEType;
-      Result.GetExtensions().SetCommaText(AExtensions);
-      return Result;
-    };
-    this.Insert$1 = function (Index) {
-      var Result = null;
-      Result = pas.Classes.TCollection.Insert.call(this,Index);
-      return Result;
-    };
-    var $r = this.$rtti;
-    $r.addMethod("Create$3",2,[["AOwner",pas.Classes.$rtti["TPersistent"]]]);
-  });
-  rtl.createClass(this,"TTextFile",pas.Classes.TComponent,function () {
-    this.$init = function () {
-      pas.Classes.TComponent.$init.call(this);
-      this.FFileHandle = undefined;
-      this.FText = "";
-      this.FOnFileSave = null;
-      this.FOnFileOpen = null;
-      this.FFileName = "";
-      this.FFilter = null;
-    };
-    this.$final = function () {
-      this.FOnFileSave = undefined;
-      this.FOnFileOpen = undefined;
-      this.FFilter = undefined;
-      pas.Classes.TComponent.$final.call(this);
-    };
-    this.DoOpenFile = function (AHandle, Value, AOpenFile) {
-      this.FFileHandle = AHandle;
-      this.FFileName = AHandle.name;
-      this.FText = Value;
-      if (this.FOnFileOpen != null) this.FOnFileOpen(this);
-      if (AOpenFile != null) AOpenFile(Value);
-    };
-    this.DoSaveFile = function (ASaveFile) {
-      if (this.FOnFileSave != null) this.FOnFileSave(this);
-      if (ASaveFile != null) ASaveFile();
-    };
-    this.DoSaveAsFile = function (AHandle, ASaveFile) {
-      this.FFileHandle = AHandle;
-      this.SaveFile$1(ASaveFile);
-    };
-    this.Create$1 = function (AOwner) {
-      pas.Classes.TComponent.Create$1.apply(this,arguments);
-      this.FFilter = $mod.TFileFilter.$create("Create$3",[this]);
-      if (1 < 0) {
-        this.DoOpenFile(0,"",null);
-        this.DoSaveFile(null);
-        this.DoSaveAsFile(0,null);
-      };
-      return this;
-    };
-    this.Destroy = function () {
-      rtl.free(this,"FFilter");
-      pas.Classes.TComponent.Destroy.call(this);
-    };
-    this.Open = function () {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.OpenFile$1(function (AText) {
-          ASuccess(AText);
-        });
-      });
-      return Result;
-    };
-    this.Save = function () {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.SaveFile$1(function () {
-          ASuccess(true);
-        });
-      });
-      return Result;
-    };
-    this.SaveAs = function () {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.SaveAsFile$1(function () {
-          ASuccess(true);
-        });
-      });
-      return Result;
-    };
-    this.OpenFile = function () {
-      this.OpenFile$1(null);
-    };
-    this.OpenFile$1 = function (AOpenFile) {
-      var jo = null;
-      jo = this.FFilter.GetFilterObject();
-      let fileHandle;
-      async function asyncCall(afile) {
-        [fileHandle] = await window.showOpenFilePicker(jo);
-        const file = await fileHandle.getFile();
-        const contents = await file.text();
-        afile.DoOpenFile(fileHandle, contents, AOpenFile);
-        }
-      asyncCall(this);
-    };
-    this.SaveFile = function () {
-      this.SaveFile$1(null);
-    };
-    this.SaveFile$1 = function (ASaveFile) {
-      if (!pas.System.Assigned(this.FFileHandle)) throw pas.SysUtils.Exception.$create("Create$1",["File handle not assigned"]);
-      async function writeFile(afile, fileHandle, contents, aproc) {
-      // Create a FileSystemWritableFileStream to write to.
-      const writable = await fileHandle.createWritable();
-      // Write the contents of the file to the stream.
-      await writable.write(contents);
-      // Close the file and write the contents to disk.
-      await writable.close();
-      afile.DoSaveFile(aproc);
-      }
-      writeFile(this, this.FFileHandle, this.FText, ASaveFile);
-    };
-    this.SaveAsFile = function () {
-      this.SaveAsFile$1(null);
-    };
-    this.SaveAsFile$1 = function (ASaveFile) {
-      var jo = null;
-      jo = this.FFilter.GetFilterObject();
-      async function getNewFileHandle(afile, aproc) {
-        const options = {
-          types: [
-           {
-            description: 'Text Files',
-            accept: { 'text/plain': ['.txt'],
-             },
-            },
-           ],
-         };
-      const handle = await window.showSaveFilePicker(jo);
-      afile.DoSaveAsFile(handle, aproc);
-      }
-      getNewFileHandle(this, ASaveFile);
-      if (1 < 0) {
-        this.DoOpenFile(null,"",null);
-        this.DoSaveFile(null);
-        this.DoSaveAsFile(null,null);
-      };
-    };
-    rtl.addIntf(this,pas.System.IUnknown);
-    var $r = this.$rtti;
-    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
-    $r.addProperty("OnFileOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileOpen","FOnFileOpen");
-    $r.addProperty("OnFileSave",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileSave","FOnFileSave");
-  });
-  rtl.createClass(this,"TLocalTextFile",this.TTextFile,function () {
-    rtl.addIntf(this,pas.System.IUnknown);
-  });
-  rtl.createClass(this,"TWebLocalTextFile",this.TTextFile,function () {
-    rtl.addIntf(this,pas.System.IUnknown);
-    var $r = this.$rtti;
-    $r.addProperty("Filter",0,$mod.$rtti["TFileFilter"],"FFilter","");
-  });
-  rtl.createClass(this,"TBinaryFile",pas.Classes.TComponent,function () {
-    this.$init = function () {
-      pas.Classes.TComponent.$init.call(this);
-      this.FFileHandle = undefined;
-      this.FData = null;
-      this.FOnFileSave = null;
-      this.FOnFileOpen = null;
-      this.FFileName = "";
-      this.FFilter = null;
-    };
-    this.$final = function () {
-      this.FData = undefined;
-      this.FOnFileSave = undefined;
-      this.FOnFileOpen = undefined;
-      this.FFilter = undefined;
-      pas.Classes.TComponent.$final.call(this);
-    };
-    this.DoOpenFile = function (AHandle, Value, AOpenFile) {
-      this.FFileHandle = AHandle;
-      this.FFileName = AHandle.name;
-      this.FData = Value;
-      if (this.FOnFileOpen != null) this.FOnFileOpen(this);
-      if (AOpenFile != null) AOpenFile(Value);
-    };
-    this.DoSaveFile = function (ASaveFile) {
-      if (this.FOnFileSave != null) this.FOnFileSave(this);
-      if (ASaveFile != null) ASaveFile();
-    };
-    this.DoSaveAsFile = function (AHandle, ASaveFile) {
-      this.FFileHandle = AHandle;
-      this.SaveFile$1(ASaveFile);
-    };
-    this.Create$1 = function (AOwner) {
-      pas.Classes.TComponent.Create$1.apply(this,arguments);
-      this.FFilter = $mod.TFileFilter.$create("Create$3",[this]);
-      if (1 < 0) {
-        this.DoOpenFile(0,null,null);
-        this.DoSaveFile(null);
-        this.DoSaveAsFile(0,null);
-      };
-      return this;
-    };
-    this.Destroy = function () {
-      rtl.free(this,"FFilter");
-      pas.Classes.TComponent.Destroy.call(this);
-    };
-    this.Open = function () {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.OpenFile$1(function (AValue) {
-          ASuccess(AValue);
-        });
-      });
-      return Result;
-    };
-    this.Open$1 = function (AFileHandle) {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.OpenFile$2(AFileHandle,function (AValue) {
-          ASuccess(AValue);
-        });
-      });
-      return Result;
-    };
-    this.Save = function () {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.SaveFile$1(function () {
-          ASuccess(true);
-        });
-      });
-      return Result;
-    };
-    this.SaveAs = function () {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.SaveAsFile$1(function () {
-          ASuccess(true);
-        });
-      });
-      return Result;
-    };
-    this.OpenFile = function () {
-      this.OpenFile$1(null);
-    };
-    this.OpenFile$1 = function (AOpenFile) {
-      var jo = null;
-      jo = this.FFilter.GetFilterObject();
-      let fileHandle;
-      async function asyncCall(afile) {
-        [fileHandle] = await window.showOpenFilePicker(jo);
-        const file = await fileHandle.getFile();
-        const contents = await file.arrayBuffer();
-        afile.DoOpenFile(fileHandle, contents, AOpenFile);
-        }
-      asyncCall(this);
-      if (1 < 0) {
-        this.DoOpenFile(null,null,null);
-        this.DoSaveFile(null);
-        this.DoSaveAsFile(null,null);
-      };
-    };
-    this.OpenFile$2 = function (AFileHandle, AOpenFile) {
-      async function asyncCall(afile) {
-        const file = await AFileHandle.getFile();
-        const contents = await file.arrayBuffer();
-        afile.DoOpenFile(AFileHandle, contents, AOpenFile);
-        }
-      asyncCall(this);
-    };
-    this.SaveFile = function () {
-      this.SaveFile$1(null);
-    };
-    this.SaveFile$1 = function (ASaveFile) {
-      if (!pas.System.Assigned(this.FFileHandle)) throw pas.SysUtils.Exception.$create("Create$1",["File handle not assigned"]);
-      async function writeFile(afile, fileHandle, contents, aproc) {
-      // Create a FileSystemWritableFileStream to write to.
-      const writable = await fileHandle.createWritable();
-      // Write the contents of the file to the stream.
-      await writable.write(contents);
-      // Close the file and write the contents to disk.
-      await writable.close();
-      afile.DoSaveFile(aproc);
-      }
-      writeFile(this, this.FFileHandle, this.FData, ASaveFile);
-    };
-    this.SaveAsFile = function () {
-      this.SaveAsFile$1(null);
-    };
-    this.SaveAsFile$1 = function (ASaveFile) {
-      var jo = null;
-      jo = this.FFilter.GetFilterObject();
-      async function getNewFileHandle(afile, aproc) {
-      const handle = await window.showSaveFilePicker(jo);
-      afile.DoSaveAsFile(handle, aproc);
-      }
-      getNewFileHandle(this, ASaveFile);
-    };
-    this.LoadStream = function (Stream) {
-      var $Self = this;
-      var Result = null;
-      var b = [];
-      var l = 0;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.OpenFile$1(function (AValue) {
-          b = pas.Classes.TMemoryStream.MemoryToBytes(AValue);
-          l = AValue.byteLength;
-          Stream.Write$1(b,0,l);
-          ASuccess(true);
-        });
-      });
-      return Result;
-    };
-    this.SaveStream = function (Stream) {
-      var $Self = this;
-      var Result = null;
-      this.FData = Stream.FMemory;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.SaveFile$1(function () {
-          ASuccess(true);
-        });
-      });
-      return Result;
-    };
-    rtl.addIntf(this,pas.System.IUnknown);
-    var $r = this.$rtti;
-    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
-    $r.addProperty("OnFileOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileOpen","FOnFileOpen");
-    $r.addProperty("OnFileSave",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileSave","FOnFileSave");
-  });
-  rtl.createClass(this,"TLocalBinaryFile",this.TBinaryFile,function () {
-    rtl.addIntf(this,pas.System.IUnknown);
-  });
-  rtl.createClass(this,"TWebLocalBinaryFile",this.TBinaryFile,function () {
-    rtl.addIntf(this,pas.System.IUnknown);
-    var $r = this.$rtti;
-    $r.addProperty("Filter",0,$mod.$rtti["TFileFilter"],"FFilter","");
-  });
-  rtl.recNewT(this,"TFileSystemFileHandle",function () {
-    this.Kind = "";
-    this.Name = "";
-    this.$eq = function (b) {
-      return (this.Kind === b.Kind) && (this.Name === b.Name);
-    };
-    this.$assign = function (s) {
-      this.Kind = s.Kind;
-      this.Name = s.Name;
-      return this;
-    };
-    var $r = $mod.$rtti.$Record("TFileSystemFileHandle",{});
-    $r.addField("Kind",rtl.string);
-    $r.addField("Name",rtl.string);
-  });
-  rtl.recNewT(this,"TFileObject",function () {
-    this.Name = "";
-    this.Lastmodfieddate = "";
-    this.Size = 0;
-    this.Fileobject = undefined;
-    this.$eq = function (b) {
-      return (this.Name === b.Name) && (this.Lastmodfieddate === b.Lastmodfieddate) && (this.Size === b.Size) && (this.Fileobject === b.Fileobject);
-    };
-    this.$assign = function (s) {
-      this.Name = s.Name;
-      this.Lastmodfieddate = s.Lastmodfieddate;
-      this.Size = s.Size;
-      this.Fileobject = s.Fileobject;
-      return this;
-    };
-    var $r = $mod.$rtti.$Record("TFileObject",{});
-    $r.addField("Name",rtl.string);
-    $r.addField("Lastmodfieddate",rtl.string);
-    $r.addField("Size",rtl.longint);
-    $r.addField("Fileobject",rtl.jsvalue);
-  });
-  this.$rtti.$DynArray("TFileSystemFileHandleArray",{eltype: this.$rtti["TFileSystemFileHandle"]});
-  this.$rtti.$RefToProcVar("TOpenFolderProc",{procsig: rtl.newTIProcSig([])});
-  this.$rtti.$RefToProcVar("TGetFileProc",{procsig: rtl.newTIProcSig([["AFileHandle",this.$rtti["TFileObject"]]])});
-  this.$rtti.$RefToProcVar("TGetFileHandleProc",{procsig: rtl.newTIProcSig([["AFileHandle",rtl.jsvalue]])});
-  this.$rtti.$RefToProcVar("TGetFolderProc",{procsig: rtl.newTIProcSig([["AFolderHandle",rtl.jsvalue]])});
-  rtl.createClass(this,"TFolder",pas.Classes.TComponent,function () {
-    this.$init = function () {
-      pas.Classes.TComponent.$init.call(this);
-      this.FFileArray = [];
-      this.FFolder = undefined;
-      this.FOnFolderOpen = null;
-    };
-    this.$final = function () {
-      this.FFileArray = undefined;
-      this.FOnFolderOpen = undefined;
-      pas.Classes.TComponent.$final.call(this);
-    };
-    this.DoGetFile = function (AFileHandle, AProc) {
-      var LFileObject = $mod.TFileObject.$new();
-      if (AProc != null) {
-        LFileObject.Name = AFileHandle.name;
-        LFileObject.Lastmodfieddate = AFileHandle.lastModifiedDate.toString();
-        LFileObject.Size = AFileHandle.size;
-        LFileObject.Fileobject = AFileHandle;
-        AProc($mod.TFileObject.$clone(LFileObject));
-      };
-    };
-    this.DoGetFileHandle = function (AFileHandle, AProc) {
-      if (AProc != null) {
-        AProc(AFileHandle);
-      };
-    };
-    this.DoListFile = function (AFile) {
-      var fh = $mod.TFileSystemFileHandle.$new();
-      this.FFileArray = rtl.arraySetLength(this.FFileArray,$mod.TFileSystemFileHandle,rtl.length(this.FFileArray) + 1);
-      fh.$assign(this.FFileArray[rtl.length(this.FFileArray) - 1]);
-      fh.Kind = AFile.kind;
-      fh.Name = AFile.name;
-      this.FFileArray[rtl.length(this.FFileArray) - 1].$assign(fh);
-    };
-    this.DoGetFolder = function (AFolder) {
-      this.FFolder = AFolder;
-    };
-    this.DoOpenFolder = function (AOpenFolder) {
-      if (this.FOnFolderOpen != null) this.FOnFolderOpen(this);
-      if (AOpenFolder != null) AOpenFolder();
-    };
-    this.DoGetFolderHandle = function (AFolder, GetFolder) {
-      if (GetFolder != null) GetFolder(AFolder);
-    };
-    this.DoCreateFolder = function (AName, AProc) {
-      async function MakeFolder(afolder,name) {
-        const newDirectoryHandle = await afolder.getDirectoryHandle(name, { create: true,} );
-        AProc(newDirectoryHandle);
-      }
-      MakeFolder(AName);
-    };
-    this.DoCreateFile = function (AName, AProc) {
-      async function MakeFile(afolder,name) {
-        const newFileHandle = await afolder.getFileHandle(name, { create: true,} );
-        AProc(newFileHandle);
-      }
-      MakeFile(AName);
-    };
-    this.Create$2 = function (AFolderHandle) {
-      pas.System.TObject.Create.call(this);
-      this.FFolder = AFolderHandle;
-      return this;
-    };
-    this.Create$1 = function (AOwner) {
-      var fs = $mod.TFileSystemFileHandle.$new();
-      pas.System.TObject.Create.call(this);
-      this.FFolder = null;
-      if (1 < 0) {
-        this.DoGetFile(0,null);
-        this.DoListFile(0);
-        this.DoGetFolder($mod.TFileSystemFileHandle.$clone(fs));
-        this.DoOpenFolder(null);
-        this.DoGetFolderHandle(0,null);
-      };
-      if (1 < 0) this.DoGetFileHandle(null,null);
-      return this;
-    };
-    this.OpenFolder = function () {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.Open$1(function () {
-          ASuccess($Self.FFileArray);
-        });
-      });
-      return Result;
-    };
-    this.Open = function () {
-      this.Open$1(null);
-    };
-    this.Open$1 = function (AOpenFolder) {
-      var fs = $mod.TFileSystemFileHandle.$new();
-      if (this.FFolder == null) {
-        async function showdir(afolder, aproc) {
-                const dirHandle = await window.showDirectoryPicker();
-        
-                afolder.FFolder = dirHandle;
-        
-                for await (const entry of dirHandle.values()) {
-                  afolder.DoListFile(entry);
-                }
-                afolder.DoOpenFolder(aproc);
-               }
-               showdir(this, AOpenFolder);
-      } else {
-        async function showdirhandle(afolder, aproc) {
-        
-                const dirHandle = afolder.FFolder;
-        
-                for await (const entry of dirHandle.values()) {
-                  afolder.DoListFile(entry);
-                }
-                afolder.DoOpenFolder(aproc);
-               }
-               showdirhandle(this, AOpenFolder);
-      };
-      if (1 < 0) {
-        this.DoGetFile(null,null);
-        this.DoListFile(null);
-        this.DoGetFolder($mod.TFileSystemFileHandle.$clone(fs));
-        this.DoOpenFolder(null);
-        this.DoGetFolderHandle(null,null);
-      };
-    };
-    this.CreateFolder = function (AName) {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.DoCreateFolder(AName,function (AFolderHandle) {
-          ASuccess(AFolderHandle);
-        });
-      });
-      return Result;
-    };
-    this.CreateFile = function (AName) {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.DoCreateFile(AName,function (AFileHandle) {
-          ASuccess(AFileHandle);
-        });
-      });
-      return Result;
-    };
-    this.FileHandle = function (AName) {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.GetFileHandle(AName,function (AFileHandle) {
-          ASuccess(AFileHandle);
-        });
-      });
-      return Result;
-    };
-    this.FileObject = function (AName) {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.GetFile(AName,function (AFileObject) {
-          ASuccess($mod.TFileObject.$clone(AFileObject));
-        });
-      });
-      return Result;
-    };
-    this.Folder = function (AName) {
-      var $Self = this;
-      var Result = null;
-      Result = new Promise(function (ASuccess, AFailed) {
-        $Self.GetFolder(AName,function (AFolderHandle) {
-          ASuccess(AFolderHandle);
-        });
-      });
-      return Result;
-    };
-    this.GetFile = function (AName, GetFile) {
-      async function getfile(afolder, aname, aproc)
-      {
-        const newFileHandle = await afolder.FFolder.getFileHandle(aname, { create: false });
-        const file = await newFileHandle.getFile();
-        afolder.DoGetFile(file, aproc);
-      }
-      getfile(this, AName, GetFile);
-    };
-    this.GetFileHandle = function (AName, GetFile) {
-      async function getfilehandle(afolder, aname, aproc)
-      {
-        const newFileHandle = await afolder.FFolder.getFileHandle(aname, { create: false });
-        afolder.DoGetFileHandle(newFileHandle, aproc);
-      }
-      getfilehandle(this, AName, GetFile);
-    };
-    this.GetFolder = function (AName, GetFolder) {
-      async function getfolder(afolder, aname, aproc)
-      {
-        const newFolderHandle = await afolder.FFolder.getDirectoryHandle(aname, { create: false });
-        afolder.DoGetFolderHandle(newFolderHandle, aproc);
-      }
-      getfolder(this, AName, GetFolder);
-    };
-    rtl.addIntf(this,pas.System.IUnknown);
-    var $r = this.$rtti;
-    $r.addMethod("Create$2",2,[["AFolderHandle",rtl.jsvalue]]);
-    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
-    $r.addProperty("OnFolderOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFolderOpen","FOnFolderOpen");
-  });
-  rtl.createClass(this,"TLocalFolder",this.TFolder,function () {
-    rtl.addIntf(this,pas.System.IUnknown);
-  });
-  rtl.createClass(this,"TWebLocalFolder",this.TFolder,function () {
-    rtl.addIntf(this,pas.System.IUnknown);
-  });
-},["WEBLib.Utils"]);
 rtl.module("TimeSpan",["System"],function () {
   "use strict";
   var $mod = this;
@@ -82321,6 +80636,1691 @@ rtl.module("WEBLib.IndexedDb",["System","Classes","JS","Web","SysUtils","WEBLib.
     };
   };
 },[]);
+rtl.module("uCargarConsultas",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.WebCtrls","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.ExtCtrls","WEBLib.REST","WEBLib.JQCtrls","WEBLib.SideMenu","WEBLib.Menus","WEBLib.Menus","WEBLib.Cookies","WEBLib.IndexedDb"],function () {
+  "use strict";
+  var $mod = this;
+  this.cargarUsuarios = function () {
+    var i = 0;
+    //********************************************************************************
+     //********************************************************************************
+     //        const sqlPromise = initSqlJs({
+     //       locateFile: file => 'https://idsfdg.github.io/FIDEVALE/'
+     //     });
+     //        const dataPromise = fetch("//idsfdg.github.io/FIDEVALE/BD_Vale.db").then(res => res.arrayBuffer());
+     //        const [SQL, buf] = await Promise.all([sqlPromise, dataPromise])
+     //        const db = new SQL.Database(new Uint8Array(buf));
+     //   alert('fech');
+     //********************************************************************************
+     //********************************************************************************
+    
+      const xhr = new XMLHttpRequest();
+    
+    // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
+    //xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/Base1.db', true);
+      xhr.open('GET', 'https://idsfdg.github.io/FIDEVALE/BD_Vale.db', true);
+    //alert('1');
+    xhr.responseType = 'arraybuffer';
+    //alert('2');
+     xhr.onload =  e => {
+      const uInt8Array = new Uint8Array(xhr.response);
+    //   alert('3');
+      const db = new SQL.Database(uInt8Array);
+    //   alert('4');
+    
+     //********************************************************************************
+     //SELECT SQL *********************************************************************
+     //********************************************************************************
+    
+     // const  contents =   db.exec("SELECT contrapwd,estado FROM tablausuarios where nombre = '"+ustr+"';");
+      const  contents =   db.exec("SELECT nombre,contrapwd,estado FROM tablausuarios;");
+     //********************************************************************************
+     //********************************************************************************
+    
+      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+       if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        // Request finished. Do processing here.
+    
+         var len = contents.length;
+         console.log('contents');
+        console.log(contents.length);
+         if (len > 0)
+         {
+          console.log(contents);
+          console.log('contents columns');
+          console.log(contents[0].columns);
+          console.log('contents values');
+          console.log(contents[0].values);
+          var len2 = contents[0].values.length;
+          if (len2 > 0)
+          {
+              for (var i = 0; i < len2; i++) {
+                 var u =contents[0].values[i][0];
+                 var p =contents[0].values[i][1];
+                 var e =contents[0].values[i][2];
+                 console.log(u);
+                 console.log(p);
+                 console.log(e);
+               //  lista[(i*len2)+0]=u;
+               //  lista[(i*len2)+1]=p;
+               //  lista[(i*len2)+2]=e;
+    
+                const edBox = document.getElementById("tabla");
+              // Set the text content of the editbox
+                 edBox.value = edBox.value+u+"\r"+p+"\r"+e+"\r";
+              }
+             }   //values
+            // console.log('lista*****');
+            //  for (var i = 0; i < 10; i++) {
+            //  console.log(lista[i]);
+               //  WebMemo1.lines.add(lista[i]);
+             //}
+         }  //contents
+      } // readyState
+    //alert('5');
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+    };
+    xhr.send();
+  };
+  this.IniciarHoja = function (WebScrollRegistro) {
+    var selpacid = "";
+    var selpacnom = "";
+    var opcpdf = "";
+    var editCheck = function(cell){
+        //cell - the cell component for the editable cell
+        //get row data
+        var data = cell.getRow().getData();
+       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
+       return false // no editable
+     // return true // editable
+    };
+    //********************************************************************************
+     //********************************************************************************
+      var sheetDataConsulta = [];
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+         var sheets = [
+        {
+          name:'huno',
+          title:"Registro",
+          key:"uno",
+         // rows:10,
+          rows:0,
+          columns:7,
+          data:[],
+      },
+    
+       {
+          name:'hdos',
+          title:"Gastos",
+          key:"dos",
+         // rows:10,
+          rows:10,
+          columns:3,
+          data:[],
+      },
+    
+    ];
+             var table = new Tabulator("#tabExample",
+    
+         {
+         //footerElement: "<div class='custom-footer'>Total Items: <span id='total-items'></span></div>",
+    
+       dependencies:{
+            XLSX:XLSX,
+        },
+      htmlOutputConfig:{
+            columnHeaders:true, //do not include column headers in HTML table
+            columnGroups:false, //do not include column groups in column headers for HTML table
+            rowHeaders:true, //do not include row headers in HTML table
+            rowGroups:false, //do not include row groups in HTML table
+            columnCalcs:true, //do not include column calcs in HTML table
+            dataTree:false, //do not include data tree in HTML table
+            formatCells:false, //show raw cell values without formatter
+        },
+      columnDefaults:{
+            headerTooltip:function(e, cell, onRendered){
+                //e - mouseover event
+                //cell - cell component
+                //onRendered - onRendered callback registration function
+    
+                var el = document.createElement("div");
+                el.style.backgroundColor = "red";
+                el.innerText = column.getDefinition().title;
+    
+                return el;
+            },
+        },
+        downloadEncoder:function(fileContents, mimeType){
+    
+             //fileContents - the unencoded contents of the file
+            //mimeType - the suggested mime type for the output
+    
+            //alert('downloadEncoder');
+            //custom action to send blob to server could be included here
+    
+    
+            var miBlob = new Blob([fileContents], {type:mimeType});
+            const blobUrl = URL.createObjectURL(miBlob);
+    
+    
+    
+        // OK       abrir blob
+    
+            window.open(blobUrl);
+    
+    
+         //return new Blob([fileContents], {type:mimeType}); //must return a blob to proceed with the download, return false to abort download
+    
+         // return false, no descargar el archivo.
+         return false;
+       },
+       // importFormat:"csv",
+       // autoColumns:true,
+        downloadConfig:{
+            columnHeaders:true, //do not include column headers in downloaded table
+            columnGroups:false, //do not include column groups in column headers for downloaded table
+            rowHeaders:false, //do not include row headers in downloaded table
+            rowGroups:false, //do not include row groups in downloaded table
+            columnCalcs:false, //do not include column calcs in downloaded table
+            dataTree:false, //do not include data tree in downloaded table
+        },
+    
+        printAsHtml:true, //enable html table printing
+        printStyled:true, //copy Tabulator styling to HTML table
+     printConfig:{
+            columnHeaders:true, //do not include column headers in printed table
+            columnGroups:false, //do not include column groups in column headers for printed table
+            rowHeaders:false, //do not include row headers in printed table
+            rowGroups:false, //do not include row groups in printed table
+            columnCalcs:false, //do not include column calcs in printed table
+            dataTree:false, //do not include data tree in printed table
+            formatCells:false, //show raw cell values without formatter
+        },
+    rowFormatter:function(row){
+    
+          // alert('rowformatter');
+         // console.log(row.getData());    //OK
+            if((row.getData()._id % 2 ) > 0){
+               // console.log ('rowformatter');
+              //  row.getElement().classList.add("Modern"); //mark rows with age greater than or equal to 18 as successful;
+           // row.getElement().style.backgroundColor = "#d5f7d7"; //apply css change to row element
+           // row.getElement().style.backgroundColor = "#7cbfb2";
+           // row.getElement().style.backgroundColor = "#b87cbf"; // Gine
+          //  row.getElement().classList.add("table-danger");
+            }
+        },
+     // bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
+    
+    
+          selectableRows:false,
+        pagination:false,
+       // paginationElement:paginacionSCR, //build pagination controls in this element
+    
+       // responsiveLayout:true, // enable responsive layouts
+       // responsiveLayout:"collapse", // collapse columns that no longer fit on the table into a list under the row
+       // responsiveLayout:"hide",
+      // layout:"fitDataStretch",
+    
+    
+     //     rowHeader:{field:"_id", hozAlign:"center", headerSort:false, title:"Sel.Ren.", headerWordWrap:true},
+     // height:"211px",
+     //   height:"100%",
+        height:"311px",
+        height:"85%",
+      spreadsheet:true,
+      //spreadsheetRows:10,
+      spreadsheetRows:0,
+      spreadsheetColumns:6,
+      spreadsheetColumnDefinition:{editable:editCheck,editor:"input"},
+    
+        spreadsheetSheets:sheets,        // DEFINICION HOJAS ARREGLO
+        spreadsheetSheetTabs:true,
+      //  spreadsheetSheetTabsElement:"#table-tabs", //insert tabs in element with id of table-tabs
+    
+    
+      editorEmptyValue:undefined, //ensure empty values are set to undefined so they arent included in spreadsheet output data
+    
+      spreadsheetColumnDefinition:{editor:"input"}, //add an input editor to every cell
+            rowHeight:50, //set rows to 40px height
+    
+         index:"rc",
+      },
+    );
+    
+       table.on("rowAdded", function(row){
+        //row - row component
+         console.log(row);
+         console.log(row.getData());
+         var ddata =row.getData();
+         //console.log('data',ddata);
+         //console.log('rc',ddata.rc);
+        // row.scrollToRow();
+        //table.scrollToRow(row.getIndex(), "center", false);
+        row.scrollTo("bottom", true);
+    });
+       table.on("tableBuilt", function(){
+    
+        });
+    
+    table.on("rowClick", function(e, row) {
+    
+    
+          var rowIndex = row.getIndex();
+           var rowPosition = row.getPosition();
+         console.log('index',rowIndex)
+         console.log('pos',rowPosition);
+    
+       //alert('row click');
+         // alert(row);
+       // alert(' identifica'+row.getData().Identifica);
+    
+      //iden=row.getData().Identifica;
+     var iden=row.getData();
+        //alert(' iden'+iden);
+        console.log(iden);
+        console.log('idenA',iden.A);
+        console.log('idenA',iden.B);
+        selpacid = iden.A
+        selpacnom = iden.B
+        console.log('id',selpacid);
+     //   alert('paciente');
+     //   alert(selpacid);
+    
+       //edPaciente.value = selpacid;
+       //edPacNombre.value =selpacnom;
+      // alert (edPacNombre.value);
+     //  table.setFilter('B like '+edPacNombre.value);
+    
+     /*
+       if (confirm("Desea eliminar registro "+rowPosition.toString()+" ?")) {
+           row.delete();
+       }
+    
+    
+     // Pendiente actualizar , porque las columnas del Grid son editables
+      if (confirm("Desea actualizar registro "+rowPosition.toString()+" ?"))
+      {;
+    WebScrollRegistro.get().SetVisible(true);
+    const editBox = document.getElementById("rowsel");
+         // Set the text content of the editbox
+         console.log(row);
+          editBox.value = rowPosition;
+    
+    
+         const btnregi = document.getElementById("btnregistrar");
+         btnregi.innerText ='Actualizar';
+    
+    
+        // const btnregd = document.getElementById("btndel");
+        // btnregd.hidden="";
+    
+        // const scrreg = document.getElementById("scrollregistro");
+        // scrreg.display="inline-block";
+       //  console.log(scrreg);
+    
+         var rowData = row.getData();
+         console.log(rowData);
+         const cliente = document.getElementById("cliente");
+         cliente.value=rowData.nombre;
+         const producto = document.getElementById("producto");
+         producto.value=rowData.articulo;
+         const importe = document.getElementById("importe");
+         importe.value=rowData.importe;
+         const vds = document.getElementById("vds");
+         vds.value=rowData.vds;
+         }
+      */;
+    });
+      table.on("sheetUpdated", function(sheet){
+        //sheet - sheet component for sheet
+      //  alert('sheetUpdated');
+    });
+    
+    table.on("rowDblClick", function(e, row){
+        //e - the click event object
+        //row - row component
+      // alert('rowDblClick');
+      var idren=row.getData();
+      console.log('renglon',idren, idren.rc);
+      var rennum = idren.rc;
+    
+       if (confirm("Desea eliminar renglón: "+rennum.toString()+" ?")) {
+           row.delete();
+       }
+    });
+    
+     //********************************************************************************
+     //********************************************************************************
+    
+           table.on("sheetLoaded", function(sheet){
+    
+        //sheet - sheet component for sheet
+           var key = sheet.getKey();
+        var   keyhoja=key;
+      // end;
+      //    if (keyhoja = 'uno') then ActualizaTitulosCol('uno');
+      //    if (keyhoja = 'dos') then ActualizaTitulosCol('dos');
+      // asm
+        switch(keyhoja) {
+      case 'uno':
+        // code block
+          table.updateColumnDefinition("A", {title:"#",field:"rc",width:1, headerTooltip:"Registro, seleccion para eliminarlo" ,editor:false}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Cliente",field:"nombre",width:80, headerTooltip:"Cliente"}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"Producto",field:"articulo",width:80, headerTooltip:"Producto"}) //change the title on the name column
+          table.updateColumnDefinition("D", {title:"$Precio",field:"importe",width:70, headerTooltip:"Precio",bottomCalc:"sum",
+        formatter:"money", formatterParams:{
+        decimal:".",
+        thousand:",",
+        symbol:"$",
+        negativeSign:true,
+        precision:2},
+        bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
+           {field: "importe",   bottomCalc:"sum",   responsive:0,
+              title: "Total", width:200, headerFilter:false ,resizable: true,formatter:"money", formatterParams:{
+        decimal:".",
+        thousand:",",
+        symbol:"$",
+        negativeSign:true,
+        precision:2}
+        }) //change the title on the name column
+          table.updateColumnDefinition("E", {title:"P.",width:30,field:"pagado",editor:true,formatter:"tickCross", headerTooltip:"Pagado"}) //change the title on the name column
+          table.updateColumnDefinition("F", {title:"E.",width:30,field:"entregado",editor:true,formatter:"tickCross", headerTooltip:"Entregado"}) //change the title on the name column
+          table.updateColumnDefinition("G", {title:"VD/S",field:"vds",width:68 ,resizable:false, headerTooltip:"Venta/Subasta"}) //change the title on the name column
+    
+    
+        break;
+      case 'dos':
+        // code block
+          table.updateColumnDefinition("A", {title:"#",field:"rc",width:1}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Concepto",field:"concepto",width:230, headerTooltip:"Concepto"}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"$Importe",field:"importe",width:100, resizable:false, headerTooltip:"Importe",bottomCalc:"sum",
+        formatter:"money", formatterParams:{
+        decimal:".",
+        thousand:",",
+        symbol:"$",
+        negativeSign:true,
+        precision:2},
+        bottomCalcFormatter:"money", bottomCalcFormatterParams :{symbol:"$", precision:2}},
+           {field: "importe",   bottomCalc:"sum",   responsive:0,
+              title: "Total", width:200, headerFilter:false ,resizable: true,formatter:"money", formatterParams:{
+        decimal:".",
+        thousand:",",
+        symbol:"$",
+        negativeSign:true,
+        precision:2}
+          }) //change the title on the name column
+        break;
+        default:
+        // code block
+    
+    }
+    
+    });
+     //********************************************************************************
+     //********************************************************************************;
+  };
+  this.CargarVentas = function () {
+    var selpacid = "";
+    var selpacnom = "";
+    var editCheck = function(cell){
+        //cell - the cell component for the editable cell
+        //get row data
+        var data = cell.getRow().getData();
+       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
+       return false // no editable
+     // return true // editable
+    };
+    //********************************************************************************
+     //********************************************************************************
+      var sheetDataConsulta = [];
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+         var sheets = [
+        {
+          name:'huno',
+          title:"Registro",
+          key:"uno",
+          rows:10,
+          columns:5,
+          data:[],
+      },
+    
+    ];
+             var table = new Tabulator("#tabExample",
+     {
+    
+       dependencies:{
+            XLSX:XLSX,
+        },
+    
+    
+       // importFormat:"csv",
+       // autoColumns:true,
+        downloadConfig:{
+            columnHeaders:false, //do not include column headers in downloaded table
+            columnGroups:false, //do not include column groups in column headers for downloaded table
+            rowHeaders:false, //do not include row headers in downloaded table
+            rowGroups:false, //do not include row groups in downloaded table
+            columnCalcs:false, //do not include column calcs in downloaded table
+            dataTree:false, //do not include data tree in downloaded table
+        },
+    rowFormatter:function(row){
+    
+          // alert('rowformatter');
+         // console.log(row.getData());    //OK
+            if((row.getData()._id % 2 ) > 0){
+               // console.log ('rowformatter');
+              //  row.getElement().classList.add("Modern"); //mark rows with age greater than or equal to 18 as successful;
+           // row.getElement().style.backgroundColor = "#d5f7d7"; //apply css change to row element
+            row.getElement().style.backgroundColor = "#7cbfb2";
+            row.getElement().style.backgroundColor = "#b87cbf"; // Gine
+          //  row.getElement().classList.add("table-danger");
+            }
+        },
+    
+           locale:true,
+          langs:{
+            "espaniol":{
+                "columns":{
+                    "name":"Name", //replace the title of column name with the value "Name"
+                },
+                "data":{
+                    "loading":"Loading", //data loader text
+                    "error":"Error", //data error text
+                },
+                "groups":{ //copy for the auto generated item count in group header
+                    "item":"item", //the singular  for item
+                    "items":"items", //the plural for items
+                },
+                "pagination":{
+                    "page_size":"Tam.Pag.", //label for the page size select element
+                    "page_title":"Ver Pag.",//tooltip text for the numeric page button, appears in front of the page number (eg. "Show Page" will result in a tool tip of "Show Page 1" on the page 1 button)
+                    "first":"Prim.", //text for the first page button
+                    "first_title":"Prim.Pag", //tooltip text for the first page button
+                    "last":"Ultim.",
+                    "last_title":"Ult.Pag.",
+                    "prev":"Prev.",
+                    "prev_title":"Pag.Ant.",
+                    "next":"Sig.",
+                    "next_title":"Pag.Sig.",
+                    "all":"All",
+                    "counter":{
+                        "showing": "Ver",
+                        "of": "de",
+                        "rows": "rengs",
+                        "pages": "paginas",
+                    }
+                },
+                "headerFilters":{
+                    "default":"filter column...", //default header filter placeholder text
+                    "columns":{
+                        "name":"filter name...", //replace default header filter text for column name
+                    }
+                }
+            }
+        },
+       // pagination:true, //enable pagination
+      //  paginationSize:10, // this option can take any positive integer value
+        paginationSize:10,
+        paginationSizeSelector:[5, 10, 15],
+        pagination:false, //true,
+    
+       // paginationElement:paginacionSCR, //build pagination controls in this element
+    
+        responsiveLayout:true, // enable responsive layouts
+        responsiveLayout:"collapse", // collapse columns that no longer fit on the table into a list under the row
+       // responsiveLayout:"hide",
+      // layout:"fitDataStretch",
+          rowHeader:{field:"_id", hozAlign:"center", headerSort:false, title:"Sel.Ren.", headerWordWrap:true},
+     // height:"211px",
+     //   height:"100%",
+        height:"311px",
+        height:"70%",
+      spreadsheet:true,
+      spreadsheetRows:10,
+      spreadsheetColumns:4,
+      spreadsheetColumnDefinition:{editable:editCheck,editor:"input"},
+    
+    
+     // spreadsheetData:sheetDataConsulta,             // OK
+    
+      //spreadsheetSheetTabs:true, //show spreadsheet tabs in footer    // OK
+    
+    
+        spreadsheetSheets:sheets,        // DEFINICION HOJAS ARREGLO
+        spreadsheetSheetTabs:true,
+      //  spreadsheetSheetTabsElement:"#table-tabs", //insert tabs in element with id of table-tabs
+    
+    
+      editorEmptyValue:undefined, //ensure empty values are set to undefined so they arent included in spreadsheet output data
+    
+      spreadsheetColumnDefinition:{editor:"input"}, //add an input editor to every cell
+      },);
+    
+    
+       table.on("tableBuilt", function(){
+         // table.setLocale("espaniol"); //set locale to espaniol
+           table.activeSheet("uno"); //make the info sheet active
+        //   table.setSheetData("uno",sheetDataConsulta);       // API
+           var cols = table.getColumns() //get array of column components
+    
+            cols[0].updateDefinition({title:' ',width:5});
+            cols[1].updateDefinition({title:'Cliente',width:120,responsive:0});
+            cols[2].updateDefinition({title:'Producto',width:120,responsive:0});
+            cols[3].updateDefinition({title:'Precio',width:75,responsive:0});
+            cols[4].updateDefinition({title:'P./E.',width:70});
+            cols[5].updateDefinition({title:'VD/SUB',width:70});
+        //  alert('tableBuilt');
+    
+    
+           });
+     
+    table.on("rowClick", function(e, row) {
+      // alert('row click');
+         // alert(row);
+       // alert(' identifica'+row.getData().Identifica);
+    
+      //iden=row.getData().Identifica;
+     var iden=row.getData();
+        //alert(' iden'+iden);
+        console.log(iden);
+        console.log('idenA',iden.A);
+        console.log('idenA',iden.B);
+        selpacid = iden.A
+        selpacnom = iden.B
+        console.log('id',selpacid);
+     //   alert('paciente');
+     //   alert(selpacid);
+    
+       edPaciente.value = selpacid;
+       edPacNombre.value =selpacnom;
+      // alert (edPacNombre.value);
+     //  table.setFilter('B like '+edPacNombre.value);
+    });
+      table.on("sheetUpdated", function(sheet){
+        //sheet - sheet component for sheet
+      //  alert('sheetUpdated');
+    });
+    
+     //********************************************************************************
+     //********************************************************************************;
+  };
+  this.CargarConsultaMedica = function (idpaciente) {
+    //  alert('CargarConsultaMedica');
+    //  alert(idpaciente);
+    
+      var editCheck = function(cell){
+        //cell - the cell component for the editable cell
+        //get row data
+        var data = cell.getRow().getData();
+       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
+       return false // no editable
+     // return true // editable
+    };
+    //********************************************************************************
+     //********************************************************************************
+      var sheetDataConsulta = [];
+    
+      const xhr = new XMLHttpRequest();
+    
+    // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
+    //xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/Base1.db', true);
+    xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/BD_SIMEDIC_G.db', true);
+    //alert('1');
+    xhr.responseType = 'arraybuffer';
+    //alert('2');
+    xhr.onload = e => {
+      const uInt8Array = new Uint8Array(xhr.response);
+    //   alert('3');
+      const db = new SQL.Database(uInt8Array);
+    //   alert('4');
+    
+     //********************************************************************************
+     //SELECT SQL *********************************************************************
+     //********************************************************************************
+     // const contents = db.exec("SELECT identificador as clave,nombre,rfc FROM TAB_PROSPECTOS WHERE identificador > 100");
+    //  const contents = db.exec("SELECT id,nombre FROM tabla1");
+    // const  contents = db.exec("SELECT fecha,comentario,diagnosticon FROM ObtieneConsultasPacientes_2 where idpaciente = 11155;");
+     const  contents = db.exec("SELECT fecha,comentario,diagnosticon FROM TABLA_CONSULTA_PRUEBAS;");
+    
+     //********************************************************************************
+     //********************************************************************************
+    
+    //   alert('5');
+      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+      console.log('contents');
+      console.log(contents);
+      console.log(contents[0].columns);
+      console.log(contents[0].values);
+    
+     // longitud de la arreglo tabla SQLite
+      var len = contents[0].values.length;
+      for (let i = 0; i < len; i++) {
+         //var obj = JSON.parse (contents[0].values[i]);
+         var obj = contents[0].values[i];
+         console.log(i,contents[0].values[i]);  // valus
+         sheetDataConsulta.push(obj);
+      }
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+      console.log('sheetdata');
+      console.log(sheetDataConsulta);
+    
+      var table = Tabulator.findTable("#tabExample")[0];
+      table.activeSheet("dos"); //make the info sheet active
+      table.setSheetData("dos",sheetDataConsulta);
+    
+           console.log('columnas');
+           console.log(contents[0].columns);
+           console.log('columnas sperad');
+           var cols = table.getColumns() //get array of column components
+           console.log(cols);
+           var lenc = cols.length;
+           for (let i = 1; i < lenc; i++) {
+    
+             var col = cols[i];
+             var strtitle = contents[0].columns[i-1];
+             console.log(strtitle);
+             if (strtitle=="nombre")
+                 col.updateDefinition({title:strtitle,width:250}) //change the column title
+             else
+                col.updateDefinition({title:strtitle, width:130}) //change the column title
+    
+              console.log(col);
+            }
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+    };
+    xhr.send();
+  };
+  this.CargarEstudiosMedicos = function (idpaciente) {
+    //  alert('CargarEstudiosMedicos');
+    //  alert(idpaciente);
+    
+      var editCheck = function(cell){
+        //cell - the cell component for the editable cell
+        //get row data
+        var data = cell.getRow().getData();
+       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
+       return false // no editable
+     // return true // editable
+    };
+    //********************************************************************************
+     //********************************************************************************
+      var sheetDataConsulta = [];
+    
+      const xhr = new XMLHttpRequest();
+    
+    // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
+    //xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/Base1.db', true);
+    xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/BD_SIMEDIC_G.db', true);
+    //alert('1');
+    xhr.responseType = 'arraybuffer';
+    //alert('2');
+    xhr.onload = e => {
+      const uInt8Array = new Uint8Array(xhr.response);
+     //  alert('3');
+      const db = new SQL.Database(uInt8Array);
+    //   alert('4');
+    
+     //********************************************************************************
+     //SELECT SQL *********************************************************************
+     //********************************************************************************
+     // const contents = db.exec("SELECT identificador as clave,nombre,rfc FROM TAB_PROSPECTOS WHERE identificador > 100");
+    //  const contents = db.exec("SELECT id,nombre FROM tabla1");
+    // const  contents = db.exec("SELECT fecha,comentario,tipo FROM ObtieneEstudiosAnalisisPacientes_2 where tipo = 'ESTUDIO' and idpaciente = 11154;");
+     const  contents = db.exec("SELECT fecha,comentario,tipo FROM TABLA_ESTUDIOANALISIS_PRUEBA where tipo = 'ESTUDIO';");
+    
+     //********************************************************************************
+     //********************************************************************************
+    
+     //  alert('5');
+      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+      console.log('contents');
+      console.log(contents);
+      console.log(contents[0].columns);
+      console.log(contents[0].values);
+    
+     // longitud de la arreglo tabla SQLite
+      var len = contents[0].values.length;
+      for (let i = 0; i < len; i++) {
+         //var obj = JSON.parse (contents[0].values[i]);
+         var obj = contents[0].values[i];
+         console.log(i,contents[0].values[i]);  // valus
+         sheetDataConsulta.push(obj);
+      }
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+      console.log('sheetdata');
+      console.log(sheetDataConsulta);
+    
+      var table = Tabulator.findTable("#tabExample")[0];
+      table.activeSheet("tres"); //make the info sheet active
+      table.setSheetData("tres",sheetDataConsulta);
+    
+           console.log('columnas');
+           console.log(contents[0].columns);
+           console.log('columnas sperad');
+           var cols = table.getColumns() //get array of column components
+           console.log(cols);
+           var lenc = cols.length;
+           for (let i = 1; i < lenc; i++) {
+    
+             var col = cols[i];
+             var strtitle = contents[0].columns[i-1];
+             console.log(strtitle);
+             if (strtitle=="nombre")
+                 col.updateDefinition({title:strtitle,width:250}) //change the column title
+             else
+                col.updateDefinition({title:strtitle, width:130}) //change the column title
+    
+              console.log(col);
+            }
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+    };
+    xhr.send();
+  };
+  this.CargarAnalisisMedicos = function (idpaciente) {
+    // alert('CargarAnalisisMedicos');
+     // alert(idpaciente);
+    
+      var editCheck = function(cell){
+        //cell - the cell component for the editable cell
+        //get row data
+        var data = cell.getRow().getData();
+       // return data.age > 18; // only allow the name cell to be edited if the age is over 18
+       return false // no editable
+     // return true // editable
+    };
+    //********************************************************************************
+     //********************************************************************************
+      var sheetDataConsulta = [];
+    
+      const xhr = new XMLHttpRequest();
+    
+    // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
+    //xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/Base1.db', true);
+    xhr.open('GET', 'https://idsfdg.github.io/ReportesTXT/BD_SIMEDIC_G.db', true);
+    //alert('1');
+    xhr.responseType = 'arraybuffer';
+    //alert('2');
+    xhr.onload = e => {
+      const uInt8Array = new Uint8Array(xhr.response);
+    //   alert('3');
+      const db = new SQL.Database(uInt8Array);
+    //   alert('4');
+    
+     //********************************************************************************
+     //SELECT SQL *********************************************************************
+     //********************************************************************************
+     // const contents = db.exec("SELECT identificador as clave,nombre,rfc FROM TAB_PROSPECTOS WHERE identificador > 100");
+    //  const contents = db.exec("SELECT id,nombre FROM tabla1");
+    // const  contents = db.exec("SELECT fecha,comentario,tipo FROM ObtieneEstudiosAnalisisPacientes_2 where tipo = 'ANALISIS' and idpaciente = 11154;");
+    
+     const  contents = db.exec("SELECT fecha,comentario,tipo FROM TABLA_ESTUDIOANALISIS_PRUEBA where tipo = 'ANALISIS';");
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+    
+     //  alert('5');
+      // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+      console.log('contents');
+      console.log(contents);
+      console.log(contents[0].columns);
+      console.log(contents[0].values);
+    
+     // longitud de la arreglo tabla SQLite
+      var len = contents[0].values.length;
+      for (let i = 0; i < len; i++) {
+         //var obj = JSON.parse (contents[0].values[i]);
+         var obj = contents[0].values[i];
+         console.log(i,contents[0].values[i]);  // valus
+         sheetDataConsulta.push(obj);
+      }
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+      console.log('sheetdata');
+      console.log(sheetDataConsulta);
+    
+      var table = Tabulator.findTable("#tabExample")[0];
+      table.activeSheet("cuatro"); //make the info sheet active
+      table.setSheetData("cuatro",sheetDataConsulta);
+    
+           console.log('columnas');
+           console.log(contents[0].columns);
+           console.log('columnas sperad');
+           var cols = table.getColumns() //get array of column components
+           console.log(cols);
+           var lenc = cols.length;
+           for (let i = 1; i < lenc; i++) {
+    
+             var col = cols[i];
+             var strtitle = contents[0].columns[i-1];
+             console.log(strtitle);
+             if (strtitle=="nombre")
+                 col.updateDefinition({title:strtitle,width:250}) //change the column title
+             else
+                col.updateDefinition({title:strtitle, width:130}) //change the column title
+    
+              console.log(col);
+            }
+    
+    
+     //********************************************************************************
+     //********************************************************************************
+    
+       // table.activeSheet("uno"); //make the info sheet active
+    
+      // alert (edPacNombre.value);
+      // table.setFilter("B", "like", edPacNombre.value);
+    };
+    xhr.send();
+  };
+  this.ActualizaTitulosCol = function (key) {
+    var table = Tabulator.findTable("#tabExample")[0];
+        alert (key);
+    switch(key) {
+      case 'uno':
+        // code block
+          table.updateColumnDefinition("A", {title:"Cliente",width:250}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Producto",width:250}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"Precio",width:150}) //change the title on the name column
+          table.updateColumnDefinition("D", {title:"Pagado",width:80}) //change the title on the name column
+          table.updateColumnDefinition("E", {title:"VD/S",width:80}) //change the title on the name column
+    
+        break;
+      case 'dos':
+        // code block
+          table.updateColumnDefinition("A", {title:"fecha"}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Comentario",width:130}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"Diagnostico",width:130}) //change the title on the name column
+    
+        break;
+      case 'tres':
+        // code block
+          table.updateColumnDefinition("A", {title:"fecha"}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Comentario",width:130}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"Tipo"}) //change the title on the name column
+    
+        break;
+      case 'cuatro':
+        // code block
+          table.updateColumnDefinition("A", {title:"fecha"}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Comentario",width:130}) //change the title on the name column
+          table.updateColumnDefinition("C", {title:"Tipo"}) //change the title on the name column
+    
+        break;
+      default:
+        // code block
+          table.updateColumnDefinition("A", {title:"Clave"}) //change the title on the name column
+          table.updateColumnDefinition("B", {title:"Cliente",width:250}) //change the title on the name column
+    
+    };
+  };
+  this.GetCookie = function (cookie_name) {
+    var Result = "";
+    var Cookies = null;
+    var Cookie = null;
+    Result = "";
+    Cookies = pas["WEBLib.Cookies"].TCookies.$create("Create$2");
+    try {
+      Cookies.GetCookies();
+      Cookie = Cookies.Find(cookie_name);
+      if (Cookie != null) Result = Cookie.FValue;
+    } finally {
+      Cookies = rtl.freeLoc(Cookies);
+    };
+    return Result;
+  };
+  $mod.$init = function () {
+  };
+},["Unit1"]);
+rtl.module("jsdelphisystem",["System"],function () {
+  "use strict";
+  var $mod = this;
+});
+rtl.module("WEBLib.LocalFiles",["System","Classes","SysUtils","JS","Web","jsdelphisystem"],function () {
+  "use strict";
+  var $mod = this;
+  this.$rtti.$RefToProcVar("TOpenTextFileProc",{procsig: rtl.newTIProcSig([["AText",rtl.string]])});
+  this.$rtti.$RefToProcVar("TOpenBinaryFileProc",{procsig: rtl.newTIProcSig([["AValue",pas.JS.$rtti["TJSArrayBuffer"]]])});
+  this.$rtti.$RefToProcVar("TSaveFileProc",{procsig: rtl.newTIProcSig([])});
+  rtl.createClass(this,"TFileFilterItem",pas.Classes.TCollectionItem,function () {
+    this.$init = function () {
+      pas.Classes.TCollectionItem.$init.call(this);
+      this.FExtensions = null;
+      this.FMimeType = "";
+      this.FDescription = "";
+    };
+    this.$final = function () {
+      this.FExtensions = undefined;
+      pas.Classes.TCollectionItem.$final.call(this);
+    };
+    this.SetExtensions = function (Value) {
+      this.FExtensions.Assign(Value);
+    };
+    this.GetExtensions = function () {
+      var Result = null;
+      Result = this.FExtensions;
+      return Result;
+    };
+    this.Create$1 = function (ACollection) {
+      pas.Classes.TCollectionItem.Create$1.apply(this,arguments);
+      this.FExtensions = pas.Classes.TStringList.$create("Create$1");
+      return this;
+    };
+    this.Destroy = function () {
+      rtl.free(this,"FExtensions");
+      pas.Classes.TCollectionItem.Destroy.call(this);
+    };
+    var $r = this.$rtti;
+    $r.addMethod("Create$1",2,[["ACollection",pas.Classes.$rtti["TCollection"]]]);
+    $r.addProperty("Description",0,rtl.string,"FDescription","FDescription");
+    $r.addProperty("MIMEType",0,rtl.string,"FMimeType","FMimeType");
+    $r.addProperty("Extensions",3,pas.Classes.$rtti["TStrings"],"GetExtensions","SetExtensions");
+  });
+  rtl.createClass(this,"TFileFilter",pas.Classes.TOwnedCollection,function () {
+    this.GetItems = function (Index) {
+      var Result = null;
+      Result = this.GetItem(Index);
+      return Result;
+    };
+    this.SetItems = function (Index, Value) {
+      this.SetItem(Index,Value);
+    };
+    this.GetFilterString = function () {
+      var Result = "";
+      var i = 0;
+      var j = 0;
+      var ext = "";
+      var mext = "";
+      Result = "";
+      if (this.GetCount() > 0) {
+        Result = "[";
+        for (var $l = 0, $end = this.GetCount() - 1; $l <= $end; $l++) {
+          i = $l;
+          if (i > 0) Result = Result + ",";
+          Result = Result + "{";
+          if (this.GetItems(i).GetExtensions().GetCount() > 0) {
+            ext = "";
+            for (var $l1 = 0, $end1 = this.GetItems(i).GetExtensions().GetCount() - 1; $l1 <= $end1; $l1++) {
+              j = $l1;
+              if (j > 0) ext = ext + ",";
+              mext = this.GetItems(i).GetExtensions().Get(j);
+              if (pas.System.Pos("*.",mext) > 0) mext = pas.System.Copy(mext,2,mext.length);
+              if ((mext === "*.*") || (mext === ".*")) continue;
+              ext = ext + '"' + mext + '"';
+            };
+            if (ext !== "") Result = Result + '"description": "' + this.GetItems(i).FDescription + '", "accept": {"' + this.GetItems(i).FMimeType + '":[' + ext + "]}";
+          };
+          Result = Result + "}";
+        };
+        Result = Result + "]";
+      };
+      return Result;
+    };
+    this.GetFilterObject = function () {
+      var Result = null;
+      var opts = "";
+      var all = "";
+      var jo = null;
+      if (this.GetCount() > 0) {
+        if (this.HasAllFiles()) {
+          all = "false"}
+         else all = "true";
+        opts = '{ "types":' + this.GetFilterString() + ',"excludeAcceptAllOption": ' + all + ',"multiple": false }';
+      };
+      if (opts !== "") {
+        jo = null;
+        if (opts != "") {
+          jo = JSON.parse(opts); };
+      };
+      Result = jo;
+      return Result;
+    };
+    this.HasAllFiles = function () {
+      var Result = false;
+      var i = 0;
+      var j = 0;
+      Result = false;
+      for (var $l = 0, $end = this.GetCount() - 1; $l <= $end; $l++) {
+        i = $l;
+        for (var $l1 = 0, $end1 = this.GetItems(i).GetExtensions().GetCount() - 1; $l1 <= $end1; $l1++) {
+          j = $l1;
+          if ((this.GetItems(i).GetExtensions().Get(j) === "*") || (this.GetItems(i).GetExtensions().Get(j) === "*.*")) {
+            Result = true;
+            break;
+          };
+        };
+      };
+      return Result;
+    };
+    this.Create$3 = function (AOwner) {
+      pas.Classes.TOwnedCollection.Create$2.call(this,AOwner,$mod.TFileFilterItem);
+      return this;
+    };
+    this.Add$1 = function () {
+      var Result = null;
+      Result = pas.Classes.TCollection.Add.call(this);
+      return Result;
+    };
+    this.Add$2 = function (ADescription, AMIMEType, AExtensions) {
+      var Result = null;
+      Result = this.Add$1();
+      Result.FDescription = ADescription;
+      Result.FMimeType = AMIMEType;
+      Result.GetExtensions().SetCommaText(AExtensions);
+      return Result;
+    };
+    this.Insert$1 = function (Index) {
+      var Result = null;
+      Result = pas.Classes.TCollection.Insert.call(this,Index);
+      return Result;
+    };
+    var $r = this.$rtti;
+    $r.addMethod("Create$3",2,[["AOwner",pas.Classes.$rtti["TPersistent"]]]);
+  });
+  rtl.createClass(this,"TTextFile",pas.Classes.TComponent,function () {
+    this.$init = function () {
+      pas.Classes.TComponent.$init.call(this);
+      this.FFileHandle = undefined;
+      this.FText = "";
+      this.FOnFileSave = null;
+      this.FOnFileOpen = null;
+      this.FFileName = "";
+      this.FFilter = null;
+    };
+    this.$final = function () {
+      this.FOnFileSave = undefined;
+      this.FOnFileOpen = undefined;
+      this.FFilter = undefined;
+      pas.Classes.TComponent.$final.call(this);
+    };
+    this.DoOpenFile = function (AHandle, Value, AOpenFile) {
+      this.FFileHandle = AHandle;
+      this.FFileName = AHandle.name;
+      this.FText = Value;
+      if (this.FOnFileOpen != null) this.FOnFileOpen(this);
+      if (AOpenFile != null) AOpenFile(Value);
+    };
+    this.DoSaveFile = function (ASaveFile) {
+      if (this.FOnFileSave != null) this.FOnFileSave(this);
+      if (ASaveFile != null) ASaveFile();
+    };
+    this.DoSaveAsFile = function (AHandle, ASaveFile) {
+      this.FFileHandle = AHandle;
+      this.SaveFile$1(ASaveFile);
+    };
+    this.Create$1 = function (AOwner) {
+      pas.Classes.TComponent.Create$1.apply(this,arguments);
+      this.FFilter = $mod.TFileFilter.$create("Create$3",[this]);
+      if (1 < 0) {
+        this.DoOpenFile(0,"",null);
+        this.DoSaveFile(null);
+        this.DoSaveAsFile(0,null);
+      };
+      return this;
+    };
+    this.Destroy = function () {
+      rtl.free(this,"FFilter");
+      pas.Classes.TComponent.Destroy.call(this);
+    };
+    this.Open = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.OpenFile$1(function (AText) {
+          ASuccess(AText);
+        });
+      });
+      return Result;
+    };
+    this.Save = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.SaveAs = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveAsFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.OpenFile = function () {
+      this.OpenFile$1(null);
+    };
+    this.OpenFile$1 = function (AOpenFile) {
+      var jo = null;
+      jo = this.FFilter.GetFilterObject();
+      let fileHandle;
+      async function asyncCall(afile) {
+        [fileHandle] = await window.showOpenFilePicker(jo);
+        const file = await fileHandle.getFile();
+        const contents = await file.text();
+        afile.DoOpenFile(fileHandle, contents, AOpenFile);
+        }
+      asyncCall(this);
+    };
+    this.SaveFile = function () {
+      this.SaveFile$1(null);
+    };
+    this.SaveFile$1 = function (ASaveFile) {
+      if (!pas.System.Assigned(this.FFileHandle)) throw pas.SysUtils.Exception.$create("Create$1",["File handle not assigned"]);
+      async function writeFile(afile, fileHandle, contents, aproc) {
+      // Create a FileSystemWritableFileStream to write to.
+      const writable = await fileHandle.createWritable();
+      // Write the contents of the file to the stream.
+      await writable.write(contents);
+      // Close the file and write the contents to disk.
+      await writable.close();
+      afile.DoSaveFile(aproc);
+      }
+      writeFile(this, this.FFileHandle, this.FText, ASaveFile);
+    };
+    this.SaveAsFile = function () {
+      this.SaveAsFile$1(null);
+    };
+    this.SaveAsFile$1 = function (ASaveFile) {
+      var jo = null;
+      jo = this.FFilter.GetFilterObject();
+      async function getNewFileHandle(afile, aproc) {
+        const options = {
+          types: [
+           {
+            description: 'Text Files',
+            accept: { 'text/plain': ['.txt'],
+             },
+            },
+           ],
+         };
+      const handle = await window.showSaveFilePicker(jo);
+      afile.DoSaveAsFile(handle, aproc);
+      }
+      getNewFileHandle(this, ASaveFile);
+      if (1 < 0) {
+        this.DoOpenFile(null,"",null);
+        this.DoSaveFile(null);
+        this.DoSaveAsFile(null,null);
+      };
+    };
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
+    $r.addProperty("OnFileOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileOpen","FOnFileOpen");
+    $r.addProperty("OnFileSave",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileSave","FOnFileSave");
+  });
+  rtl.createClass(this,"TLocalTextFile",this.TTextFile,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+  rtl.createClass(this,"TWebLocalTextFile",this.TTextFile,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addProperty("Filter",0,$mod.$rtti["TFileFilter"],"FFilter","");
+  });
+  rtl.createClass(this,"TBinaryFile",pas.Classes.TComponent,function () {
+    this.$init = function () {
+      pas.Classes.TComponent.$init.call(this);
+      this.FFileHandle = undefined;
+      this.FData = null;
+      this.FOnFileSave = null;
+      this.FOnFileOpen = null;
+      this.FFileName = "";
+      this.FFilter = null;
+    };
+    this.$final = function () {
+      this.FData = undefined;
+      this.FOnFileSave = undefined;
+      this.FOnFileOpen = undefined;
+      this.FFilter = undefined;
+      pas.Classes.TComponent.$final.call(this);
+    };
+    this.DoOpenFile = function (AHandle, Value, AOpenFile) {
+      this.FFileHandle = AHandle;
+      this.FFileName = AHandle.name;
+      this.FData = Value;
+      if (this.FOnFileOpen != null) this.FOnFileOpen(this);
+      if (AOpenFile != null) AOpenFile(Value);
+    };
+    this.DoSaveFile = function (ASaveFile) {
+      if (this.FOnFileSave != null) this.FOnFileSave(this);
+      if (ASaveFile != null) ASaveFile();
+    };
+    this.DoSaveAsFile = function (AHandle, ASaveFile) {
+      this.FFileHandle = AHandle;
+      this.SaveFile$1(ASaveFile);
+    };
+    this.Create$1 = function (AOwner) {
+      pas.Classes.TComponent.Create$1.apply(this,arguments);
+      this.FFilter = $mod.TFileFilter.$create("Create$3",[this]);
+      if (1 < 0) {
+        this.DoOpenFile(0,null,null);
+        this.DoSaveFile(null);
+        this.DoSaveAsFile(0,null);
+      };
+      return this;
+    };
+    this.Destroy = function () {
+      rtl.free(this,"FFilter");
+      pas.Classes.TComponent.Destroy.call(this);
+    };
+    this.Open = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.OpenFile$1(function (AValue) {
+          ASuccess(AValue);
+        });
+      });
+      return Result;
+    };
+    this.Open$1 = function (AFileHandle) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.OpenFile$2(AFileHandle,function (AValue) {
+          ASuccess(AValue);
+        });
+      });
+      return Result;
+    };
+    this.Save = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.SaveAs = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveAsFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.OpenFile = function () {
+      this.OpenFile$1(null);
+    };
+    this.OpenFile$1 = function (AOpenFile) {
+      var jo = null;
+      jo = this.FFilter.GetFilterObject();
+      let fileHandle;
+      async function asyncCall(afile) {
+        [fileHandle] = await window.showOpenFilePicker(jo);
+        const file = await fileHandle.getFile();
+        const contents = await file.arrayBuffer();
+        afile.DoOpenFile(fileHandle, contents, AOpenFile);
+        }
+      asyncCall(this);
+      if (1 < 0) {
+        this.DoOpenFile(null,null,null);
+        this.DoSaveFile(null);
+        this.DoSaveAsFile(null,null);
+      };
+    };
+    this.OpenFile$2 = function (AFileHandle, AOpenFile) {
+      async function asyncCall(afile) {
+        const file = await AFileHandle.getFile();
+        const contents = await file.arrayBuffer();
+        afile.DoOpenFile(AFileHandle, contents, AOpenFile);
+        }
+      asyncCall(this);
+    };
+    this.SaveFile = function () {
+      this.SaveFile$1(null);
+    };
+    this.SaveFile$1 = function (ASaveFile) {
+      if (!pas.System.Assigned(this.FFileHandle)) throw pas.SysUtils.Exception.$create("Create$1",["File handle not assigned"]);
+      async function writeFile(afile, fileHandle, contents, aproc) {
+      // Create a FileSystemWritableFileStream to write to.
+      const writable = await fileHandle.createWritable();
+      // Write the contents of the file to the stream.
+      await writable.write(contents);
+      // Close the file and write the contents to disk.
+      await writable.close();
+      afile.DoSaveFile(aproc);
+      }
+      writeFile(this, this.FFileHandle, this.FData, ASaveFile);
+    };
+    this.SaveAsFile = function () {
+      this.SaveAsFile$1(null);
+    };
+    this.SaveAsFile$1 = function (ASaveFile) {
+      var jo = null;
+      jo = this.FFilter.GetFilterObject();
+      async function getNewFileHandle(afile, aproc) {
+      const handle = await window.showSaveFilePicker(jo);
+      afile.DoSaveAsFile(handle, aproc);
+      }
+      getNewFileHandle(this, ASaveFile);
+    };
+    this.LoadStream = function (Stream) {
+      var $Self = this;
+      var Result = null;
+      var b = [];
+      var l = 0;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.OpenFile$1(function (AValue) {
+          b = pas.Classes.TMemoryStream.MemoryToBytes(AValue);
+          l = AValue.byteLength;
+          Stream.Write$1(b,0,l);
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.SaveStream = function (Stream) {
+      var $Self = this;
+      var Result = null;
+      this.FData = Stream.FMemory;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
+    $r.addProperty("OnFileOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileOpen","FOnFileOpen");
+    $r.addProperty("OnFileSave",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileSave","FOnFileSave");
+  });
+  rtl.createClass(this,"TLocalBinaryFile",this.TBinaryFile,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+  rtl.createClass(this,"TWebLocalBinaryFile",this.TBinaryFile,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addProperty("Filter",0,$mod.$rtti["TFileFilter"],"FFilter","");
+  });
+  rtl.recNewT(this,"TFileSystemFileHandle",function () {
+    this.Kind = "";
+    this.Name = "";
+    this.$eq = function (b) {
+      return (this.Kind === b.Kind) && (this.Name === b.Name);
+    };
+    this.$assign = function (s) {
+      this.Kind = s.Kind;
+      this.Name = s.Name;
+      return this;
+    };
+    var $r = $mod.$rtti.$Record("TFileSystemFileHandle",{});
+    $r.addField("Kind",rtl.string);
+    $r.addField("Name",rtl.string);
+  });
+  rtl.recNewT(this,"TFileObject",function () {
+    this.Name = "";
+    this.Lastmodfieddate = "";
+    this.Size = 0;
+    this.Fileobject = undefined;
+    this.$eq = function (b) {
+      return (this.Name === b.Name) && (this.Lastmodfieddate === b.Lastmodfieddate) && (this.Size === b.Size) && (this.Fileobject === b.Fileobject);
+    };
+    this.$assign = function (s) {
+      this.Name = s.Name;
+      this.Lastmodfieddate = s.Lastmodfieddate;
+      this.Size = s.Size;
+      this.Fileobject = s.Fileobject;
+      return this;
+    };
+    var $r = $mod.$rtti.$Record("TFileObject",{});
+    $r.addField("Name",rtl.string);
+    $r.addField("Lastmodfieddate",rtl.string);
+    $r.addField("Size",rtl.longint);
+    $r.addField("Fileobject",rtl.jsvalue);
+  });
+  this.$rtti.$DynArray("TFileSystemFileHandleArray",{eltype: this.$rtti["TFileSystemFileHandle"]});
+  this.$rtti.$RefToProcVar("TOpenFolderProc",{procsig: rtl.newTIProcSig([])});
+  this.$rtti.$RefToProcVar("TGetFileProc",{procsig: rtl.newTIProcSig([["AFileHandle",this.$rtti["TFileObject"]]])});
+  this.$rtti.$RefToProcVar("TGetFileHandleProc",{procsig: rtl.newTIProcSig([["AFileHandle",rtl.jsvalue]])});
+  this.$rtti.$RefToProcVar("TGetFolderProc",{procsig: rtl.newTIProcSig([["AFolderHandle",rtl.jsvalue]])});
+  rtl.createClass(this,"TFolder",pas.Classes.TComponent,function () {
+    this.$init = function () {
+      pas.Classes.TComponent.$init.call(this);
+      this.FFileArray = [];
+      this.FFolder = undefined;
+      this.FOnFolderOpen = null;
+    };
+    this.$final = function () {
+      this.FFileArray = undefined;
+      this.FOnFolderOpen = undefined;
+      pas.Classes.TComponent.$final.call(this);
+    };
+    this.DoGetFile = function (AFileHandle, AProc) {
+      var LFileObject = $mod.TFileObject.$new();
+      if (AProc != null) {
+        LFileObject.Name = AFileHandle.name;
+        LFileObject.Lastmodfieddate = AFileHandle.lastModifiedDate.toString();
+        LFileObject.Size = AFileHandle.size;
+        LFileObject.Fileobject = AFileHandle;
+        AProc($mod.TFileObject.$clone(LFileObject));
+      };
+    };
+    this.DoGetFileHandle = function (AFileHandle, AProc) {
+      if (AProc != null) {
+        AProc(AFileHandle);
+      };
+    };
+    this.DoListFile = function (AFile) {
+      var fh = $mod.TFileSystemFileHandle.$new();
+      this.FFileArray = rtl.arraySetLength(this.FFileArray,$mod.TFileSystemFileHandle,rtl.length(this.FFileArray) + 1);
+      fh.$assign(this.FFileArray[rtl.length(this.FFileArray) - 1]);
+      fh.Kind = AFile.kind;
+      fh.Name = AFile.name;
+      this.FFileArray[rtl.length(this.FFileArray) - 1].$assign(fh);
+    };
+    this.DoGetFolder = function (AFolder) {
+      this.FFolder = AFolder;
+    };
+    this.DoOpenFolder = function (AOpenFolder) {
+      if (this.FOnFolderOpen != null) this.FOnFolderOpen(this);
+      if (AOpenFolder != null) AOpenFolder();
+    };
+    this.DoGetFolderHandle = function (AFolder, GetFolder) {
+      if (GetFolder != null) GetFolder(AFolder);
+    };
+    this.DoCreateFolder = function (AName, AProc) {
+      async function MakeFolder(afolder,name) {
+        const newDirectoryHandle = await afolder.getDirectoryHandle(name, { create: true,} );
+        AProc(newDirectoryHandle);
+      }
+      MakeFolder(AName);
+    };
+    this.DoCreateFile = function (AName, AProc) {
+      async function MakeFile(afolder,name) {
+        const newFileHandle = await afolder.getFileHandle(name, { create: true,} );
+        AProc(newFileHandle);
+      }
+      MakeFile(AName);
+    };
+    this.Create$2 = function (AFolderHandle) {
+      pas.System.TObject.Create.call(this);
+      this.FFolder = AFolderHandle;
+      return this;
+    };
+    this.Create$1 = function (AOwner) {
+      var fs = $mod.TFileSystemFileHandle.$new();
+      pas.System.TObject.Create.call(this);
+      this.FFolder = null;
+      if (1 < 0) {
+        this.DoGetFile(0,null);
+        this.DoListFile(0);
+        this.DoGetFolder($mod.TFileSystemFileHandle.$clone(fs));
+        this.DoOpenFolder(null);
+        this.DoGetFolderHandle(0,null);
+      };
+      if (1 < 0) this.DoGetFileHandle(null,null);
+      return this;
+    };
+    this.OpenFolder = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.Open$1(function () {
+          ASuccess($Self.FFileArray);
+        });
+      });
+      return Result;
+    };
+    this.Open = function () {
+      this.Open$1(null);
+    };
+    this.Open$1 = function (AOpenFolder) {
+      var fs = $mod.TFileSystemFileHandle.$new();
+      if (this.FFolder == null) {
+        async function showdir(afolder, aproc) {
+                const dirHandle = await window.showDirectoryPicker();
+        
+                afolder.FFolder = dirHandle;
+        
+                for await (const entry of dirHandle.values()) {
+                  afolder.DoListFile(entry);
+                }
+                afolder.DoOpenFolder(aproc);
+               }
+               showdir(this, AOpenFolder);
+      } else {
+        async function showdirhandle(afolder, aproc) {
+        
+                const dirHandle = afolder.FFolder;
+        
+                for await (const entry of dirHandle.values()) {
+                  afolder.DoListFile(entry);
+                }
+                afolder.DoOpenFolder(aproc);
+               }
+               showdirhandle(this, AOpenFolder);
+      };
+      if (1 < 0) {
+        this.DoGetFile(null,null);
+        this.DoListFile(null);
+        this.DoGetFolder($mod.TFileSystemFileHandle.$clone(fs));
+        this.DoOpenFolder(null);
+        this.DoGetFolderHandle(null,null);
+      };
+    };
+    this.CreateFolder = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.DoCreateFolder(AName,function (AFolderHandle) {
+          ASuccess(AFolderHandle);
+        });
+      });
+      return Result;
+    };
+    this.CreateFile = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.DoCreateFile(AName,function (AFileHandle) {
+          ASuccess(AFileHandle);
+        });
+      });
+      return Result;
+    };
+    this.FileHandle = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.GetFileHandle(AName,function (AFileHandle) {
+          ASuccess(AFileHandle);
+        });
+      });
+      return Result;
+    };
+    this.FileObject = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.GetFile(AName,function (AFileObject) {
+          ASuccess($mod.TFileObject.$clone(AFileObject));
+        });
+      });
+      return Result;
+    };
+    this.Folder = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.GetFolder(AName,function (AFolderHandle) {
+          ASuccess(AFolderHandle);
+        });
+      });
+      return Result;
+    };
+    this.GetFile = function (AName, GetFile) {
+      async function getfile(afolder, aname, aproc)
+      {
+        const newFileHandle = await afolder.FFolder.getFileHandle(aname, { create: false });
+        const file = await newFileHandle.getFile();
+        afolder.DoGetFile(file, aproc);
+      }
+      getfile(this, AName, GetFile);
+    };
+    this.GetFileHandle = function (AName, GetFile) {
+      async function getfilehandle(afolder, aname, aproc)
+      {
+        const newFileHandle = await afolder.FFolder.getFileHandle(aname, { create: false });
+        afolder.DoGetFileHandle(newFileHandle, aproc);
+      }
+      getfilehandle(this, AName, GetFile);
+    };
+    this.GetFolder = function (AName, GetFolder) {
+      async function getfolder(afolder, aname, aproc)
+      {
+        const newFolderHandle = await afolder.FFolder.getDirectoryHandle(aname, { create: false });
+        afolder.DoGetFolderHandle(newFolderHandle, aproc);
+      }
+      getfolder(this, AName, GetFolder);
+    };
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addMethod("Create$2",2,[["AFolderHandle",rtl.jsvalue]]);
+    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
+    $r.addProperty("OnFolderOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFolderOpen","FOnFolderOpen");
+  });
+  rtl.createClass(this,"TLocalFolder",this.TFolder,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+  rtl.createClass(this,"TWebLocalFolder",this.TFolder,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+},["WEBLib.Utils"]);
 rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.ExtCtrls"],function () {
   "use strict";
   var $mod = this;
@@ -83345,6 +83345,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var opcionGuardar = 0;
       var LLocalStorage = null;
       var jsonData = "";
+      var i = 0;
       this.edRen.SetText(".");
       nomarch = "";
       opcionGuardar = 6;
@@ -84010,7 +84011,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
        var activeRowCount = table.getDataCount(key);
        rowcountt =activeRowCount;
        //console.log('activeRowCount',activeRowCount);
-      if (keyhoja === "uno") this.Consultas1Click(Sender);
+      if ((keyhoja === "uno") && (rowcountt === 0)) this.Consultas1Click(Sender);
     };
     this.AnlisisGrfico1Click = async function (Sender) {
       //window.open('http://localhost/GraficadorPas/TMSWeb/Debug/Project1.html');
@@ -84519,6 +84520,10 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       newform.SetBorder(pas["WEBLib.Forms"].TFormBorderStyle.fbDialog);
       newform.FShowClose = false;
       newform.ShowModal$1(AfterShowModal);
+    };
+    this.PedidosDbClientDataset1AfterOpen = function (DataSet) {
+      var Sender = null;
+      this.WebDivClick(Sender);
     };
     this.ValidarUsuarioActivo = async function (u, p) {
       var Result = false;
@@ -85443,6 +85448,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.PedidosDbClientDataset1.FIDBObjectStoreName = "Pedidos";
         this.PedidosDbClientDataset1.FIDBKeyFieldName = "id";
         this.PedidosDbClientDataset1.FIDBAutoIncrement = true;
+        this.PedidosDbClientDataset1.FAfterOpen = rtl.createCallback(this,"PedidosDbClientDataset1AfterOpen");
         this.PedidosDbClientDataset1.SetLeft(480);
         this.PedidosDbClientDataset1.SetTop(376);
       } finally {
@@ -85645,6 +85651,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("WebScrollRegistroMouseEnter",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebScrollRegistroMouseLeave",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("cargarFormaCaptura",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("PedidosDbClientDataset1AfterOpen",0,[["DataSet",pas.DB.$rtti["TDataSet"]]]);
   });
   this.Form1 = null;
   $mod.$implcode = function () {

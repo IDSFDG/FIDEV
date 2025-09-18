@@ -82373,6 +82373,8 @@ rtl.module("Unit3",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.btnCerrarClick = function (Sender) {
+      var table = Tabulator.findTable("#tabExample")[0];
+      table.clearAlert();
       this.Close();
     };
     this.btnAgregarClick = function (Sender) {
@@ -82985,6 +82987,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.Compartir2 = null;
       this.WebLocalTextFile1 = null;
       this.PedidosDbClientDataset1 = null;
+      this.WebLabel8 = null;
       this.minimizo = false;
     };
     this.$final = function () {
@@ -83058,6 +83061,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.Compartir2 = undefined;
       this.WebLocalTextFile1 = undefined;
       this.PedidosDbClientDataset1 = undefined;
+      this.WebLabel8 = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.WebButton1Click = function (Sender) {
@@ -83614,6 +83618,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       $impl.RegistroCookie.GetCookies();
       $impl.NomRegistroCookie = "VENTASEMANA";
       this.lbarchivo.SetText($impl.NomRegistroCookie);
+      this.lbarchivo.SetText($impl.NomRegistroCookie + ". Tocar sobre libreta para agregar");
       document.addEventListener("visibilitychange", function() {
         if (document.visibilityState === "hidden") {
           // The page is hidden, which could mean the browser is minimized or in a background tab
@@ -84004,6 +84009,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       var keyhoja = "";
       var rowcountt = 0;
       var table = Tabulator.findTable("#tabExample")[0];
+      // table.alert("Libreta digital, Tocar para agregar renglones");
        var sheet = table.getSheet();
        var key = sheet.getKey();
       // alert(key);
@@ -84011,6 +84017,8 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
        var activeRowCount = table.getDataCount(key);
        rowcountt =activeRowCount;
        //console.log('activeRowCount',activeRowCount);
+      this.Registrar1Click(Sender);
+      return;
       if ((keyhoja === "uno") && (rowcountt === 0)) this.Consultas1Click(Sender);
     };
     this.AnlisisGrfico1Click = async function (Sender) {
@@ -84523,7 +84531,14 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     };
     this.PedidosDbClientDataset1AfterOpen = function (DataSet) {
       var Sender = null;
-      this.WebDivClick(Sender);
+      this.CargarRenglones();
+    };
+    this.WebDivMouseMove = function (Sender, Shift, X, Y) {
+      return;
+      var table = Tabulator.findTable("#tabExample")[0];
+        table.alert("Libreta digital, Tocar para agregar renglones");
+      
+          table.clearAlert();   // Clear Alert;
     };
     this.ValidarUsuarioActivo = async function (u, p) {
       var Result = false;
@@ -84639,6 +84654,33 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         element.style.visibility = 'visible'; // Hides the element and removes its space;
       };
     };
+    this.CargarRenglones = function () {
+      var keyhoja = "";
+      var rowcountt = 0;
+      var Sender = null;
+      var table = Tabulator.findTable("#tabExample")[0];
+       var sheet = table.getSheet();
+       var key = sheet.getKey();
+      // alert(key);
+       keyhoja=key;
+       var activeRowCount = table.getDataCount(key);
+       rowcountt =activeRowCount;
+       //console.log('activeRowCount',activeRowCount);
+      if ((keyhoja === "uno") && (rowcountt === 0)) this.Consultas1Click(Sender);
+    };
+    this.MostrarHint = function () {
+      var ElemID = "";
+      var ToolText = "";
+      ElemID = this.WebDiv.GetID();
+      ToolText = this.WebDiv.FHint;
+      var div = document.getElementById(ElemID);
+      var tooltip = new bootstrap.Tooltip(div, {
+        title: ToolText,
+        placement: 'right', // 'top', 'bottom', 'left' also possible
+        customClass: 'MyCustomToolTipClass', // Optional: for custom CSS
+        delay: { show: 1000, hide: 250 } // Optional: delay for showing/hiding
+      });
+    };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
       this.WebDiv = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$2",["tabExample"]);
@@ -84648,6 +84690,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebPanel4 = pas["WEBLib.ExtCtrls"].TPanel.$create("Create$1",[this]);
       this.WebLabel1 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebLabel2 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
+      this.WebLabel8 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebButton9 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.edPacNombre = pas["WEBLib.StdCtrls"].TEdit.$create("Create$2",["edPacNombre"]);
       this.WebButton11 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
@@ -84718,6 +84761,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebPanel4.BeforeLoadDFMValues();
       this.WebLabel1.BeforeLoadDFMValues();
       this.WebLabel2.BeforeLoadDFMValues();
+      this.WebLabel8.BeforeLoadDFMValues();
       this.WebButton9.BeforeLoadDFMValues();
       this.edPacNombre.BeforeLoadDFMValues();
       this.WebButton11.BeforeLoadDFMValues();
@@ -84809,6 +84853,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebDiv.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebDiv.SetRole("");
         this.SetEvent$1(this.WebDiv,this,"OnClick","WebDivClick");
+        this.SetEvent$1(this.WebDiv,this,"OnMouseMove","WebDivMouseMove");
         this.WebMemo1.SetParentComponent(this.WebDiv);
         this.WebMemo1.SetName("WebMemo1");
         this.WebMemo1.SetLeft(16);
@@ -84894,7 +84939,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel2.SetHint("Seleccione el menú para iniciar");
         this.WebLabel2.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebLabel2.SetAlignment(pas.Classes.TAlignment.taCenter);
-        this.WebLabel2.SetCaption("Registro de VENTAS Y SUBASTAS");
+        this.WebLabel2.SetCaption("Libreta Digital registro de VENTAS Y SUBASTAS");
         this.WebLabel2.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel2.FFont.FCharset = 1;
         this.WebLabel2.FFont.SetColor(65793);
@@ -84906,6 +84951,19 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel2.SetParentFont(false);
         this.WebLabel2.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.WebLabel2,this,"OnClick","WebLabel2Click");
+        this.WebLabel8.SetParentComponent(this.WebPanel4);
+        this.WebLabel8.SetName("WebLabel8");
+        this.WebLabel8.SetLeft(232);
+        this.WebLabel8.SetTop(24);
+        this.WebLabel8.SetWidth(216);
+        this.WebLabel8.SetHeight(18);
+        this.WebLabel8.SetAlignment(pas.Classes.TAlignment.taCenter);
+        this.WebLabel8.SetCaption("Tocar sobre libreta para agregar ");
+        this.WebLabel8.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebLabel8.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.WebLabel8.SetHeightPercent(100.000000000000000000);
+        this.WebLabel8.SetVisible(false);
+        this.WebLabel8.SetWidthPercent(100.000000000000000000);
         this.WebButton9.SetParentComponent(this.WebPanel4);
         this.WebButton9.SetName("WebButton9");
         this.WebButton9.SetLeft(93);
@@ -84983,8 +85041,9 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.lbarchivo.SetName("lbarchivo");
         this.lbarchivo.SetLeft(16);
         this.lbarchivo.SetTop(20);
-        this.lbarchivo.SetWidth(218);
+        this.lbarchivo.SetWidth(337);
         this.lbarchivo.SetHeight(22);
+        this.lbarchivo.SetAutoSize(true);
         this.lbarchivo.SetBorderStyle(pas["WEBLib.Controls"].TBorderStyle.bsNone);
         this.lbarchivo.SetChildOrderEx(1);
         this.lbarchivo.SetColor(16577277);
@@ -85459,6 +85518,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel4.AfterLoadDFMValues();
         this.WebLabel1.AfterLoadDFMValues();
         this.WebLabel2.AfterLoadDFMValues();
+        this.WebLabel8.AfterLoadDFMValues();
         this.WebButton9.AfterLoadDFMValues();
         this.edPacNombre.AfterLoadDFMValues();
         this.WebButton11.AfterLoadDFMValues();
@@ -85597,6 +85657,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addField("Compartir2",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
     $r.addField("WebLocalTextFile1",pas["WEBLib.LocalFiles"].$rtti["TLocalTextFile"]);
     $r.addField("PedidosDbClientDataset1",pas["WEBLib.IndexedDb"].$rtti["TIndexedDbClientDataset"]);
+    $r.addField("WebLabel8",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
     $r.addMethod("WebButton1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton2Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton3Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
@@ -85652,6 +85713,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addMethod("WebScrollRegistroMouseLeave",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("cargarFormaCaptura",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("PedidosDbClientDataset1AfterOpen",0,[["DataSet",pas.DB.$rtti["TDataSet"]]]);
+    $r.addMethod("WebDivMouseMove",0,[["Sender",pas.System.$rtti["TObject"]],["Shift",pas.Classes.$rtti["TShiftState"]],["X",rtl.longint],["Y",rtl.longint]]);
   });
   this.Form1 = null;
   $mod.$implcode = function () {
